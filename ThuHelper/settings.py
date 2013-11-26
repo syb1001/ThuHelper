@@ -1,7 +1,11 @@
 # Django settings for ThuHelper project.
-
+import os.path
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+TEMPLATE_DIRS = (
+    os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
+)
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
