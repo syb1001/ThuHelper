@@ -18,6 +18,9 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'ThuHelper.settings'
 path = os.path.dirname(os.path.abspath(__file__)) + '/ThuHelper'
 if path not in sys.path:
     sys.path.insert(1, path)
+# the next two lines are for 3rd-part modules
+lib_path = os.path.join(os.path.split(os.path.realpath(__file__))[0], 'lib')
+sys.path.insert(0, lib_path)
 
 from django.core.handlers.wsgi import WSGIHandler
 from bae.core.wsgi import WSGIApplication
