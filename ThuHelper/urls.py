@@ -5,6 +5,7 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 from ThuHelper.views import checkSignature
+from ThuHelper.database import testTable
 
 urlpatterns = patterns('',
     # Examples:
@@ -17,4 +18,5 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^access/$', checkSignature),
+    url(r'^dbtest/$', testTable),
 )
