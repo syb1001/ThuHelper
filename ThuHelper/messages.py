@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import sys
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('UTF-8')

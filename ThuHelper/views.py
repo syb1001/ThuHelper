@@ -4,6 +4,7 @@ import sys
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('UTF-8')
 
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseForbidden
 from django.views.decorators.http import require_http_methods
 from django.template import RequestContext
@@ -31,6 +32,7 @@ def checkSignature(request):
 def echo(text):
     return text
 
+@csrf_exempt
 def index(req):
     if not checkSig(req):
         return HttpResponseForbidden()
