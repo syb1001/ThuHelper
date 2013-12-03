@@ -7,6 +7,7 @@
 
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
+from helpInfo import getHelpInfoArticles
 
 def processMessage(message):
     # 根据用户发来的消息返回对应的消息
@@ -15,6 +16,10 @@ def processMessage(message):
             # 用户查询人文图书馆座位信息
             response = getLibrarySeatText()
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Content'] in ['?', 'help', u'？', u'帮助']:
+            # 帮助信息
+            articles = getHelpInfoArticles()
+            return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
         elif 'test' in message['Content']:
             # 测试通道
             articles = getLibrarySeatNews()
