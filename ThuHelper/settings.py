@@ -25,6 +25,7 @@ if 'SERVER_SOFTWARE' in os.environ:
             'PORT': '4050',                      # Set to empty string for default. Not used with sqlite3.
         }
     }
+'''
 else:
     DATABASES = {
         'default': {
@@ -36,7 +37,7 @@ else:
             'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
         }
     }
-
+'''
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
@@ -88,6 +89,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    'F:/PycharmProjects/ThuHelper/static',
 )
 
 # List of finder classes that know how to find static files in
@@ -178,3 +180,5 @@ LOGGING = {
 # 与微信公众平台约定的token
 # 在微信平台上填写
 WEIXIN_TOKEN = 'helloworld'
+# 人文社科图书馆座位查询URL
+URL_LIBRARY = 'http://thuhelper11.duapp.com/library/'

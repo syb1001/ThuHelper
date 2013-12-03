@@ -5,6 +5,7 @@
 
 from BeautifulSoup import BeautifulSoup
 import urllib
+from .settings import URL_LIBRARY
 
 # 生成图文信息
 def getLibrarySeatNews():
@@ -12,10 +13,10 @@ def getLibrarySeatNews():
     return [{
         'Title': u'人文社科图书馆座位使用情况',
         'PicUrl': 'http://hdn.xnimg.cn/photos/hdn121/20130429/2335/h_large_MRrr_d18a00000489113e.jpg',
-        'Url': ''
+        'Url': URL_LIBRARY
     }, {
         'Title': info,
-        'Url': ''
+        'Url': URL_LIBRARY
     }]
 
 # 获取座位信息
