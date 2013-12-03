@@ -1,30 +1,23 @@
+# coding=utf-8
+
 from django.http import HttpResponse
-from django.template.loader import get_template
-from django.template import Context
-from xml.etree import ElementTree as ET
+from .utils import checkSignature, parseXml
+from .control import processMessage
 
-import hashlib, time
-
+# 防止403 error的语句
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
-def checkSignature(request):
-    token = 'helloworld'
 
-    signature = request.GET.get('signature', '')
-    timestamp = request.GET.get('timestamp', '')
-    nonce = request.GET.get('nonce', '')
-    echostr = request.GET.get('echostr', '')
+def entry(request):
+    # 进行token验证
+    if not checkSignature(request):
+        return HttpResponse('Invalid Request')
 
-    infostr = ''.join(sorted([token, timestamp, nonce]))
-    if hashlib.sha1(infostr).hexdigest() == signature:
-        if request.GET.has_key('echostr'):
-            return HttpResponse(echostr)
-        else:
-            reply = '<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[%s]]></Content></xml>'
-            xml = ET.fromstring(request.body)
-            content = xml.find("Content").text
-            fromUserName = xml.find("ToUserName").text
-            toUserName = xml.find("FromUserName").text
-            return HttpResponse(reply % (toUserName, fromUserName, str(int(time.time())), content))
+    if request.GET.has_key('echostr'):
+        # 接入微信公众平台的情况
+        # 按微信平台要求返回echostr以通过验证
+        return HttpResponse(request.GET['echostr'])
     else:
-        return HttpResponse("Invalid Request")
+        # 接收用户消息的情况
+        message = parseXml(request.body)
+        return HttpResponse(processMessage(message))

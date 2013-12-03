@@ -1,11 +1,9 @@
+# coding=utf-8
+
 # Django settings for ThuHelper project.
 import os.path
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-
-TEMPLATE_DIRS = (
-    os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
-)
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -114,6 +112,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
 )
 
 INSTALLED_APPS = (
@@ -157,3 +156,9 @@ LOGGING = {
         },
     }
 }
+
+# 项目配置
+
+# 与微信公众平台约定的token
+# 在微信平台上填写
+WEIXIN_TOKEN = 'helloworld'
