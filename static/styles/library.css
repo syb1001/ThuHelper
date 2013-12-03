@@ -1,0 +1,25 @@
+table {
+    margin: 20px auto auto auto;
+    background-color:rgba(255,255,255,0.3);
+    border-radius: 5px;
+    font-family: "Microsoft Yahei", "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    font-size: 30px;
+}
+
+td {
+    padding: 8px;
+    text-align: center;
+}
+
+body {
+    background-color: lightblue;
+}
+
+#title {
+    font-size: 40px;
+}
+
+#head {
+    background-color: rgba(192, 192, 192, 0.35);
+    font-size: 35px;
+}
