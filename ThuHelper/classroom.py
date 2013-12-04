@@ -18,7 +18,7 @@ def getClassroomInfo(queryStr):
     weekday = datetime.date(dt.year, dt.month, dt.day).weekday()
     
     roomList = getclassroomsbyfloor(buildID, floor, classSeqNum, weekday)
-    ret =  str(dt.month) + u'月' + str(dt.day) + u'日' + u'第' + str(classSeqNum) + u'大节，\n'+ buildname + u'空闲教室：\n' 
+    ret =  str(dt.month) + u'月' + str(dt.day) + u'日' + u'第' + str(classSeqNum) + u'大节，\n'+ buildname + floor + u'层空闲教室：\n'
     for room in roomList:
         ret = ret + room['roomnumber'].split()[0] + '\n'
     ret = ret.rstrip('\n')
