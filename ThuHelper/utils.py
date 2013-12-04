@@ -28,6 +28,8 @@ def parseXml(xml):
     return content
 
 # 根据时间返回课程时间序号, 可选参数为偏移分钟数
+# _datetime是datetime对象, 表示给定时间;_deltaMinute是数字, 表示偏移的分钟数
+# 每节课的下课时间之前对应这节课的时间，第6节课下课后的时间仍对应第6节课
 def getClassSeqNumByDatetime(_datetime, _deltaMinute = 0):
     delta = datetime.timedelta(0, 0, 0, 0, _deltaMinute)
     dt = _datetime + delta  

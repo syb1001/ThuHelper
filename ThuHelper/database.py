@@ -33,8 +33,8 @@ def dbinit(request):
         insertclassroom(room['building'], room['name'][0], room['status'])
     return HttpResponse()
 
-def isroomusable(data, time):
-    nowweek = datetime.datetime.now().weekday() + 1
+def isroomusable(data, time, weekday):
+    nowweek = weekday + 1
     time = time - 1
     if (nowweek == 1):
         return data.Monday[time]
@@ -69,11 +69,11 @@ def getcourse(data):
         return data.Sunday
 
 
-def getclassroomsbyfloor(building, floor, time):
+def getclassroomsbyfloor(building, floor, time, weekday):
     classroomlist = classroom.objects.filter(building=building, floor=floor)
     result = []
     for row in classroomlist:
-        isusable = isroomusable(row, time)
+        isusable = isroomusable(row, time, weekday)
         if (isusable == '0'):
             roomdata = {}
             roomdata['roomnumber'] = row.roomnumber
