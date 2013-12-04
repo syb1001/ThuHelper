@@ -8,6 +8,7 @@
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
 from helpInfo import getHelpInfoArticles
+from music import getRandomMusic
 
 def processMessage(message):
     # 根据用户发来的消息返回对应的消息
@@ -26,17 +27,13 @@ def processMessage(message):
             # 以文字消息形式返回
             response = getLibrarySeatText()
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif u'音乐' in message['Content']:
+            music = getRandomMusic()
+            return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
         elif 'test' in message['Content']:
             # 测试通道
-            return makeMusicMessage(
-                message['FromUserName'],
-                message['ToUserName'],
-                '',
-                'http://thuhelper11.duapp.com/static/music/1.wma',
-                'http://thuhelper11.duapp.com/static/music/1.wma',
-                'II Quiet Romance',
-                'just enjoy'
-            )
+            response = message['Content']
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         else:
             # 文字消息原样返回
             response = message['Content']

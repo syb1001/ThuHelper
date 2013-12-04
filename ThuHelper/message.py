@@ -54,17 +54,16 @@ def makeVideoMessage(toUser, fromUser, mediaId, title, description):
     return template.render(context)
 
 # 音乐消息
-def makeMusicMessage(toUser, fromUser, mediaId, musicUrl, hqMusicUrl, title, description):
+def makeMusicMessage(toUser, fromUser, music):
     template = get_template('xml_music.xml')
     context = Context({
         'ToUserName': toUser,
         'FromUserName': fromUser,
         'CreateTime': str(int(time.time())),
-        'MediaId': mediaId,
-        'MusicUrl': musicUrl,
-        'HQMusicUrl': hqMusicUrl,
-        'Title': title,
-        'Description': description
+        'MusicUrl': music['Url'],
+        'HQMusicUrl': music['HQUrl'],
+        'Title': music['Title'],
+        'Description': music['Description']
     })
     return template.render(context)
 
