@@ -46,6 +46,10 @@ def processMessage(message):
             # 否则原样返回
             response = getRoomCourseInfo(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+    elif message['MsgType'] == 'event':
+        if message['Event'] == 'subscribe':
+            response = u'欢迎关注清华自习小助手，请发送“帮助”或“help”查看帮助信息~'
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
     else:
         # 其他类型的消息不支持
         response = u'暂不支持非文字消息'
