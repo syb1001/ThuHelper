@@ -8,22 +8,32 @@
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
 from helpInfo import getHelpInfoArticles
+from music import getRandomMusic
 
 def processMessage(message):
     # 根据用户发来的消息返回对应的消息
     if message['MsgType'] == 'text':
-        if u'文图' in message['Content'] or u'人文馆' in message['Content']:
-            # 用户查询人文图书馆座位信息
-            response = getLibrarySeatText()
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif message['Content'] in ['?', 'help', u'？', u'帮助']:
+        if message['Content'] in ['?', 'help', u'？', u'帮助']:
             # 帮助信息
             articles = getHelpInfoArticles()
             return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
-        elif 'test' in message['Content']:
-            # 测试通道
+        elif u'人文馆' in message['Content']:
+            # 用户查询人文馆座位信息
+            # 以图文消息形式返回
             articles = getLibrarySeatNews()
             return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
+        elif u'文图' in message['Content']:
+            # 用户查询人文图书馆座位信息
+            # 以文字消息形式返回
+            response = getLibrarySeatText()
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif u'音乐' in message['Content']:
+            music = getRandomMusic()
+            return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
+        elif 'test' in message['Content']:
+            # 测试通道
+            response = message['Content']
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         else:
             # 文字消息原样返回
             response = message['Content']

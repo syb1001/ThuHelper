@@ -182,3 +182,5 @@ LOGGING = {
 WEIXIN_TOKEN = 'helloworld'
 # 人文社科图书馆座位查询URL
 URL_LIBRARY = 'http://thuhelper11.duapp.com/library/'
+URL_LIBRARY_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/library'
+MAX_LIBRARY_IMAGE_INDEX = 4
