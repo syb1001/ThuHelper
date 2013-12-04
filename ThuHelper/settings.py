@@ -25,7 +25,6 @@ if 'SERVER_SOFTWARE' in os.environ:
             'PORT': '4050',                      # Set to empty string for default. Not used with sqlite3.
         }
     }
-'''
 else:
     DATABASES = {
         'default': {
@@ -37,7 +36,6 @@ else:
             'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
         }
     }
-'''
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
@@ -182,3 +180,5 @@ LOGGING = {
 WEIXIN_TOKEN = 'helloworld'
 # 人文社科图书馆座位查询URL
 URL_LIBRARY = 'http://thuhelper11.duapp.com/library/'
+URL_LIBRARY_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/library'
+MAX_LIBRARY_IMAGE_INDEX = 4

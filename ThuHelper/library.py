@@ -2,17 +2,18 @@
 
 # library.py
 # 人文图书馆座位信息获取
+# 人文古树管空闲座位数量获取
 
 from BeautifulSoup import BeautifulSoup
-import urllib
-from .settings import URL_LIBRARY
+import urllib, random
+from .settings import URL_LIBRARY, URL_LIBRARY_IMAGE_PREF, MAX_LIBRARY_IMAGE_INDEX
 
 # 生成图文信息
 def getLibrarySeatNews():
     info = u'人文馆当前共有空闲座位' + str(getLibrarySeatNum()) + u'个'
     return [{
         'Title': u'人文社科图书馆座位使用情况',
-        'PicUrl': 'http://hdn.xnimg.cn/photos/hdn121/20130429/2335/h_large_MRrr_d18a00000489113e.jpg',
+        'PicUrl': URL_LIBRARY_IMAGE_PREF + str(random.randint(1, MAX_LIBRARY_IMAGE_INDEX)) + '.jpg',
         'Url': URL_LIBRARY
     }, {
         'Title': info,

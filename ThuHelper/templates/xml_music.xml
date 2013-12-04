@@ -8,6 +8,5 @@
         <Description><![CDATA[{{ Description }}]]></Description>
         <MusicUrl><![CDATA[{{ MusicUrl }}]]></MusicUrl>
         <HQMusicUrl><![CDATA[{{ HQMusicUrl }}]]></HQMusicUrl>
-        <ThumbMediaId><![CDATA[{{ MediaId }}]]></ThumbMediaId>
     </Music>
 </xml>
