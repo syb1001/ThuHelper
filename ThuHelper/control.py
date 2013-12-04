@@ -9,7 +9,7 @@ from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusic
-from classroom import getClassroomInfo
+from classroom import getClassroomInfo, getRoomCourseInfo
 
 def processMessage(message):
     # 根据用户发来的消息返回对应的消息
@@ -33,6 +33,7 @@ def processMessage(message):
             response = getClassroomInfo(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif u'音乐' in message['Content']:
+            # 随机播放一首音乐
             music = getRandomMusic()
             return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
         elif 'test' in message['Content']:
@@ -40,8 +41,10 @@ def processMessage(message):
             response = message['Content']
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         else:
-            # 文字消息原样返回
-            response = message['Content']
+            # 判断输入是否为某个教室
+            # 若是一个教室则返回教室信息
+            # 否则原样返回
+            response = getRoomCourseInfo(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
     else:
         # 其他类型的消息不支持
