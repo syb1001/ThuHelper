@@ -23,7 +23,7 @@ def makeImageMessage(toUser, fromUser, mediaId):
     template = get_template('xml_image.xml')
     context = Context({
         'ToUserName': toUser,
-        'FromUsername': fromUser,
+        'FromUserName': fromUser,
         'CreateTime': str(int(time.time())),
         'MediaId': mediaId
     })
@@ -34,7 +34,7 @@ def makeVoiceMessage(toUser, fromUser, mediaId):
     template = get_template('xml_voice.xml')
     context = Context({
         'ToUserName': toUser,
-        'FromUsername': fromUser,
+        'FromUserName': fromUser,
         'CreateTime': str(int(time.time())),
         'MediaId': mediaId
     })
@@ -45,7 +45,7 @@ def makeVideoMessage(toUser, fromUser, mediaId, title, description):
     template = get_template('xml_voice.xml')
     context = Context({
         'ToUserName': toUser,
-        'FromUsername': fromUser,
+        'FromUserName': fromUser,
         'CreateTime': str(int(time.time())),
         'MediaId': mediaId,
         'Title': title,
@@ -58,7 +58,7 @@ def makeMusicMessage(toUser, fromUser, mediaId, musicUrl, hqMusicUrl, title, des
     template = get_template('xml_music.xml')
     context = Context({
         'ToUserName': toUser,
-        'FromUsername': fromUser,
+        'FromUserName': fromUser,
         'CreateTime': str(int(time.time())),
         'MediaId': mediaId,
         'MusicUrl': musicUrl,
