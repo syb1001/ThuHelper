@@ -1,11 +1,12 @@
 #coding=utf-8
 #from bae.core import const
-from ThuHelper.models import classroom
+from ThuHelper.models import *
 import MySQLdb
 import datetime
 from django.http import HttpResponse
 from ThuHelper.settings import DATABASE_NAME
 import pickle
+import random
 def dbtest(request):
     """
     mydb = MySQLdb.connect(
@@ -107,3 +108,10 @@ def insertclassroom(building, roomnumber, status):
     p.save()
 
 
+
+
+
+
+def getonemusic():
+    musiclist = onlinemusic.objects.all()
+    return musiclist[random.randint(0, len(musiclist) - 1)]
