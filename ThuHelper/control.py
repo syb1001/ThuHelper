@@ -9,6 +9,7 @@ from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusic
+from classroom import getClassroomInfo, getRoomCourseInfo
 
 def processMessage(message):
     # 根据用户发来的消息返回对应的消息
@@ -27,7 +28,12 @@ def processMessage(message):
             # 以文字消息形式返回
             response = getLibrarySeatText()
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Content'].startswith('#'):
+            # 查询教室排课信息, 简单版本
+            response = getClassroomInfo(message['Content'])
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif u'音乐' in message['Content']:
+            # 随机播放一首音乐
             music = getRandomMusic()
             return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
         elif 'test' in message['Content']:
@@ -35,8 +41,14 @@ def processMessage(message):
             response = message['Content']
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         else:
-            # 文字消息原样返回
-            response = message['Content']
+            # 判断输入是否为某个教室
+            # 若是一个教室则返回教室信息
+            # 否则原样返回
+            response = getRoomCourseInfo(message['Content'])
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+    elif message['MsgType'] == 'event':
+        if message['Event'] == 'subscribe':
+            response = u'欢迎关注清华自习小助手，请发送“帮助”或“help”查看帮助信息~'
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
     else:
         # 其他类型的消息不支持
