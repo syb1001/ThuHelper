@@ -14,3 +14,14 @@ class classroom(models.Model):
 
     def __unicode__(self):
         return self.roomnumber
+
+class onlinemusic(models.Model):
+    LQURL = models.CharField(max_length=250)
+    HQURL = models.CharField(max_length=250)
+    title = models.CharField(max_length=50)
+    singer = models.CharField(max_length=50)
+    description = models.CharField(max_length=250)
+    type = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.title
