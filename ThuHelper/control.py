@@ -50,6 +50,45 @@ def processMessage(message):
         if message['Event'] == 'subscribe':
             response = u'欢迎关注清华自习小助手，请发送“帮助”或“help”查看帮助信息~'
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Event'] == 'CLICK':
+            '''response = u'点也白点，没写完呢'
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)'''
+            if message['EventKey'] == 'JSPKCX':
+                response = u'请输入教室编号（例如：6B201，4101..）'
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            elif message['EventKey'] == 'WTZWCX':
+                articles = getLibrarySeatNews()
+                return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
+            elif message['EventKey'] == 'JXLCX':
+                response = u'请输入楼层（例如：#4,2...）'
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            #推荐吃饭地点
+            elif message['EventKey'] == 'QNC':
+                response = u'点也白点，没写完呢'
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            #推荐自习室
+            elif message['EventKey'] == 'QNX':
+                response = u'点也白点，没写完呢'
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            #推荐音乐
+            elif message['EventKey'] == 'LDYY':
+                music = getRandomMusic()
+                return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
+            #签到
+            elif message['EventKey'] == 'QD':
+                response = u'点也白点，没写完呢'
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            
+            elif message['EventKey'] == 'HELP':
+                articles = getHelpInfoArticles()
+                return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
+            elif message['EventKey'] == 'ABOUT':
+                response = u'只是一群被软工虐的机智程序员。。。'
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            else:
+                response = u'点也白点，没写完呢'
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            
     else:
         # 其他类型的消息不支持
         response = u'暂不支持非文字消息'
