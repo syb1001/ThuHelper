@@ -1,0 +1,21 @@
+<!Doctype html>
+<html>
+<head>
+	<meta charset = "UTF-8">
+	<style type = "text/css">
+		body{background-color:lightblue;}
+		table{margin-top:20px; margin-left:auto; margin-right:auto;background-color:rgba(255,255,255,0.3); border-radius:5px;}
+		td{padding:5px;text-align:center;padding: 10px;padding-left: 20px;padding-right: 20px;}
+		#title{background-color: rgba(100,200,190,0.4);padding: 10px;}
+		tr{background-color: rgba(60,200,230,0.3);padding: 5px;}
+	</style>
+</head>
+<body>
+<table>
+	<tr><td>{{classroom.title}}可自习教室情况</td></tr>
+	{% if wentu_seat %}
+		{% for room in wentu_seat %}
+			<tr><td>classroom.roomNum</tr></td>
+</table>
+</body>
+</html>		
