@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/styles/library.css" >
+</head>
+<body>
+<table width="100%">
+    <tbody>
+        <tr id="title">
+            <td colspan="3">人文社科图书馆座位使用情况</td>
+        </tr>
+        <tr id="head">
+            <td>自习室名称</td>
+            <td>已用座位数</td>
+            <td>空闲座位数</td>
+        </tr>
+        {% for district in seat %}
+            <tr>
+                <td>{{ district.floor }}</td>
+                <td>{{ district.takenNum }}</td>
+                <td>{{ district.leftNum }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td>暂时无法获取座位信息</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>		
