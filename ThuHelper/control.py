@@ -9,7 +9,7 @@ from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusic, musicTest
-from classroom import getClassroomInfo, getRoomCourseInfo
+from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time
 
 def processMessage(message):
     if message['MsgType'] == 'text':
@@ -31,6 +31,10 @@ def processMessage(message):
         elif message['Content'].startswith('#'):
             # 查询教室排课信息, 简单版本
             response = getClassroomInfo(message['Content'])
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Content'].startswith('$'):
+            # 查询教室排课信息, 加入时间参数
+            response = getClassroomInfo_time(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif u'音乐' in message['Content']:
             # 随机播放一首音乐
