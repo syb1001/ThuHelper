@@ -6,8 +6,9 @@ from ThuHelper.utils import checkSignature, parseXml
 from ThuHelper.control import processMessage
 from ThuHelper.library import getLibrarySeatInfo
 from ThuHelper.database import insertonlinemusic
+from .music import getRandomMusicByType
 
-# 防止403 error的语�?
+# 防止403 error的语句
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 
@@ -17,17 +18,22 @@ def entry(request):
     #    return HttpResponse('Invalid Request')
 
     if request.GET.has_key('echostr'):
-        # 接入微信公众平台的情�?
-        # 按微信平台要求返回echostr以�?过验�?
+        # 接入微信公众平台的情况
+        # 按微信平台要求返回echostr以通过验证
         return HttpResponse(request.GET['echostr'])
     else:
-        # 接收用户消息的情�?
+        # 接收用户消息的情况
         message = parseXml(request.body)
         return HttpResponse(processMessage(message))
 
 def library(request):
     dictArray = getLibrarySeatInfo()
     return render_to_response('library.html', {'seat': dictArray})
+
+def musicplay(request):
+    dict = {'type' + request.GET['type']: request.GET['class']}
+    music = getRandomMusicByType(dict)
+    return render_to_response('player.html', {'musicUrl': music['Url']})
 
 def insertmusic(request):
     music = {}

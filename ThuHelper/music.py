@@ -3,8 +3,8 @@
 # music.py
 # 返回一个随机的音乐
 import random
-from database import getonemusic
-from .settings import URL_MUSIC_IMAGE, URL_PLAYER
+from database import getonemusic, getOneMusicByType
+from .settings import URL_MUSIC_IMAGE, URL_PLAYER_PREF
 
 music_type = {
     'type1': {
@@ -27,26 +27,27 @@ music_type = {
         'a': u'中文',
         'b': u'英文',
         'c': u'电影配乐',
-        'd': u'交响',
+        'd': u'钢琴',
         'e': u'轻音乐'
     }
 }
 
 def getRandomMusic():
-    randommusic = getonemusic()
+    return convertObjToDict(getonemusic())
+
+def getRandomMusicByType(dict):
+    return convertObjToDict(getOneMusicByType(dict))
+
+def convertObjToDict(musicobj):
     return {
-        'Title': randommusic.title,
-        'Description': randommusic.singer,
-        'Url': randommusic.LQURL,
-        'HQUrl':randommusic.HQURL,
+        'Title': musicobj.title,
+        'Description': musicobj.singer,
+        'Url': musicobj.LQURL,
+        'HQUrl': musicobj.HQURL
     }
 
 def formMusicTypeList():
-    list = [{
-        'Title': u'热门音乐分类',
-        'PicUrl': URL_MUSIC_IMAGE
-    }]
-
+    list = []
     for i in range(1, 4):
         # 先从每个维度上随机取出3个类型
         keys = random.sample(music_type['type' + str(i)], 3)
@@ -54,7 +55,12 @@ def formMusicTypeList():
             # 根据每个类型构造相应图文消息
             ele = {
                 'Title': music_type['type' + str(i)][keys[j-1]],
-                'Url': URL_PLAYER + 'type=' + str(j) + '&class=' + keys[j-1]
+                'Url': URL_PLAYER_PREF + 'type=' + str(j) + '&class=' + keys[j-1]
             }
             list.append(ele)
+    random.shuffle(list)
+    list.insert(0, {
+        'Title': u'热门音乐分类',
+        'PicUrl': URL_MUSIC_IMAGE
+    })
     return list
