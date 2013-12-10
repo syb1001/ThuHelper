@@ -7,7 +7,7 @@ from database import getclassroomsbyfloor, getcoursebyroom
 from utils import getClassSeqNumByDatetime
 import datetime 
 
-# 返回文字消息内容
+# 返回文字消息内容 queryStr := '#ID floor'
 def getClassroomInfo(queryStr):
     queryDict = getBuildFloor(queryStr)
     buildID = queryDict['buildID']
@@ -18,17 +18,41 @@ def getClassroomInfo(queryStr):
     weekday = datetime.date(dt.year, dt.month, dt.day).weekday()
     
     roomList = getclassroomsbyfloor(buildID, floor, classSeqNum, weekday)
-    ret =  str(dt.month) + u'月' + str(dt.day) + u'日' + u'第' + str(classSeqNum) + u'大节，\n'+ buildname + floor + u'层空闲教室：\n'
+    ret = str(dt.month) + u'月' + str(dt.day) + u'日' + u'第' + str(classSeqNum) \
+          + u'大节，\n' + buildname + floor + u'层空闲教室：\n'
     for room in roomList:
         ret = ret + room['roomnumber'].split()[0] + '\n'
     ret = ret.rstrip('\n')
     return ret
 
+# 返回文字消息内容 queryStr := '$ID floor time'
+def getClassroomInfo_time(queryStr):
+    queryDict = getBuildFloorTime(queryStr)
+    dt = datetime.datetime.now()
+    weekday = datetime.date(dt.year, dt.month, dt.day).weekday()
+    roomList = getclassroomsbyfloor(queryDict['buildID'], queryDict['floor'], int(queryDict['time']), weekday)
+    buildname = buildIDtoName(queryDict['buildID'])
+    ret = str(dt.month) + u'月' + str(dt.day) + u'日' + u'第' + queryDict['time'] \
+          + u'大节，\n' + buildname + queryDict['floor'] + u'层空闲教室：\n'
+    for room in roomList:
+        ret = ret + room['roomnumber'].split()[0] + '\n'
+    ret = ret.rstrip('\n')
+    return ret
+
+
 def getBuildFloor(queryStr):
-    t = tuple(queryStr.strip('#').split(','))
+    t = tuple(queryStr.strip('#').split(' '))
     return {
     'buildID': t[0],
     'floor':   t[1],
+    }
+
+def getBuildFloorTime(queryStr):
+    t = tuple(queryStr.strip('$').split(' '))
+    return {
+    'buildID': t[0],
+    'floor':   t[1],
+    'time':    t[2],
     }
 
 def buildIDtoName(id):
