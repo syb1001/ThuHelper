@@ -183,6 +183,10 @@ URL_LIBRARY = 'http://thuhelper11.duapp.com/library/'
 URL_LIBRARY_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/library'
 MAX_LIBRARY_IMAGE_INDEX = 4
 
+# 音乐分类列表
+URL_PLAYER_PREF = 'http://thuhelper11.duapp.com/musicplay?'
+URL_MUSIC_IMAGE = 'http://thuhelper11.duapp.com/static/images/music.jpg'
+
 EXPRESSION_LIST = {
     'happy': ['/::)','/:8-)', '/::D', '/:,@P', '/:,@-D', '/::>', '/:B-)', '/:X-)', '/::B',],
     'sad': ['/::<', '/::(', '/::+', '/::Q', '/::-|', '/::~', '/:,@o', '/:,@!', '/::8',],
