@@ -39,6 +39,23 @@ def getClassroomInfo_time(queryStr):
     ret = ret.rstrip('\n')
     return ret
 
+# 返回文字消息内容 queryStr := '@ID floor time day_delta'
+def getClassroomInfo_time_day(queryStr):
+    queryDict = getBuildFloorTimeDaydelta(queryStr)
+    dt = datetime.datetime.now()
+    weekday = datetime.date(dt.year, dt.month, dt.day).weekday()
+    weekday += int(queryDict['delta'])
+    if weekday == 7:
+        return u'现在只能得到本周的教室排课信息'
+    dt += datetime.timedelta(days=int(queryDict['delta']))
+    roomList = getclassroomsbyfloor(queryDict['buildID'], queryDict['floor'], int(queryDict['time']), weekday)
+    buildname = buildIDtoName(queryDict['buildID'])
+    ret = str(dt.month) + u'月' + str(dt.day) + u'日' + u'第' + queryDict['time'] \
+          + u'大节，\n' + buildname + queryDict['floor'] + u'层空闲教室：\n'
+    for room in roomList:
+        ret = ret + room['roomnumber'].split()[0] + '\n'
+    ret = ret.rstrip('\n')
+    return ret
 
 def getBuildFloor(queryStr):
     t = tuple(queryStr.strip('#').split(' '))
@@ -53,6 +70,15 @@ def getBuildFloorTime(queryStr):
     'buildID': t[0],
     'floor':   t[1],
     'time':    t[2],
+    }
+
+def getBuildFloorTimeDaydelta(queryStr):
+    t = tuple(queryStr.strip('@').split(' '))
+    return {
+    'buildID': t[0],
+    'floor':   t[1],
+    'time':    t[2],
+    'delta':   t[3],
     }
 
 def buildIDtoName(id):
