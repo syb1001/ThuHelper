@@ -3,7 +3,7 @@
 # classroom.py
 # 教室排课信息获取
 
-from database import getclassroomsbyfloor
+from database import getclassroomsbyfloor, getcoursebyroom
 from utils import getClassSeqNumByDatetime
 import datetime 
 
@@ -18,7 +18,7 @@ def getClassroomInfo(queryStr):
     weekday = datetime.date(dt.year, dt.month, dt.day).weekday()
     
     roomList = getclassroomsbyfloor(buildID, floor, classSeqNum, weekday)
-    ret =  str(dt.month) + u'月' + str(dt.day) + u'日' + u'第' + str(classSeqNum) + u'大节，\n'+ buildname + u'空闲教室：\n' 
+    ret =  str(dt.month) + u'月' + str(dt.day) + u'日' + u'第' + str(classSeqNum) + u'大节，\n'+ buildname + floor + u'层空闲教室：\n'
     for room in roomList:
         ret = ret + room['roomnumber'].split()[0] + '\n'
     ret = ret.rstrip('\n')
@@ -45,3 +45,25 @@ def buildIDtoName(id):
     '6C':u'六教C区',
     }
     return buildDict[id]
+
+# 传入的room如果不是一个教室则原样返回
+# 若是一个教室则返回该教室当天的排课信息
+def getRoomCourseInfo(room):
+    result = getcoursebyroom(room)
+    if len(result) != 0:
+        return formCourseText(result)
+    else:
+        return room
+
+# 根据六位的01字符序列生成教室占用情况
+def formCourseText(sequence):
+    text = u'该教室今日安排：\n'
+    i = 0
+    for bit in sequence:
+        i += 1
+        text += u'第' + str(i) + u'大节'
+        if bit == '0':
+            text += u'无课\n'
+        else:
+            text += u'有课\n'
+    return text.rstrip('\n')

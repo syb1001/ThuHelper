@@ -2,11 +2,19 @@
 
 # music.py
 # 返回一个随机的音乐
+from database import getonemusic
 
 def getRandomMusic():
+    randommusic = getonemusic()
     return {
-        'Title': 'Title',
-        'Description': 'Description',
-        'Url': 'http://thuhelper11.duapp.com/static/music/1.mp3',
-        'HQUrl': 'http://thuhelper11.duapp.com/static/music/1.mp3'
+        'Title': randommusic.title,
+        'Description': randommusic.description,
+        'Url': randommusic.LQURL,
+        'HQUrl':randommusic.HQURL,
     }
+
+def musicTest():
+    return [{
+        'Title': u'人文社科图书馆座位使用情况',
+        'Url': 'http://thuhelper11.duapp.com/musicplay/'
+    }]
