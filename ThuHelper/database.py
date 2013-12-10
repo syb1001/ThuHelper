@@ -69,7 +69,7 @@ def getcourse(data):
     elif (nowweek == 7):
         return data.Sunday
 
-# building, floor 是字符串; time, weekday 是数字
+# building, floor 是字符串; time, weekday 是数字; weekday 的范围是 0 到 6
 def getclassroomsbyfloor(building, floor, time, weekday):
     classroomlist = Classroom.objects.filter(building=building, floor=floor)
     result = []
