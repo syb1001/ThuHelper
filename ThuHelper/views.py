@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response
 from .utils import checkSignature, parseXml
 from .control import processMessage
 from .library import getLibrarySeatInfo
+from .music import getRandomMusic
 
 # 防止403 error的语句
 from django.views.decorators.csrf import csrf_exempt
@@ -27,3 +28,7 @@ def entry(request):
 def library(request):
     dictArray = getLibrarySeatInfo()
     return render_to_response('library.html', {'seat': dictArray})
+
+def musicplay(request):
+    music = getRandomMusic()
+    return render_to_response('player.html', {'musicUrl': music['Url']})

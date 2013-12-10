@@ -12,3 +12,9 @@ def getRandomMusic():
         'Url': randommusic.LQURL,
         'HQUrl':randommusic.HQURL,
     }
+
+def musicTest():
+    return [{
+        'Title': u'人文社科图书馆座位使用情况',
+        'Url': 'http://thuhelper11.duapp.com/musicplay/'
+    }]
