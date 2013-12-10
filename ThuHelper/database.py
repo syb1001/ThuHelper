@@ -7,24 +7,6 @@ from django.http import HttpResponse
 from ThuHelper.settings import DATABASE_NAME
 import pickle
 import random
-def dbtest(request):
-    """
-    mydb = MySQLdb.connect(
-        host = const.MYSQL_HOST,
-        port = int(const.MYSQL_PORT),
-        user = const.MYSQL_USER,
-        passwd = const.MYSQL_PASS,
-        db = DATABASE_NAME,
-    )
-    cursor = mydb.cursor()
-    cursor.execute('Select * from classroom')
-    classrooms = [row[1] for row in cursor.fetchall()]
-    for room in classrooms:
-        print(room)
-    mydb.close()
-    """
-    idleclassroom = getcoursebyroom('1101')
-    return HttpResponse(idleclassroom)
 
 def dbinit(request):
     roomfile = open('ThuHelper/data.pkl', 'r')
@@ -88,10 +70,6 @@ def getcoursebyroom(room):
     else:
         return getcourse(classroomlist[0])
 
-
-#def getclassroomsbyroom(room):
-
-
 def insertclassroom(building, roomnumber, status):
     #roomnumber = roomnumber.decode('unicode_escape')
     if (building == '1') or (building == '2'):
@@ -111,10 +89,13 @@ def insertonlinemusic(music):
     p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], LQURL=music['LQURL'], HQURL=music['HQURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
     p.save()
 
-
-
-
-
 def getonemusic():
     musiclist = Onlinemusic.objects.all()
     return musiclist[random.randint(0, len(musiclist) - 1)]
+
+# 根据音乐类型随机一首歌
+# 传入的词典中可能含有'type1': 'b'这样的项
+# 多维搜索时可能含有更多的项
+def getOneMusicByType(dict):
+    musicList = Onlinemusic.objects.all()
+    return musicList[random.randint(0, len(musicList) - 1)]
