@@ -8,7 +8,7 @@
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
 from helpInfo import getHelpInfoArticles
-from music import getRandomMusic, musicTest
+from music import getRandomMusic, formMusicTypeList
 from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time
 
 def processMessage(message):
@@ -42,7 +42,7 @@ def processMessage(message):
             return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
         elif 'test' in message['Content']:
             # 测试通道
-            articles = musicTest()
+            articles = formMusicTypeList()
             return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
         else:
             # 判断输入是否为某个教室
