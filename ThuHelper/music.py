@@ -8,7 +8,7 @@ def getRandomMusic():
     randommusic = getonemusic()
     return {
         'Title': randommusic.title,
-        'Description': randommusic.description,
+        'Description': randommusic.singer,
         'Url': randommusic.LQURL,
         'HQUrl':randommusic.HQURL,
     }
