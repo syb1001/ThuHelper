@@ -10,13 +10,21 @@ from .settings import URL_LIBRARY, URL_LIBRARY_IMAGE_PREF, MAX_LIBRARY_IMAGE_IND
 
 # 生成图文信息
 def getLibrarySeatNews():
-    info = u'人文馆当前共有空闲座位' + str(getLibrarySeatNum()) + u'个'
+    nums = getLibrarySeatNum()
+    info1 = u'人文馆当前共有空闲座位' + str(nums[0]) + u'个'
+    info2 = u'G层自修室' + str(nums[1]) + u'个\n其他区域' + str(nums[2]) + u'个'
     return [{
         'Title': u'人文社科图书馆座位使用情况',
         'PicUrl': URL_LIBRARY_IMAGE_PREF + str(random.randint(1, MAX_LIBRARY_IMAGE_INDEX)) + '.jpg',
         'Url': URL_LIBRARY
     }, {
-        'Title': info,
+        'Title': info1,
+        'Url': URL_LIBRARY
+    }, {
+        'Title': info2,
+        'Url': URL_LIBRARY
+    }, {
+        'Title': u'点此消息查看详细信息',
         'Url': URL_LIBRARY
     }]
 
@@ -27,7 +35,7 @@ def getLibrarySeatNum():
     num = 0
     for element in info:
         num += int(element['leftNum'])
-    return num
+    return (num, int(info[0]['leftNum']), num - int(info[0]['leftNum']))
 
 # 获取座位信息
 # 以字典数组形式返回
