@@ -74,7 +74,6 @@ def getBuildFloor(queryStr):
         'floor': t[1],
     }
 
-
 def getBuildFloorTime(queryStr):
     t = tuple(queryStr.strip('$').split(' '))
     return {
@@ -82,7 +81,6 @@ def getBuildFloorTime(queryStr):
         'floor': t[1],
         'time': t[2],
     }
-
 
 def getBuildFloorTimeDaydelta(queryStr):
     t = tuple(queryStr.strip('@').split(' '))
@@ -93,7 +91,6 @@ def getBuildFloorTimeDaydelta(queryStr):
         'delta': t[3],
     }
 
-
 def valid_query(query):
     if u'天' and u'节' and u'教' and u'层' in query:
         if query[query.index(u'天') - 1] in (u'今', u'明', u'后'):
@@ -102,7 +99,6 @@ def valid_query(query):
             return False
     else:
         return False
-
 
 def parseQuery(query):
     daydelta = wordtoDay(query[query.index(u'天')-1])
@@ -126,9 +122,6 @@ def toQueryStr(dic):
     return '@' + dic['buildID'] + ' ' + dic['floor'] \
            + ' ' + dic['seq'] + ' ' + dic['delta']
 
-
-
-
 def wordtoDay(word):
     cn_delta = {
         u'今': 0,
@@ -137,7 +130,6 @@ def wordtoDay(word):
         u'大后': 3,
     }
     return cn_delta[word]
-
 
 def toNum(word):
     if isinstance(word, int):
@@ -170,8 +162,6 @@ def toNum(word):
     }
     return cn_num[word]
 
-
-
 def nametoBuildID(name):
     d = {
         u'一教': '1',
@@ -186,7 +176,6 @@ def nametoBuildID(name):
         u'六教C区': '6C',
     }
     return d[name]
-
 
 def buildIDtoName(id):
     buildDict = {
