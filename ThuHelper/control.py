@@ -9,7 +9,7 @@ from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusic, formMusicTypeList
-from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time
+from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time, getClassroomInfo_time_day
 
 def processMessage(message):
     if message['MsgType'] == 'text':
@@ -29,12 +29,16 @@ def processMessage(message):
             response = getLibrarySeatText()
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('#'):
-            # 查询教室排课信息, 简单版本
+            # 查询教室排课信息, 简易版本
             response = getClassroomInfo(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('$'):
             # 查询教室排课信息, 加入时间参数
             response = getClassroomInfo_time(message['Content'])
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Content'].startswith('@'):
+            # 查询教室排课信息, 加入时间参数
+            response = getClassroomInfo_time_day(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif u'音乐' in message['Content']:
             # 随机播放一首音乐
@@ -63,7 +67,7 @@ def processMessage(message):
             # 响应点击服务号菜单事件
             if message['EventKey'] == 'JSPKCX':
                 # 教室排课查询
-                response = u'请输入教室编号（例如：6B201，4101..）'
+                response = u'请输入教室编号（例如：B201、101..）'
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'WTZWCX':
                 # 文图座位查询
