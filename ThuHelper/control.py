@@ -5,6 +5,7 @@
 # 判断用户发送消息的用途
 # 返回用户不同类型不同内容的消息
 
+from database import adduser
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
 from helpInfo import getHelpInfoArticles
@@ -60,6 +61,7 @@ def processMessage(message):
             # 订阅号欢迎消息
             #response = u'欢迎关注清华自习小助手，请发送“帮助”或“help”查看帮助信息~'
             # 服务号欢迎消息
+            adduser(message['FromUserName'])
             response = u'欢迎关注清华自习小助手，请使用帮助菜单查看帮助信息~也可回复“帮助”或“help”哦~'
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Event'] == 'CLICK':
