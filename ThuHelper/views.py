@@ -17,7 +17,8 @@ def entry(request):
     #    return HttpResponse('Invalid Request')
 
     if request.GET.has_key('echostr'):
-        # 接入微信公众平台的情�?        # 按微信平台要求返回echostr以�?过验�?        return HttpResponse(request.GET['echostr'])
+        # 接入微信公众平台的情�?        # 按微信平台要求返回echostr以�?过验�?
+        return HttpResponse(request.GET['echostr'])
     else:
         message = parseXml(request.body)
         return HttpResponse(processMessage(message))
