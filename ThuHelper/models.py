@@ -27,3 +27,11 @@ class Onlinemusic(models.Model):
 
     def __unicode__(self):
         return self.title
+
+class User(models.Model):
+    openid = models.CharField(max_length=250)
+    latestsignuptime = models.FloatField()
+    signupstatus = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.openid

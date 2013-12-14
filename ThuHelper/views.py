@@ -7,7 +7,7 @@ from ThuHelper.control import processMessage
 from ThuHelper.library import getLibrarySeatInfo
 from ThuHelper.database import insertonlinemusic
 
-# 防止403 error的语�?
+# 防止403 error的语�?
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 
@@ -17,11 +17,11 @@ def entry(request):
     #    return HttpResponse('Invalid Request')
 
     if request.GET.has_key('echostr'):
-        # 接入微信公众平台的情�?
-        # 按微信平台要求返回echostr以�?过验�?
+        # 接入微信公众平台的情�?
+        # 按微信平台要求返回echostr以�?过验�?
         return HttpResponse(request.GET['echostr'])
     else:
-        # 接收用户消息的情�?
+        # 接收用户消息的情�?
         message = parseXml(request.body)
         return HttpResponse(processMessage(message))
 
@@ -77,4 +77,3 @@ def insertmusic(request):
             })
     else:
         return (render_to_response('insertmusic.html'))
-

@@ -5,8 +5,10 @@ import MySQLdb
 import datetime
 from django.http import HttpResponse
 from ThuHelper.settings import DATABASE_NAME
+import httplib
 import pickle
 import random
+from settings import WEIXIN_TOKEN
 def dbtest(request):
     """
     mydb = MySQLdb.connect(
@@ -23,7 +25,7 @@ def dbtest(request):
         print(room)
     mydb.close()
     """
-    idleclassroom = getcoursebyroom('1101')
+    idleclassroom = adduser('asdfasdfa')
     return HttpResponse(idleclassroom)
 
 def dbinit(request):
@@ -111,10 +113,40 @@ def insertonlinemusic(music):
     p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], LQURL=music['LQURL'], HQURL=music['HQURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
     p.save()
 
-
-
-
+def getonemusicbytype(musictype):
+    if musictype['type1']:
+        musiclist = Onlinemusic.objects.filter(type1=musictype['type1'])
+        return musiclist[random.randint(0, len(musiclist) - 1)]
+    if musictype['type2']:
+        musiclist = Onlinemusic.objects.filter(type1=musictype['type2'])
+        return musiclist[random.randint(0, len(musiclist) - 1)]
+    if musictype['type3']:
+        musiclist = Onlinemusic.objects.filter(type1=musictype['type3'])
+        return musiclist[random.randint(0, len(musiclist) - 1)]
+    return None
 
 def getonemusic():
     musiclist = Onlinemusic.objects.all()
     return musiclist[random.randint(0, len(musiclist) - 1)]
+
+def adduser(openid):
+    newuser = User(openid=openid, latestsignuptime=0, signupstatus='000000000000000000000000000000')
+    newuser.save()
+
+def getRecentInfobyID(ID):
+    oneuser = User.objects.get(openid=ID)
+    return oneuser.signupstatus
+
+def changeRecentInfo(ID, info):
+    oneuser = User.objects.get(openid=ID)
+    oneuser.signupstatus = info
+    oneuser.save()
+
+def getLastTimebyID(ID):
+    oneuser = User.objects.get(openid=ID)
+    return oneuser.latestsignuptime
+
+def changeLastTime(ID, now):
+    oneuser = User.objects.get(openid=ID)
+    oneuser.latestsignuptime = now
+    oneuser.save()
