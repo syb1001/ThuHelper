@@ -7,27 +7,9 @@ from django.http import HttpResponse
 from ThuHelper.settings import DATABASE_NAME
 import pickle
 import random
-def dbtest(request):
-    """
-    mydb = MySQLdb.connect(
-        host = const.MYSQL_HOST,
-        port = int(const.MYSQL_PORT),
-        user = const.MYSQL_USER,
-        passwd = const.MYSQL_PASS,
-        db = DATABASE_NAME,
-    )
-    cursor = mydb.cursor()
-    cursor.execute('Select * from classroom')
-    classrooms = [row[1] for row in cursor.fetchall()]
-    for room in classrooms:
-        print(room)
-    mydb.close()
-    """
-    idleclassroom = getcoursebyroom('1101')
-    return HttpResponse(idleclassroom)
 
 def dbinit(request):
-    roomfile = open('ThuHelper/data.pickle', 'rb')
+    roomfile = open('ThuHelper/data.pkl', 'r')
     classroomlist = pickle.load(roomfile)
     roomfile.close()
     for room in classroomlist:
@@ -69,9 +51,9 @@ def getcourse(data):
     elif (nowweek == 7):
         return data.Sunday
 
-
+# building, floor 是字符串; time, weekday 是数字; weekday 的范围是 0 到 6
 def getclassroomsbyfloor(building, floor, time, weekday):
-    classroomlist = classroom.objects.filter(building=building, floor=floor)
+    classroomlist = Classroom.objects.filter(building=building, floor=floor)
     result = []
     for row in classroomlist:
         isusable = isroomusable(row, time, weekday)
@@ -82,15 +64,11 @@ def getclassroomsbyfloor(building, floor, time, weekday):
     return result
 
 def getcoursebyroom(room):
-    classroomlist = classroom.objects.filter(roomnumber__contains=room)
+    classroomlist = Classroom.objects.filter(roomnumber__contains=room)
     if (len(classroomlist) == 0):
         return classroomlist
     else:
         return getcourse(classroomlist[0])
-
-
-#def getclassroomsbyroom(room):
-
 
 def insertclassroom(building, roomnumber, status):
     #roomnumber = roomnumber.decode('unicode_escape')
@@ -104,14 +82,20 @@ def insertclassroom(building, roomnumber, status):
        #building += roomnumber[0]
     if (building[0] == '6'):
         building += roomnumber[1]
-    p = classroom(building=building, floor=floornum, roomnumber=roomnumber, Monday=status[0:6], Tuesday=status[6:12], Wednesday=status[12:18], Thursday=status[18:24], Friday=status[24:30], Saturday=status[30:36], Sunday=status[36:42])
+    p = Classroom(building=building, floor=floornum, roomnumber=roomnumber, Monday=status[0:6], Tuesday=status[6:12], Wednesday=status[12:18], Thursday=status[18:24], Friday=status[24:30], Saturday=status[30:36], Sunday=status[36:42])
     p.save()
 
-
-
-
-
+def insertonlinemusic(music):
+    p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], LQURL=music['LQURL'], HQURL=music['HQURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
+    p.save()
 
 def getonemusic():
-    musiclist = onlinemusic.objects.all()
+    musiclist = Onlinemusic.objects.all()
     return musiclist[random.randint(0, len(musiclist) - 1)]
+
+# 根据音乐类型随机一首歌
+# 传入的词典中可能含有'type1': 'b'这样的项
+# 多维搜索时可能含有更多的项
+def getOneMusicByType(dict):
+    musicList = Onlinemusic.objects.all()
+    return musicList[random.randint(0, len(musicList) - 1)]
