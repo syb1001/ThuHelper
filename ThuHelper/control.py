@@ -9,8 +9,8 @@ from database import adduser
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
 from helpInfo import getHelpInfoArticles
-from music import getRandomMusic, musicTest
-from classroom import getClassroomInfo, getRoomCourseInfo
+from music import getRandomMusic, formMusicTypeList
+from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time, getClassroomInfo_time_day, classroom
 
 def processMessage(message):
     if message['MsgType'] == 'text':
@@ -19,19 +19,26 @@ def processMessage(message):
             # 帮助信息
             articles = getHelpInfoArticles()
             return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
-        elif u'人文馆' in message['Content']:
-            # 用户查询人文馆座位信息
-            # 以图文消息形式返回
-            articles = getLibrarySeatNews()
-            return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
-        elif u'文图' in message['Content']:
+        elif u'文图' in message['Content'] or u'人文馆' in message['Content']:
             # 用户查询人文图书馆座位信息
             # 以文字消息形式返回
             response = getLibrarySeatText()
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('#'):
-            # 查询教室排课信息, 简单版本
+            # 查询教室排课信息, 简易版本
             response = getClassroomInfo(message['Content'])
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Content'].startswith('$'):
+            # 查询教室排课信息, 加入时间参数
+            response = getClassroomInfo_time(message['Content'])
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Content'].startswith('@'):
+            # 查询教室排课信息, 加入日期偏移参数
+            response = getClassroomInfo_time_day(message['Content'])
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif u'教' in message['Content']:
+            # 查询教室排课信息, 处理的是文字输入
+            response = classroom(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif u'音乐' in message['Content']:
             # 随机播放一首音乐
@@ -39,7 +46,7 @@ def processMessage(message):
             return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
         elif 'test' in message['Content']:
             # 测试通道
-            articles = musicTest()
+            articles = formMusicTypeList()
             return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
         else:
             # 判断输入是否为某个教室
@@ -81,8 +88,8 @@ def processMessage(message):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'LDYY':
                 # 推荐音乐
-                music = getRandomMusic()
-                return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
+                articles = formMusicTypeList()
+                return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'QD':
                 # 签到功能
                 response = u'功能还没实现，敬请期待~'

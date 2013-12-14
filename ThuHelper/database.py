@@ -71,7 +71,7 @@ def getcourse(data):
     elif (nowweek == 7):
         return data.Sunday
 
-
+# building, floor 是字符串; time, weekday 是数�? weekday 的范围是 0 �?6
 def getclassroomsbyfloor(building, floor, time, weekday):
     classroomlist = Classroom.objects.filter(building=building, floor=floor)
     result = []
@@ -89,10 +89,6 @@ def getcoursebyroom(room):
         return classroomlist
     else:
         return getcourse(classroomlist[0])
-
-
-#def getclassroomsbyroom(room):
-
 
 def insertclassroom(building, roomnumber, status):
     #roomnumber = roomnumber.decode('unicode_escape')
@@ -149,4 +145,3 @@ def getLastTimebyID(ID):
 def changeLastTime(ID, now):
     oneuser = User.objects.get(openid=ID)
     oneuser.latestsignuptime = now
-    oneuser.save()
