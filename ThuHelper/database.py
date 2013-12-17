@@ -5,8 +5,28 @@ import MySQLdb
 import datetime
 from django.http import HttpResponse
 from ThuHelper.settings import DATABASE_NAME
+import httplib
 import pickle
 import random
+from settings import WEIXIN_TOKEN
+def dbtest(request):
+    """
+    mydb = MySQLdb.connect(
+        host = const.MYSQL_HOST,
+        port = int(const.MYSQL_PORT),
+        user = const.MYSQL_USER,
+        passwd = const.MYSQL_PASS,
+        db = DATABASE_NAME,
+    )
+    cursor = mydb.cursor()
+    cursor.execute('Select * from classroom')
+    classrooms = [row[1] for row in cursor.fetchall()]
+    for room in classrooms:
+        print(room)
+    mydb.close()
+    """
+    idleclassroom = adduser('asdfasdfa')
+    return HttpResponse(idleclassroom)
 
 def dbinit(request):
     roomfile = open('ThuHelper/data.pkl', 'r')
@@ -51,7 +71,7 @@ def getcourse(data):
     elif (nowweek == 7):
         return data.Sunday
 
-# building, floor 是字符串; time, weekday 是数字; weekday 的范围是 0 到 6
+# building, floor 是字符串; time, weekday 是数�? weekday 的范围是 0 �?6
 def getclassroomsbyfloor(building, floor, time, weekday):
     classroomlist = Classroom.objects.filter(building=building, floor=floor)
     result = []
@@ -89,10 +109,8 @@ def insertonlinemusic(music):
     p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], LQURL=music['LQURL'], HQURL=music['HQURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
     p.save()
 
-# 根据音乐类型随机一首歌
-# 传入的词典中可能含有'type1': 'b'这样的项
-# 多维搜索时可能含有更多的项
-# 暂不支持多维搜索
+# 根据音乐类型随机�?���?# 传入的词典中可能含有'type1': 'b'这样的项
+# 多维搜索时可能含有更多的�?# 暂不支持多维搜索
 def getOneMusicByType(dict):
     musicList = None
     if dict.has_key('type1'):
@@ -104,9 +122,8 @@ def getOneMusicByType(dict):
     if not dict.has_key('type1') and not dict.has_key('type2') and not dict.has_key('type3'):
         # 如果字典为空则返回完全随机的歌曲
         musicList = Onlinemusic.objects.all()
-    # 在列表中完全随机一首音乐返回
-    # 需要保证列表不为空否则出错
-    music = musicList[random.randint(0, len(musicList) - 1)]
+    # 在列表中完全随机�?��音乐返回
+    # �?��保证列表不为空否则出�?    music = musicList[random.randint(0, len(musicList) - 1)]
     # 以字典的形式返回
     # 其中字符串均为unicode
     return {
@@ -114,3 +131,24 @@ def getOneMusicByType(dict):
         'Singer': music.singer,
         'Description': music.singer
     }
+
+def adduser(openid):
+    newuser = User(openid=openid, latestsignuptime=0, signupstatus='000000000000000000000000000000')
+    newuser.save()
+
+def getRecentInfobyID(ID):
+    oneuser = User.objects.get(openid=ID)
+    return oneuser.signupstatus
+
+def changeRecentInfo(ID, info):
+    oneuser = User.objects.get(openid=ID)
+    oneuser.signupstatus = info
+    oneuser.save()
+
+def getLastTimebyID(ID):
+    oneuser = User.objects.get(openid=ID)
+    return oneuser.latestsignuptime
+
+def changeLastTime(ID, now):
+    oneuser = User.objects.get(openid=ID)
+    oneuser.latestsignuptime = now
