@@ -2,10 +2,10 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from ThuHelper.utils import checkSignature, parseXml
-from ThuHelper.control import processMessage
-from ThuHelper.library import getLibrarySeatInfo
-from ThuHelper.database import insertonlinemusic
+from .utils import checkSignature, parseXml
+from .control import processMessage
+from .library import getLibrarySeatInfo
+from .database import insertonlinemusic
 from .music import getRandomMusicByType
 
 # 防止403 error的语句
@@ -31,7 +31,10 @@ def library(request):
     return render_to_response('library.html', {'seat': dictArray})
 
 def musicplay(request):
-    dict = {'type' + request.GET['type']: request.GET['class']}
+    if request.GET.has_key('type') and request.GET.has_key('class'):
+        dict = {'type' + request.GET['type']: request.GET['class']}
+    else:
+        dict = {}
     music = getRandomMusicByType(dict)
     return render_to_response('player.html', {'musicUrl': music['Url']})
 
