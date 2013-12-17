@@ -5,7 +5,67 @@
 
 from database import getclassroomsbyfloor, getcoursebyroom
 from utils import getClassSeqNumByDatetime
-import datetime 
+import datetime
+
+cn_num = {
+    u'〇': 0,
+    u'一': 1,
+    u'二': 2,
+    u'三': 3,
+    u'四': 4,
+    u'五': 5,
+    u'六': 6,
+    u'七': 7,
+    u'八': 8,
+    u'九': 9,
+
+    u'零': 0,
+    u'壹': 1,
+    u'贰': 2,
+    u'叁': 3,
+    u'肆': 4,
+    u'伍': 5,
+    u'陆': 6,
+    u'柒': 7,
+    u'捌': 8,
+    u'玖': 9,
+
+    u'貮': 2,
+    u'两': 2,
+
+    '1':   1,
+    '2':   2,
+    '3':   3,
+    '4':   4,
+    '5':   5,
+    '6':   6,
+    '7':   7,
+    '8':   8,
+    '9':   9,
+    '0':   0,
+}
+
+cn_delta = {
+    u'前': -2,
+    u'昨': -1,
+    u'今': 0,
+    u'明': 1,
+    u'后': 2,
+    u'大后': 3,
+}
+
+building_storey = {
+    '1':  (1, 2),
+    '2':  (1, 2),
+    '31': (1, 2, 3),
+    '32': (1, 3),
+    '33': (1, 2, 3, 4),
+    '4':  (1, 2, 3, 4),
+    '5':  (1, 2, 3),
+    '6A': (0, 1, 2, 3, 4),
+    '6B': (1, 2, 3, 4),
+    '6C': (1, 2, 3),
+}
 
 # 返回文字消息内容 queryStr := '#ID floor'
 def getClassroomInfo(queryStr):
@@ -42,6 +102,8 @@ def getClassroomInfo_time(queryStr):
 # 返回文字消息内容; queryStr := '@ID floor time day_delta'
 def getClassroomInfo_time_day(queryStr):
     queryDict = getBuildFloorTimeDaydelta(queryStr)
+    if int(queryDict['floor']) not in building_storey[queryDict['buildID']]:
+        return buildIDtoName(queryDict['buildID']) + u'哪里有' + queryDict['floor'] + u'层嘛～'
     dt = datetime.datetime.now()
     weekday = datetime.date(dt.year, dt.month, dt.day).weekday()
     weekday += int(queryDict['delta'])
@@ -52,19 +114,63 @@ def getClassroomInfo_time_day(queryStr):
     buildname = buildIDtoName(queryDict['buildID'])
     ret = str(dt.month) + u'月' + str(dt.day) + u'日' + u'第' + queryDict['time'] \
           + u'大节，\n' + buildname + queryDict['floor'] + u'层空闲教室：\n'
-    for room in roomList:
-        ret = ret + room['roomnumber'].split()[0] + '\n'
+    if roomList == []:
+        ret += u'无'
+    else:
+        for room in roomList:
+            ret = ret + room['roomnumber'].split()[0] + '\n'
     ret = ret.rstrip('\n')
     return ret
+
+
+
 
 # 返回文字消息内容; query 是中文
 def classroom(query):
     query = query.decode('UTF-8')
     if not valid_query(query):
-        return u"您的输入似乎不太对哦～\n举一个栗子：您可以输入“今天第二节四教二层”，" \
-               u"来查询所有没课的教室。"
-    query_dict = parseQuery(query)
-    return getClassroomInfo_time_day(toQueryStr(query_dict))
+        return u"您的输入似乎不太对哦~\n举个栗子：您可以输入“今天第二节四教二层”、“六教”等关键词查询所有没课的教室。"
+    query_dict = query_to_dict(query)
+    ret = ''
+    if query_dict['building_id'] == '6ABC':
+        for section in ('A', 'B', 'C'):
+            query_dict['building_id'] = '6' + section
+            if query_dict['storey'] == '-':
+                storeys = building_storey[query_dict['building_id']]
+                for i in storeys:
+                    query_dict['storey'] = str(i)
+                    ret += getClassroomInfo_time_day(toQueryStr(query_dict))
+                    ret += '\n\n'
+                query_dict['storey'] = '-'
+            else:
+                ret += getClassroomInfo_time_day(toQueryStr(query_dict))
+                ret += '\n\n'
+
+    elif query_dict['building_id'] == '3123':
+        for section in ('1', '2', '3'):
+            query_dict['building_id'] = '3' + section
+            if query_dict['storey'] == '-':
+                storeys = building_storey[query_dict['building_id']]
+                for i in storeys:
+                    query_dict['storey'] = str(i)
+                    ret += getClassroomInfo_time_day(toQueryStr(query_dict))
+                    ret += '\n\n'
+                query_dict['storey'] = '-'
+            else:
+                ret += getClassroomInfo_time_day(toQueryStr(query_dict))
+                ret += '\n\n'
+    else:
+        if query_dict['storey'] == '-':
+            storeys = building_storey[query_dict['building_id']]
+            for i in storeys:
+                query_dict['storey'] = str(i)
+                ret += getClassroomInfo_time_day(toQueryStr(query_dict))
+                ret += '\n\n'
+            query_dict['storey'] = '-'
+        else:
+            ret += getClassroomInfo_time_day(toQueryStr(query_dict))
+    ret = ret.rstrip('\n')
+    return ret
 
 
 def getBuildFloor(queryStr):
@@ -92,38 +198,82 @@ def getBuildFloorTimeDaydelta(queryStr):
     }
 
 def valid_query(query):
-    if u'天' and u'节' and u'教' and u'层' in query:
-        if query[query.index(u'天') - 1] in (u'今', u'明', u'后'):
-            return True
+    flag = False
+    if u'教' in query:
+        if query[query.index(u'教') - 1] in cn_num:
+            flag = True
         else:
             return False
-    else:
-        return False
+    if u'层' in query:
+        if query[query.index(u'层') - 1] in cn_num:
+            flag = True
+        else:
+            return False
+    if u'节' in query:
+        if query[query.index(u'节') - 1] in cn_num:
+            flag = True
+        else:
+            return False
+    if u'天' in query:
+        if query[query.index(u'天') - 1] in cn_delta:
+            flag = True
+        else:
+            return False
+    return flag
 
-def parseQuery(query):
-    daydelta = wordtoDay(query[query.index(u'天')-1])
-    seq = toNum(query[query.index(u'节')-1])
-    floor = str(toNum(query[query.index(u'层')-1]))
-    build = toNum(query[query.index(u'教')-1])
+# 返回一个字典，其中各项的值均为字符串
+def query_to_dict(query):
+    if u'教' in query:
+        building_id = toNum(query[query.index(u'教')-1])
+    else:
+        building_id = 1
+
+    if u'节' in query:
+        class_sequence = toNum(query[query.index(u'节')-1])
+    else:
+        dt = datetime.datetime.now()
+        class_sequence = getClassSeqNumByDatetime(dt, 5)
+
+    if u'层' in query:
+        storey = str(toNum(query[query.index(u'层')-1]))
+    else:
+        storey = '-'
+
+    if u'天' in query:
+        if query[query.index(u'天')-1] == u'后' and query[query.index(u'天')-2] == u'大':
+            day_delta = to_delta(u'大后')
+        else:
+            day_delta = to_delta(query[query.index(u'天')-1])
+    else:
+        day_delta = 0
+
     section = ''
-    if build == 6:
-        section = query[query.index(u'区')-1]
-    elif build == 3:
-        section = query[query.index(u'段')-1]
-    build = str(build) + section
+    if building_id == 6:
+        if u'区' in query:
+            section = query[query.index(u'区')-1].upper()
+        else:
+            section = 'ABC'
+    elif building_id == 3:
+        if u'段' in query:
+            section = str(toNum(query[query.index(u'段')-1]))
+        else:
+            section = '123'
+    building_id = str(building_id) + section
     return {
-        'delta':   str(daydelta),
-        'seq':     str(seq),
-        'buildID': build,
-        'floor':   floor,
+        'day_delta':   str(day_delta),
+        'class_sequence':     str(class_sequence),
+        'building_id': building_id,
+        'storey':   storey,
     }
 
 def toQueryStr(dic):
-    return '@' + dic['buildID'] + ' ' + dic['floor'] \
-           + ' ' + dic['seq'] + ' ' + dic['delta']
+    return '@' + dic['building_id'] + ' ' + dic['storey'] \
+           + ' ' + dic['class_sequence'] + ' ' + dic['day_delta']
 
-def wordtoDay(word):
+def to_delta(word):
     cn_delta = {
+        u'前': -2,
+        u'昨': -1,
         u'今': 0,
         u'明': 1,
         u'后': 2,
@@ -159,6 +309,17 @@ def toNum(word):
 
         u'貮': 2,
         u'两': 2,
+
+        '1':   1,
+        '2':   2,
+        '3':   3,
+        '4':   4,
+        '5':   5,
+        '6':   6,
+        '7':   7,
+        '8':   8,
+        '9':   9,
+        '0':   0,
     }
     return cn_num[word]
 
