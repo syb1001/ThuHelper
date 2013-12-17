@@ -2,9 +2,15 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <script type="text/javascript" src="../../static/js/audio.min.js"></script>
+    <script>
+        audiojs.events.ready(function() {
+            var as = audiojs.createAll();
+        });
+    </script>
 </head>
 <body>
-    <audio controls="controls" autoplay="autoplay">
+    <audio autoplay="autoplay">
         <source src="{{ musicUrl }}">
         Sorry，您的浏览器不支持html5播放器(╯‵□′)╯︵┻━┻
     </audio>
