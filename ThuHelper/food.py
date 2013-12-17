@@ -1,6 +1,8 @@
 # coding=utf-8
 
-arr_food = [
+import random
+
+foods = [
     u'紫荆一层木桶饭',
     u'紫荆一层原清芬香锅',
     u'紫荆一层湖南窗口',
@@ -67,3 +69,8 @@ arr_food = [
     u'丁香瓦罐汤',
     u'丁香石锅饭'
 ]
+
+def get_food():
+    lenth = len(foods)
+    index = random.randint(0, lenth - 1)
+    return tuple(foods)[index]
