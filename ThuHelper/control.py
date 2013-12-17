@@ -5,6 +5,7 @@
 # 判断用户发送消息的用途
 # 返回用户不同类型不同内容的消息
 
+from database import adduser
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
 from helpInfo import getHelpInfoArticles
@@ -18,12 +19,7 @@ def processMessage(message):
             # 帮助信息
             articles = getHelpInfoArticles()
             return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
-        elif u'人文馆' in message['Content']:
-            # 用户查询人文馆座位信息
-            # 以图文消息形式返回
-            articles = getLibrarySeatNews()
-            return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
-        elif u'文图' in message['Content']:
+        elif u'文图' in message['Content'] or u'人文馆' in message['Content']:
             # 用户查询人文图书馆座位信息
             # 以文字消息形式返回
             response = getLibrarySeatText()
@@ -65,6 +61,7 @@ def processMessage(message):
             # 订阅号欢迎消息
             #response = u'欢迎关注清华自习小助手，请发送“帮助”或“help”查看帮助信息~'
             # 服务号欢迎消息
+            adduser(message['FromUserName'])
             response = u'欢迎关注清华自习小助手，请使用帮助菜单查看帮助信息~也可回复“帮助”或“help”哦~'
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Event'] == 'CLICK':
@@ -91,8 +88,8 @@ def processMessage(message):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'LDYY':
                 # 推荐音乐
-                music = getRandomMusic()
-                return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
+                articles = formMusicTypeList()
+                return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'QD':
                 # 签到功能
                 response = u'功能还没实现，敬请期待~'
