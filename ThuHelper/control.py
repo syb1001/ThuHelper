@@ -7,7 +7,7 @@
 
 from database import adduser
 from message import *
-from library import getLibrarySeatText, getLibrarySeatNews
+from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusicByType, formMusicTypeList
 from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time, getClassroomInfo_time_day, classroom
@@ -19,7 +19,7 @@ def processMessage(message):
             # 帮助信息
             articles = getHelpInfoArticles()
             return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
-        elif u'文图' in message['Content'] or u'人文馆' in message['Content']:
+        elif isConsultingLibrary(message['Content']):
             # 用户查询人文图书馆座位信息
             # 以文字消息形式返回
             response = getLibrarySeatText()

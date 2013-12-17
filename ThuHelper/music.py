@@ -37,9 +37,9 @@ def getRandomMusicByType(dict):
 def formMusicTypeList():
     list = []
     for i in range(1, 4):
-        # 先从每个维度上随机取出2个类型
-        keys = random.sample(music_type['type' + str(i)], 2)
-        for j in range(1, 3):
+        # 先从每个维度上随机取出1个类型
+        keys = random.sample(music_type['type' + str(i)], 1)
+        for j in range(1, 2):
             # 根据每个类型构造相应图文消息
             ele = {
                 'Title': music_type['type' + str(i)][keys[j-1]],
@@ -48,8 +48,9 @@ def formMusicTypeList():
             list.append(ele)
     random.shuffle(list)
     list.insert(0, {
-        'Title': u'热门音乐分类',
-        'PicUrl': URL_MUSIC_IMAGE
+        'Title': u'热门音乐分类-点击播放',
+        'PicUrl': URL_MUSIC_IMAGE,
+        'Url': URL_PLAYER_PREF
     })
     list.append({
         'Title': u'随便听听',
