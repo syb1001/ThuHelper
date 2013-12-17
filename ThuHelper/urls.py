@@ -2,7 +2,6 @@
 
 from django.conf.urls import patterns, include, url
 from django.conf import settings
-from ThuHelper.database import dbtest
 from ThuHelper.database import dbinit
 
 # Uncomment the next two lines to enable the admin:
@@ -19,9 +18,11 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'ThuHelper.views.entry', name='entry'),
-    url(r'^library/', 'ThuHelper.views.library', name='library'),
-
+    url(r'^$', 'ThuHelper.views.entry'),
+    url(r'^library/', 'ThuHelper.views.library'),
+    url(r'^musicplay$', 'ThuHelper.views.musicplay'),
+    url(r'^dbinit/', dbinit),
+    url(r'^insertmusic/', 'ThuHelper.views.insertmusic'),
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.STATICFILES_DIRS[0],
         'show_indexes': True
