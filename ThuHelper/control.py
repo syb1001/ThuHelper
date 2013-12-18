@@ -78,7 +78,7 @@ def processMessage(message):
             elif message['EventKey'] == 'JXLCX':
                 # 教学楼查询
                 response = u'查询某教学楼空闲教室情况\n您可以输入关键词：\n' \
-                           u'“六教C区”\n“三教三段2层”\n“今天第三节五教”\n“明天第二节四教三层”\n(其中教学楼名称必须指定)\n\n'
+                           u'“四教”\n“六教C区”\n“三教三段2层”\n“今天第三节五教”\n“明天第二节四教三层”\n(其中教学楼名称必须指定)'
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'QNC':
                 # 推荐吃饭地点
