@@ -174,7 +174,9 @@ LOGGING = {
 }
 
 # 项目配置
-
+# 开发者凭据
+APPID = 'wx908467c39426e3bc'
+APP_SECRET = '82729dab279ea74bab044cd868ec1543'
 # 与微信公众平台约定的token
 # 在微信平台上填写
 WEIXIN_TOKEN = 'helloworld'

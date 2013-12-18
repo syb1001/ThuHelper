@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <script type="text/javascript" src="../../static/js/audio.min.js"></script>
-    <script>
-        audiojs.events.ready(function() {
-            var as = audiojs.createAll();
-        });
-    </script>
+	<meta charset="utf-8">
+	<title>html5播放器</title>
+  <link rel="stylesheet" type="text/css" href="../../static/styles/player.css">
 </head>
 <body>
-    <audio autoplay="autoplay">
-        <source src="{{ musicUrl }}">
-        Sorry，您的浏览器不支持html5播放器(╯‵□′)╯︵┻━┻
-    </audio>
+	<audio id="audio" autoplay="autoplay">
+		<source src="{{ musicUrl }}">
+        抱歉，您的浏览器不支持html5播放器
+	</audio>
+	<div id="controls">
+		<div id="btnwrap">
+			<div id="btn" class="play"></div>
+		</div>
+		<div id="wrap">
+			<div id="info">
+				<p id="title">{{ title }}</p>
+				<p id="description">{{ description }}</p>
+				<span id="time">0:00/0:00</span>
+			</div>
+			<div id="totalProgress">
+				<div id="bufferProgress">
+					<div id="currentProgress"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="../../static/js/player.js"></script>
 </body>
 </html>

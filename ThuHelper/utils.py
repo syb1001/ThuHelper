@@ -1,11 +1,15 @@
 # coding=utf-8
 
+# util.py
+# 一些工具函数
+
 import hashlib
 from xml.etree import ElementTree as ET
 
 from .settings import WEIXIN_TOKEN
 import datetime
 
+# 微信token校验
 def checkSignature(request):
     token = WEIXIN_TOKEN
 
@@ -20,6 +24,7 @@ def checkSignature(request):
     else:
         return False
 
+# xml解析
 def parseXml(xml):
     xml_tree = ET.fromstring(xml)
     content = dict()

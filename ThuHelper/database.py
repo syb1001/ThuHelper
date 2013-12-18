@@ -1,4 +1,8 @@
-#coding=utf-8
+# coding=utf-8
+
+# database.py
+# 数据库操作
+
 #from bae.core import const
 from ThuHelper.models import *
 import MySQLdb

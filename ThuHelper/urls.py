@@ -1,5 +1,8 @@
 # coding=utf-8
 
+# urls.py
+# 路由配置
+
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from ThuHelper.database import dbinit
