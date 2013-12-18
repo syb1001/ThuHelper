@@ -11,6 +11,8 @@ from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusicByType, formMusicTypeList
 from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time, getClassroomInfo_time_day, classroom
+from food import get_food
+from recommend_classroom import recommend_classroom
 
 def processMessage(message):
     if message['MsgType'] == 'text':
@@ -68,7 +70,7 @@ def processMessage(message):
             # 响应点击服务号菜单事件
             if message['EventKey'] == 'JSPKCX':
                 # 教室排课查询
-                response = u'请输入教室编号（例如：6B201，4101..）'
+                response = u'查询某教室今天的排课情况\n您可以输入教室编号：\n“6A301”\n“4302”'
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'WTZWCX':
                 # 文图座位查询
@@ -76,15 +78,16 @@ def processMessage(message):
                 return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'JXLCX':
                 # 教学楼查询
-                response = u'请输入楼层（例如：#4,2...）'
+                response = u'查询某教学楼空闲教室情况\n您可以输入关键词：\n' \
+                           u'“四教”\n“六教C区”\n“三教三段2层”\n“今天第三节五教”\n“明天第二节四教三层”\n(其中教学楼名称必须指定)'
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'QNC':
                 # 推荐吃饭地点
-                response = u'功能还没实现，敬请期待~'
+                response = get_food()
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'QNX':
                 # 推荐自习室
-                response = u'功能还没实现，敬请期待~'
+                response = recommend_classroom()
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'LDYY':
                 # 推荐音乐
