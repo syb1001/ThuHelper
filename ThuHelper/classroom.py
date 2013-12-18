@@ -356,21 +356,22 @@ def buildIDtoName(id):
 # 传入的room如果不是一个教室则原样返回
 # 若是一个教室则返回该教室当天的排课信息
 def getRoomCourseInfo(room):
+    room = room.upper()
     result = getcoursebyroom(room)
     if len(result) != 0:
-        return formCourseText(result)
+        return room + formCourseText(result)
     else:
         return room
 
 # 根据六位的01字符序列生成教室占用情况
 def formCourseText(sequence):
-    text = u'该教室今日安排：\n'
+    text = u'教室今日安排：\n'
     i = 0
     for bit in sequence:
         i += 1
         text += u'第' + str(i) + u'大节'
         if bit == '0':
-            text += u'无课\n'
+            text += u'空闲\n'
         else:
             text += u'有课\n'
     return text.rstrip('\n')
