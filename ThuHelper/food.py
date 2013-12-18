@@ -97,5 +97,5 @@ def get_food():
         meal = u'午饭'
     elif t < ranges['supper_end']:
         meal = u'晚饭'
-    return u'今天是星期' + num_cn[str(weekday+1)]+ u'，' + meal + u'我们向您推荐:\n' \
-        + tuple(foods)[index]
+    return u'今天是星期' + num_cn[str(weekday+1)]+ u'\n' + meal + u'我们向您推荐:\n' \
+        + tuple(foods)[index] + u'\n快去尝尝吧o(∩_∩)o'
