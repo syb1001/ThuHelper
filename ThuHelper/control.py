@@ -12,6 +12,7 @@ from helpInfo import getHelpInfoArticles
 from music import getRandomMusicByType, formMusicTypeList
 from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time, getClassroomInfo_time_day, classroom
 from food import get_food
+from recommend_classroom import recommend_classroom
 
 def processMessage(message):
     if message['MsgType'] == 'text':
@@ -86,7 +87,7 @@ def processMessage(message):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'QNX':
                 # 推荐自习室
-                response = u'功能还没实现，敬请期待~'
+                response = recommend_classroom()
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'LDYY':
                 # 推荐音乐
