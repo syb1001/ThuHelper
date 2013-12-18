@@ -1,5 +1,8 @@
 # coding=utf-8
 
+# food.py
+# 食堂推荐功能
+
 import random
 import datetime
 

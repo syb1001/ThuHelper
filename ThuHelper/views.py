@@ -1,5 +1,8 @@
 # coding=utf-8
 
+# views.py
+# 定义视图
+
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from .utils import checkSignature, parseXml

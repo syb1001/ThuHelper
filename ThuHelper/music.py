@@ -2,6 +2,7 @@
 
 # music.py
 # 返回一个随机的音乐
+
 import random
 from urllib import quote, urlopen
 from database import getOneMusicByType

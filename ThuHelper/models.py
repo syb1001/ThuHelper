@@ -1,3 +1,8 @@
+# coding=utf-8
+
+# models.py
+# 数据库model
+
 from django.db import models
 
 class Classroom(models.Model):
