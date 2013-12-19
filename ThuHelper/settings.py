@@ -189,6 +189,10 @@ MAX_LIBRARY_IMAGE_INDEX = 4
 URL_PLAYER_PREF = 'http://thuhelper11.duapp.com/musicplay'
 URL_MUSIC_IMAGE = 'http://thuhelper11.duapp.com/static/images/music.jpg'
 
+# 帮助信息列表
+URL_HELP = 'http://thuhelper11.duapp.com/help/'
+URL_HELP_IMAGE = 'http://thuhelper11.duapp.com/static/images/hand.jpg'
+
 EXPRESSION_LIST = {
     'a': ['/::)', '/::B', '/:8-)', '/::P', '/::D', '/::+', '/:,@P', '/:,@-D', '/::>', '/::,@', '/:handclap', '/:B-)', '/::*'],
     'b': ['/::|', '/::Z', '/:–b', '/::d', '/:|-)', '/::-O', '/:@x', '/:8*'],
