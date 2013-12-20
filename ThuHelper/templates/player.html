@@ -12,7 +12,7 @@
 	</audio>
     <div id="image">
         {% ifequal imageUrl '' %}
-            <img src="../../static/images/album.jpg">
+            <img src="{{ albumUrl }}">
         {% else %}
             <img src="{{ imageUrl }}">
         {% endifequal %}
@@ -33,7 +33,15 @@
                 {% else %}
                     <p id="description">{{ description }}</p>
                 {% endifequal %}
-				<span id="time">0:00/0:00</span>
+                {% ifequal musicUrl '' %}
+                    {% ifequal title '' %}
+                        <span id="time">0:00/0:00</span>
+                    {% else %}
+                        <span id="time">该音乐资源已过期</span>
+                    {% endifequal %}
+                {% else %}
+				    <span id="time">0:00/0:00</span>
+                {% endifequal %}
 			</div>
 			<div id="totalProgress">
 				<div id="bufferProgress">
