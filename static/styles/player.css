@@ -2,6 +2,19 @@ body {
 	background-color: #3498db;
 }
 
+#image {
+	text-align: center;
+	margin: 80px auto;
+	width: 500px;
+	height: 500px;
+	background-color: #3498db;
+}
+
+#image img {
+	max-width: 500px;
+	max-height: 500px;
+}
+
 #controls {
 	position: absolute;
 	margin: auto 5%;

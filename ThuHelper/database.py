@@ -133,13 +133,16 @@ def getOneMusicByType(dict):
         musicList = Onlinemusic.objects.all()
     # 在列表中完全随机选择音乐返回
     # 需要保证列表不为空否则出错
+    if len(musicList) == 0:
+        return None
     music = musicList[random.randint(0, len(musicList) - 1)]
     # 以字典的形式返回
     # 其中字符串均为unicode
     return {
         'Title': music.title,
         'Singer': music.singer,
-        'Description': music.singer
+        'Description': music.singer,
+        'ImageUrl': music.imageURL
     }
 
 def adduser(openid):
@@ -147,18 +150,30 @@ def adduser(openid):
     newuser.save()
 
 def getRecentInfobyID(ID):
-    oneuser = User.objects.get(openid=ID)
-    return oneuser.signupstatus
+    try:
+        oneuser = User.objects.get(openid=ID)
+        return oneuser.signupstatus
+    except User.DoesNotExist:
+        return ''
 
 def changeRecentInfo(ID, info):
-    oneuser = User.objects.get(openid=ID)
-    oneuser.signupstatus = info
-    oneuser.save()
+    try:
+        oneuser = User.objects.get(openid=ID)
+        oneuser.signupstatus = info
+        oneuser.save()
+    except User.DoesNotExist:
+        return 'Error!'
 
 def getLastTimebyID(ID):
-    oneuser = User.objects.get(openid=ID)
-    return oneuser.latestsignuptime
+    try:
+        oneuser = User.objects.get(openid=ID)
+        return oneuser.latestsignuptime
+    except User.DoesNotExist:
+        return 0
 
 def changeLastTime(ID, now):
-    oneuser = User.objects.get(openid=ID)
-    oneuser.latestsignuptime = now
+    try:
+        oneuser = User.objects.get(openid=ID)
+        oneuser.latestsignuptime = now
+    except User.DoesNotExist:
+        return 'Error!'

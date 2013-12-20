@@ -6,14 +6,26 @@
 import random
 from urllib import quote, urlopen
 from database import getOneMusicByType
-from .settings import URL_MUSIC_IMAGE, URL_PLAYER_PREF, EXPRESSION_LIST
-
+from .settings import URL_PLAYER_PREF,\
+    URL_MUSIC_IMAGE_PREF as IMAGE_PREF, URL_MUSIC_IMAGE_SUF as IMAGE_SUF, MAX_MUSIC_IMAGE_INDEX as MAX_INDEX
+from .settings import EXPRESSION_LIST
 # 从数据库获取随机音乐
 # 返回一个music对象用于生成音乐消息
 def getRandomMusicByType(dict):
     # 从数据库中获取随机的音乐
     # 返回的数据包含title和singer字段
     music = getOneMusicByType(dict)
+
+    # 数据库返回空
+    if music == None:
+        return {
+            'Title': '',
+            'Singer': '',
+            'Description': '',
+            'Url': '',
+            'HQUrl': '',
+            'ImageUrl': ''
+        }
 
     # 使用百度音乐搜索接口
     # 得到xml搜索结果
@@ -49,8 +61,8 @@ def formMusicTypeList():
             list.append(ele)
     random.shuffle(list)
     list.insert(0, {
-        'Title': u'热门音乐分类-点击播放',
-        'PicUrl': URL_MUSIC_IMAGE,
+        'Title': u'点击音乐分类 随机欣赏音乐',
+        'PicUrl': IMAGE_PREF + str(random.randint(1, MAX_INDEX)) + IMAGE_SUF,
         'Url': URL_PLAYER_PREF
     })
     list.append({
@@ -61,21 +73,22 @@ def formMusicTypeList():
 
 def getMusicByExpression(expression):
     flag = 0
+    dict = {}
     for type in EXPRESSION_LIST:
         for expre in EXPRESSION_LIST[type]:
             if expression.startswith(expre):
                 dict = {
                     'type1' : type
                 }
-                music = getRandomMusicByType(dict)
                 flag = 1
                 break
         if (flag == 1):
             break
-    if (flag == 0):
-        return expression
-    else:
-        return music
+    music = getRandomMusicByType(dict)
+    if (music['Url'] == ''):
+        temp = {}
+        music = getRandomMusicByType(temp)
+    return music
 
 
 # 预定义音乐类型

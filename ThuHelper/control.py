@@ -12,9 +12,10 @@ from message import *
 from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusicByType, formMusicTypeList, getMusicByExpression
-from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time, getClassroomInfo_time_day, classroom
-from food import get_food
+from classroom import getRoomCourseInfo, classroom
+from food import food_articles
 from recommend_classroom import recommend_classroom
+from signin import signin
 
 def processMessage(message):
     if message['MsgType'] == 'text':
@@ -28,22 +29,7 @@ def processMessage(message):
             # 以文字消息形式返回
             response = getLibrarySeatText()
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif message['Content'].startswith('#'):
-            # 查询教室排课信息, 简易版本
-            response = getClassroomInfo(message['Content'])
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif message['Content'].startswith('$'):
-            # 查询教室排课信息, 加入时间参数
-            response = getClassroomInfo_time(message['Content'])
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif message['Content'].startswith('@'):
-            # 查询教室排课信息, 加入日期偏移参数
-            response = getClassroomInfo_time_day(message['Content'])
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('/:'):
-            # 判断是否为表情
-            # 如果是表情，则返回一首相同类型的歌曲
-            # 否则
             response = getMusicByExpression(message['Content'])
             if type(response) is types.StringType:
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
@@ -56,7 +42,10 @@ def processMessage(message):
         elif u'音乐' in message['Content']:
             # 随机播放一首音乐
             music = getRandomMusicByType({})
-            return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
+            if music['Title'] == '':
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], '抱歉，未找到该类型的音乐')
+            else:
+                return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
         elif 'test' in message['Content']:
             # 测试通道
             response = message['Content']
@@ -94,8 +83,8 @@ def processMessage(message):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'MEAL':
                 # 推荐吃饭地点
-                response = get_food()
-                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+                articles = food_articles()
+                return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'STUDY':
                 # 推荐自习室
                 response = recommend_classroom()
@@ -106,7 +95,8 @@ def processMessage(message):
                 return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'SIGNIN':
                 # 签到功能
-                response = u'功能还没实现，敬请期待~'
+                times = signin(message['FromUserName'], message['CreateTime'])
+                response = str(times)
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'HELP':
                 # 帮助功能

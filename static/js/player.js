@@ -61,10 +61,8 @@ btn.addEventListener('click', function() {
 totalProgress.addEventListener('click', function(e) {
 	var leftPos = document.getElementById('controls').offsetLeft + this.offsetLeft;
 	var len = e.clientX - leftPos;
-	if (len / totalProgress.offsetWidth <= audio.buffered.end(0) / audio.duration) {
-		currentProgress.style.width = len + 'px';
-		audio.currentTime = audio.duration * len / totalProgress.offsetWidth;
-	}
+	currentProgress.style.width = len + 'px';
+	audio.currentTime = audio.duration * len / totalProgress.offsetWidth;
 });
 
 // 对DOM元素的CSS类进行操作

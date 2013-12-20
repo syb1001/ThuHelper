@@ -5,6 +5,8 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.utils import simplejson
+
 from .utils import checkSignature, parseXml
 from .control import processMessage
 from .library import getLibrarySeatInfo
@@ -14,6 +16,7 @@ from .music import getRandomMusicByType
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 
+# 微信消息推送入口
 def entry(request):
     # 进行token验证
     #if not checkSignature(request):
@@ -27,10 +30,19 @@ def entry(request):
         message = parseXml(request.body)
         return HttpResponse(processMessage(message))
 
+# 文图座位信息页面
 def library(request):
     dictArray = getLibrarySeatInfo()
     return render_to_response('library.html', {'seat': dictArray})
 
+# 帮助信息页面
+def help(request):
+    return render_to_response('help.html', {})
+
+def about(request):
+    return render_to_response('about.html', {})
+
+# 音乐播放器页面
 def musicplay(request):
     if request.GET.has_key('type') and request.GET.has_key('class'):
         dict = {'type' + request.GET['type']: request.GET['class']}
@@ -40,9 +52,17 @@ def musicplay(request):
     return render_to_response('player.html', {
         'musicUrl': music['Url'],
         'title': music['Title'],
-        'description': music['Description']
+        'description': music['Description'],
+        'imageUrl': music['ImageUrl']
     })
 
+def dataupdate(request):
+    length = len(request.POST)
+    response = HttpResponse(simplejson.dumps({'message': 'ok', 'statusCode': 0, 'dictLength': length}, ensure_ascii=False))
+    response['Access-Control-Allow-Origin'] = '*'
+    return response
+
+# 音乐插入后台页面
 def insertmusic(request):
     music = {}
     musiccomplete = 1
