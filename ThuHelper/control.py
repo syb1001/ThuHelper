@@ -12,7 +12,7 @@ from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusicByType, formMusicTypeList
 from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time, getClassroomInfo_time_day, classroom
-from food import get_food
+from food import food_articles
 from recommend_classroom import recommend_classroom
 
 def processMessage(message):
@@ -96,7 +96,7 @@ def processMessage(message):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'MEAL':
                 # 推荐吃饭地点
-                articles = get_food()
+                articles = food_articles()
                 return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'STUDY':
                 # 推荐自习室
