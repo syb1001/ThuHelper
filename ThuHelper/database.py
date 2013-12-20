@@ -29,8 +29,9 @@ def dbtest(request):
         print(room)
     mydb.close()
     """
-    idleclassroom = adduser('asdfasdfa')
-    return HttpResponse(idleclassroom)
+    p = Classroom(building='asdf', floor=2, roomnumber='r1232', Tuesday='000000')
+    p.save()
+    return HttpResponse(0)
 
 def dbinit(request):
     roomfile = open('ThuHelper/data.pkl', 'r')
@@ -140,7 +141,8 @@ def getOneMusicByType(dict):
     return {
         'Title': music.title,
         'Singer': music.singer,
-        'Description': music.singer
+        'Description': music.singer,
+        'ImageUrl': music.imageURL
     }
 
 def adduser(openid):
