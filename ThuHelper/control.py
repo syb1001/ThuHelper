@@ -110,10 +110,6 @@ def processMessage(message):
                 # 帮助功能
                 articles = getHelpInfoArticles()
                 return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
-            elif message['EventKey'] == 'ABOUT':
-                # 开发者信息
-                response = u'机智的程序猿小组'
-                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             else:
                 # 其他事件不响应
                 response = u'抱歉...暂不支持响应此事件'

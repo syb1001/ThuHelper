@@ -198,6 +198,9 @@ MAX_MUSIC_IMAGE_INDEX = 5
 URL_HELP = 'http://thuhelper11.duapp.com/help/'
 URL_HELP_IMAGE = 'http://thuhelper11.duapp.com/static/images/hand.jpg'
 
+# 关于我们页面
+URL_ABOUT = 'http://thuhelper11.duapp.com/about/'
+
 EXPRESSION_LIST = {
     'a': ['/::)', '/::B', '/:8-)', '/::P', '/::D', '/::+', '/:,@P', '/:,@-D', '/::>', '/::,@', '/:handclap', '/:B-)', '/::*'],
     'b': ['/::|', '/::Z', '/:–b', '/::d', '/:|-)', '/::-O', '/:@x', '/:8*'],
