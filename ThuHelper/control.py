@@ -14,6 +14,7 @@ from music import getRandomMusicByType, formMusicTypeList
 from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time, getClassroomInfo_time_day, classroom
 from food import get_food
 from recommend_classroom import recommend_classroom
+from signin import signin
 
 def processMessage(message):
     if message['MsgType'] == 'text':
@@ -40,12 +41,12 @@ def processMessage(message):
             response = getClassroomInfo_time_day(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('/:'):
-            flag = 0;
+            flag = 0
             for type in EXPRESSION_LIST:
                 for expression in EXPRESSION_LIST[type]:
                     if (expression == message['Content']):
-                        flag = 1;
-                        break;
+                        flag = 1
+                        break
 
 
         elif u'教' in message['Content']:
@@ -108,7 +109,8 @@ def processMessage(message):
                 return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'SIGNIN':
                 # 签到功能
-                response = u'功能还没实现，敬请期待~'
+                times = signin(message['FromUserName'], message['CreateTime'])
+                response = str(times)
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'HELP':
                 # 帮助功能
