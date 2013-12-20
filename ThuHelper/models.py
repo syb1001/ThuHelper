@@ -21,8 +21,7 @@ class Classroom(models.Model):
         return self.roomnumber
 
 class Onlinemusic(models.Model):
-    LQURL = models.CharField(max_length=250)
-    HQURL = models.CharField(max_length=250)
+    imageURL = models.CharField(max_length=250)
     title = models.CharField(max_length=50)
     singer = models.CharField(max_length=50)
     description = models.CharField(max_length=250)
