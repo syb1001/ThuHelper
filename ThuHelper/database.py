@@ -112,7 +112,7 @@ def insertclassroom(building, roomnumber, status):
     p.save()
 
 def insertonlinemusic(music):
-    p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], LQURL=music['LQURL'], HQURL=music['HQURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
+    p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], imageURL=music['imageURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
     p.save()
 
 # 根据音乐类型随机返回music对象

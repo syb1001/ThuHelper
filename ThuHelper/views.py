@@ -65,17 +65,11 @@ def insertmusic(request):
         else:
             music['description'] = request.POST['description']
 
-        if (len(request.POST['LQURL']) == 0):
+        if (len(request.POST['imageURL']) == 0):
             musiccomplete = 0
-            music['LQURLempty'] = 1
+            music['imageURLempty'] = 1
         else:
-            music['LQURL'] = request.POST['LQURL']
-
-        if (len(request.POST['HQURL']) == 0):
-            musiccomplete = 0
-            music['HQURLempty'] = 1
-        else:
-            music['HQURL'] = request.POST['HQURL']
+            music['imageURL'] = request.POST['imageURL']
 
         if (musiccomplete == 1):
             music['type1'] = request.POST['type1']
