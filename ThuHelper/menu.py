@@ -5,7 +5,7 @@
 # 菜单变化时需手动运行
 
 import urllib2, json, sys
-from ThuHelper.settings import APPID, APP_SECRET
+from ThuHelper.settings import APPID, APP_SECRET, URL_ABOUT
 
 reload(sys)
 sys.setdefaultencoding('UTF-8')
@@ -69,9 +69,9 @@ menu = '''{
                     "name": "帮助",
                     "key": "HELP"
                 }, {
-                    "type": "click",
+                    "type": "view",
                     "name": "关于我们",
-                    "key": "ABOUT"
+                    "key": "''' + URL_ABOUT + '''"
                 },
             ]
         }

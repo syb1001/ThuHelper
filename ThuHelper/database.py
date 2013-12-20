@@ -13,6 +13,7 @@ import httplib
 import pickle
 import random
 from settings import WEIXIN_TOKEN
+
 def dbtest(request):
     """
     mydb = MySQLdb.connect(
@@ -29,8 +30,8 @@ def dbtest(request):
         print(room)
     mydb.close()
     """
-    p = Classroom(building='asdf', floor=2, roomnumber='r1232', Tuesday='000000')
-    p.save()
+    #app = signin('asdfasdfasdf', 123123)
+    #appe = app
     return HttpResponse(0)
 
 def dbinit(request):
@@ -149,6 +150,13 @@ def adduser(openid):
     newuser = User(openid=openid, latestsignuptime=0, signupstatus='000000000000000000000000000000')
     newuser.save()
 
+def deluser(openid):
+    try:
+        olduser = User.objects.get(openid=openid)
+        olduser.delete()
+    except User.DoesNotExist:
+        return 'Error!'
+
 def getRecentInfobyID(ID):
     try:
         oneuser = User.objects.get(openid=ID)
@@ -175,5 +183,6 @@ def changeLastTime(ID, now):
     try:
         oneuser = User.objects.get(openid=ID)
         oneuser.latestsignuptime = now
+        oneuser.save()
     except User.DoesNotExist:
         return 'Error!'
