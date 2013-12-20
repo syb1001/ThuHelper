@@ -80,16 +80,19 @@ def getMusicByExpression(expression):
                 dict = {
                     'type1' : type
                 }
+                music = getRandomMusicByType(dict)
                 flag = 1
                 break
         if (flag == 1):
             break
-    music = getRandomMusicByType(dict)
-    if (music['Url'] == ''):
-        temp = {}
-        music = getRandomMusicByType(temp)
-    return music
-
+    if (flag == 1):
+        if (music['Url'] == ''):
+            message = u'居然没有' + music_type['type1'][type] + u'类型的音乐！！！快去补！！！'
+            return message
+        else:
+            return music
+    else:
+        return expression
 
 # 预定义音乐类型
 music_type = {
