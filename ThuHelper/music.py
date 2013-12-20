@@ -2,6 +2,7 @@
 
 # music.py
 # 返回一个随机的音乐
+
 import random
 from urllib import quote, urlopen
 from database import getOneMusicByType
@@ -43,7 +44,7 @@ def formMusicTypeList():
             # 根据每个类型构造相应图文消息
             ele = {
                 'Title': music_type['type' + str(i)][keys[j-1]],
-                'Url': URL_PLAYER_PREF + '?type=' + str(j) + '&class=' + keys[j-1]
+                'Url': URL_PLAYER_PREF + '?type=' + str(i) + '&class=' + keys[j-1]
             }
             list.append(ele)
     random.shuffle(list)

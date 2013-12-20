@@ -174,7 +174,9 @@ LOGGING = {
 }
 
 # 项目配置
-
+# 开发者凭据
+APPID = 'wx908467c39426e3bc'
+APP_SECRET = '82729dab279ea74bab044cd868ec1543'
 # 与微信公众平台约定的token
 # 在微信平台上填写
 WEIXIN_TOKEN = 'helloworld'
@@ -186,6 +188,10 @@ MAX_LIBRARY_IMAGE_INDEX = 4
 # 音乐分类列表
 URL_PLAYER_PREF = 'http://thuhelper11.duapp.com/musicplay'
 URL_MUSIC_IMAGE = 'http://thuhelper11.duapp.com/static/images/music.jpg'
+
+# 帮助信息列表
+URL_HELP = 'http://thuhelper11.duapp.com/help/'
+URL_HELP_IMAGE = 'http://thuhelper11.duapp.com/static/images/hand.jpg'
 
 EXPRESSION_LIST = {
     'a': ['/::)', '/::B', '/:8-)', '/::P', '/::D', '/::+', '/:,@P', '/:,@-D', '/::>', '/::,@', '/:handclap', '/:B-)', '/::*'],

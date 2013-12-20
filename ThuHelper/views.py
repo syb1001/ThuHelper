@@ -1,5 +1,8 @@
 # coding=utf-8
 
+# views.py
+# 定义视图
+
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from .utils import checkSignature, parseXml
@@ -17,7 +20,8 @@ def entry(request):
     #    return HttpResponse('Invalid Request')
 
     if request.GET.has_key('echostr'):
-        # 接入微信公众平台的情�?        # 按微信平台要求返回echostr以�?过验�?
+        # 接入微信公众平台的情况
+        # 按微信平台要求返回echostr以通过验证
         return HttpResponse(request.GET['echostr'])
     else:
         message = parseXml(request.body)
@@ -33,7 +37,11 @@ def musicplay(request):
     else:
         dict = {}
     music = getRandomMusicByType(dict)
-    return render_to_response('player.html', {'musicUrl': music['Url']})
+    return render_to_response('player.html', {
+        'musicUrl': music['Url'],
+        'title': music['Title'],
+        'description': music['Description']
+    })
 
 def insertmusic(request):
     music = {}
