@@ -12,11 +12,11 @@ def getHelpInfoArticles():
         'PicUrl': URL_HELP_IMAGE,
         'Url': URL_HELP
     }, {
-        'Title': u'查询人文社科图书馆座位情况：\n点击菜单查看，或发送“人文馆”或“文图”等相关词语',
+        'Title': u'查询文科图书馆座位情况：\n点击菜单查看，或发送“人文馆”或“文图”等相关词语',
         'PicUrl': URL_HELP_IMAGE_PREF + 'book.jpg',
         'Url': URL_HELP
     }, {
-        'Title': u'查询某教室今日课程安排：\n发送“6B201”、“4104”等',
+        'Title': u'查询某教室今日课程安排：\n发送“6C301”、“4104”、\n“5205”等',
         'PicUrl': URL_HELP_IMAGE_PREF + 'pencil.jpg',
         'Url': URL_HELP
     }, {
