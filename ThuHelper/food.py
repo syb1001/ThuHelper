@@ -56,9 +56,9 @@ foods = [
     u'万人二层自选',
     u'万人三层点餐餐厅',
 
-    u'清青时代咖啡厅',
-
     u'清青永和',
+
+    u'清青面吧'
 
     u'荷园一层自选',
     u'荷园二层点餐餐厅',
@@ -90,8 +90,8 @@ ranges = {
 }
 
 def get_food():
-    lenth = len(foods)
-    index = random.randint(0, lenth - 1)
+    length = len(foods)
+    index = random.randint(0, length - 1)
     dt = datetime.datetime.now()
     weekday = datetime.date(dt.year, dt.month, dt.day).weekday()
     t = datetime.time(hour=dt.hour, second=dt.second)
