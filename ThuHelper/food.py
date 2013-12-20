@@ -208,7 +208,7 @@ def get_food(refectory):
     return food_list[index]
 
 def get_picture_url(refectory, food):
-    return IMAGE_PREF + refectory + food_filename[food]
+    return IMAGE_PREF + refectory + '/' + food_filename[food]
 
 def food_articles():
     dt = datetime.datetime.now()
