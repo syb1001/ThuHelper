@@ -7,12 +7,12 @@
 
 import types
 from settings import EXPRESSION_LIST
-from database import adduser
+from database import adduser, deluser
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusicByType, formMusicTypeList, getMusicByExpression
-from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time, getClassroomInfo_time_day, classroom
+from classroom import getRoomCourseInfo, classroom
 from food import food_articles
 from recommend_classroom import recommend_classroom
 from signin import signin
@@ -29,24 +29,9 @@ def processMessage(message):
             # 以文字消息形式返回
             response = getLibrarySeatText()
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif message['Content'].startswith('#'):
-            # 查询教室排课信息, 简易版本
-            response = getClassroomInfo(message['Content'])
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif message['Content'].startswith('$'):
-            # 查询教室排课信息, 加入时间参数
-            response = getClassroomInfo_time(message['Content'])
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif message['Content'].startswith('@'):
-            # 查询教室排课信息, 加入日期偏移参数
-            response = getClassroomInfo_time_day(message['Content'])
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('/:'):
-            # 判断是否为表情
-            # 如果是表情，则返回一首相同类型的歌曲
-            # 否则
             response = getMusicByExpression(message['Content'])
-            if type(response) is types.StringType:
+            if (type(response) is types.UnicodeType) or (type(response) is types.StringType):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             else:
                 return makeMusicMessage(message['FromUserName'], message['ToUserName'], response)
@@ -81,6 +66,13 @@ def processMessage(message):
             adduser(message['FromUserName'])
             response = u'欢迎关注清华自习小助手，请使用帮助菜单查看帮助信息~也可回复“帮助”或“help”哦~'
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Event'] == 'unsubscribe':
+            # 取消订阅事件
+            # 订阅号欢送消息
+            #response = u'快点重新关注清华助手！'
+            deluser(message['FromUserName'])
+            response = u'快点重新关注清华助手！'
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Event'] == 'CLICK':
             # 响应点击服务号菜单事件
             if message['EventKey'] == 'COURSE':
@@ -94,7 +86,8 @@ def processMessage(message):
             elif message['EventKey'] == 'CLASSROOM':
                 # 空闲教室查询
                 response = u'查询某教学楼空闲教室情况\n您可以输入关键词：\n' \
-                           u'“四教”\n“六教C区”\n“三教三段2层”\n“今天第三节五教”\n“明天第二节四教三层”\n(其中教学楼名称必须指定)'
+                           u'“四教”\n“六教C区”\n“三教三段2层”\n“今天第三节五教”\n“明天第二节四教三层”\n\n' \
+                           u'其中教学楼名称必须指定\n目前支持一到六教'
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'MEAL':
                 # 推荐吃饭地点
