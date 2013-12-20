@@ -188,11 +188,17 @@ MAX_LIBRARY_IMAGE_INDEX = 4
 # 美食图片URL
 URL_FOOD_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/food/'
 
-# 音乐分类列表
+# 音乐图文消息大图
 URL_PLAYER_PREF = 'http://thuhelper11.duapp.com/musicplay'
 URL_MUSIC_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/music/music_'
 URL_MUSIC_IMAGE_SUF = '.jpg'
 MAX_MUSIC_IMAGE_INDEX = 5
+# 音乐图文消息分类小图
+URL_MUSIC_NOTE_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/music_notes/'
+MAX_MUSIC_NOTE_IMAGE_INDEX = {'1': 3, '2': 3, '3': 3}
+# 音乐图文消息随便听听图片
+URL_MUSIC_GIFT_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/gift/gift'
+MAX_MUSIC_GIFT_IMAGE_INDEX = 3
 
 # 默认专辑图片
 URL_ALBUM_PREF = 'http://thuhelper11.duapp.com/static/images/album/album'
