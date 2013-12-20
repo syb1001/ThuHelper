@@ -50,7 +50,8 @@ def musicplay(request):
     return render_to_response('player.html', {
         'musicUrl': music['Url'],
         'title': music['Title'],
-        'description': music['Description']
+        'description': music['Description'],
+        'imageUrl': music['ImageUrl']
     })
 
 # 音乐插入后台页面

@@ -140,7 +140,8 @@ def getOneMusicByType(dict):
     return {
         'Title': music.title,
         'Singer': music.singer,
-        'Description': music.singer
+        'Description': music.singer,
+        'ImageUrl': music.imageURL
     }
 
 def adduser(openid):
