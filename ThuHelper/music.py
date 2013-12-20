@@ -3,7 +3,7 @@
 # music.py
 # 返回一个随机的音乐
 import random
-from database import getonemusic, getOneMusicByType
+from database import getonemusic, getonemusicbytype
 from .settings import URL_MUSIC_IMAGE, URL_PLAYER_PREF
 
 music_type = {
@@ -36,7 +36,7 @@ def getRandomMusic():
     return convertObjToDict(getonemusic())
 
 def getRandomMusicByType(dict):
-    return convertObjToDict(getOneMusicByType(dict))
+    return convertObjToDict(getonemusicbytype(dict))
 
 def convertObjToDict(musicobj):
     return {

@@ -71,7 +71,7 @@ def getcourse(data):
     elif (nowweek == 7):
         return data.Sunday
 
-# building, floor 是字符串; time, weekday 是数�? weekday 的范围是 0 �?6
+# building, floor 是字符串; time, weekday 是数�? weekday 的范围是 0 �?6
 def getclassroomsbyfloor(building, floor, time, weekday):
     classroomlist = Classroom.objects.filter(building=building, floor=floor)
     result = []
@@ -106,7 +106,7 @@ def insertclassroom(building, roomnumber, status):
     p.save()
 
 def insertonlinemusic(music):
-    p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], LQURL=music['LQURL'], HQURL=music['HQURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
+    p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], imageURL=music['imageURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
     p.save()
 
 def getonemusicbytype(musictype):

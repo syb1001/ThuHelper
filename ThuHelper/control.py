@@ -5,6 +5,7 @@
 # 判断用户发送消息的用途
 # 返回用户不同类型不同内容的消息
 
+from settings import EXPRESSION_LIST
 from database import adduser
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews
@@ -36,6 +37,15 @@ def processMessage(message):
             # 查询教室排课信息, 加入日期偏移参数
             response = getClassroomInfo_time_day(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Content'].startswith('/:'):
+            flag = 0;
+            for type in EXPRESSION_LIST:
+                for expression in EXPRESSION_LIST[type]:
+                    if (expression == message['Content']):
+                        flag = 1;
+                        break;
+
+
         elif u'教' in message['Content']:
             # 查询教室排课信息, 处理的是文字输入
             response = classroom(message['Content'])
