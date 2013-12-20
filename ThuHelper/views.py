@@ -1,11 +1,14 @@
 # coding=utf-8
 
+# views.py
+# 定义视图
+
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from ThuHelper.utils import checkSignature, parseXml
-from ThuHelper.control import processMessage
-from ThuHelper.library import getLibrarySeatInfo
-from ThuHelper.database import insertonlinemusic
+from .utils import checkSignature, parseXml
+from .control import processMessage
+from .library import getLibrarySeatInfo
+from .database import insertonlinemusic
 from .music import getRandomMusicByType
 
 from django.views.decorators.csrf import csrf_exempt
@@ -17,7 +20,8 @@ def entry(request):
     #    return HttpResponse('Invalid Request')
 
     if request.GET.has_key('echostr'):
-        # 接入微信公众平台的情�?        # 按微信平台要求返回echostr以�?过验�?
+        # 接入微信公众平台的情况
+        # 按微信平台要求返回echostr以通过验证
         return HttpResponse(request.GET['echostr'])
     else:
         message = parseXml(request.body)
@@ -28,9 +32,16 @@ def library(request):
     return render_to_response('library.html', {'seat': dictArray})
 
 def musicplay(request):
-    dict = {'type' + request.GET['type']: request.GET['class']}
+    if request.GET.has_key('type') and request.GET.has_key('class'):
+        dict = {'type' + request.GET['type']: request.GET['class']}
+    else:
+        dict = {}
     music = getRandomMusicByType(dict)
-    return render_to_response('player.html', {'musicUrl': music['Url']})
+    return render_to_response('player.html', {
+        'musicUrl': music['Url'],
+        'title': music['Title'],
+        'description': music['Description']
+    })
 
 def insertmusic(request):
     music = {}

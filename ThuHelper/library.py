@@ -8,6 +8,14 @@ from BeautifulSoup import BeautifulSoup
 import urllib, random
 from .settings import URL_LIBRARY, URL_LIBRARY_IMAGE_PREF, MAX_LIBRARY_IMAGE_INDEX
 
+# 检查一个字符串中是否含有关于人文馆的关键词
+def isConsultingLibrary(str):
+    names = [u'文图', u'人文馆', u'文科馆', u'人文社科图书馆', u'人文图书馆', u'凯风']
+    for name in names:
+        if name in str:
+            return True
+    return False
+
 # 生成图文信息
 def getLibrarySeatNews():
     nums = getLibrarySeatNum()
