@@ -23,7 +23,8 @@ def getRandomMusicByType(dict):
             'Singer': '',
             'Description': '',
             'Url': '',
-            'HQUrl': ''
+            'HQUrl': '',
+            'ImageUrl': ''
         }
 
     # 使用百度音乐搜索接口

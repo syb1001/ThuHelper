@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^musicplay$', 'ThuHelper.views.musicplay'),
     url(r'^help/$', 'ThuHelper.views.help'),
     url(r'^about/$', 'ThuHelper.views.about'),
+    url(r'^dataupdate/$', 'ThuHelper.views.dataupdate')
     url(r'^dbinit/', dbinit),
     url(r'^insertmusic/', 'ThuHelper.views.insertmusic'),
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
