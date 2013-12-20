@@ -197,6 +197,7 @@ MAX_MUSIC_IMAGE_INDEX = 5
 # 帮助信息列表
 URL_HELP = 'http://thuhelper11.duapp.com/help/'
 URL_HELP_IMAGE = 'http://thuhelper11.duapp.com/static/images/hand.jpg'
+URL_HELP_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/help/'
 
 # 关于我们页面
 URL_ABOUT = 'http://thuhelper11.duapp.com/about/'
