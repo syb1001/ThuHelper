@@ -14,6 +14,7 @@ from .music import getRandomMusicByType
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 
+# 微信消息推送入口
 def entry(request):
     # 进行token验证
     #if not checkSignature(request):
@@ -27,10 +28,19 @@ def entry(request):
         message = parseXml(request.body)
         return HttpResponse(processMessage(message))
 
+# 文图座位信息页面
 def library(request):
     dictArray = getLibrarySeatInfo()
     return render_to_response('library.html', {'seat': dictArray})
 
+# 帮助信息页面
+def help(request):
+    return render_to_response('help.html', {})
+
+def about(request):
+    return render_to_response('about.html', {})
+
+# 音乐播放器页面
 def musicplay(request):
     if request.GET.has_key('type') and request.GET.has_key('class'):
         dict = {'type' + request.GET['type']: request.GET['class']}
@@ -43,6 +53,7 @@ def musicplay(request):
         'description': music['Description']
     })
 
+# 音乐插入后台页面
 def insertmusic(request):
     music = {}
     musiccomplete = 1

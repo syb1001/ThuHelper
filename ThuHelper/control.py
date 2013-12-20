@@ -55,7 +55,10 @@ def processMessage(message):
         elif u'音乐' in message['Content']:
             # 随机播放一首音乐
             music = getRandomMusicByType({})
-            return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
+            if music['Title'] == '':
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], '抱歉，未找到该类型的音乐')
+            else:
+                return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
         elif 'test' in message['Content']:
             # 测试通道
             response = message['Content']

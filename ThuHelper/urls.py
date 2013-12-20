@@ -22,8 +22,10 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'ThuHelper.views.entry'),
-    url(r'^library/', 'ThuHelper.views.library'),
+    url(r'^library/$', 'ThuHelper.views.library'),
     url(r'^musicplay$', 'ThuHelper.views.musicplay'),
+    url(r'^help/$', 'ThuHelper.views.help'),
+    url(r'^about/$', 'ThuHelper.views.about'),
     url(r'^dbinit/', dbinit),
     url(r'^insertmusic/', 'ThuHelper.views.insertmusic'),
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {

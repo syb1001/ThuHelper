@@ -15,6 +15,16 @@ def getRandomMusicByType(dict):
     # 返回的数据包含title和singer字段
     music = getOneMusicByType(dict)
 
+    # 数据库返回空
+    if music == None:
+        return {
+            'Title': '',
+            'Singer': '',
+            'Description': '',
+            'Url': '',
+            'HQUrl': ''
+        }
+
     # 使用百度音乐搜索接口
     # 得到xml搜索结果
     url = 'http://box.zhangmen.baidu.com/x?op=12&count=1&title=' + quote(music['Title'].encode('utf-8')) + '$$' + quote(music['Singer'].encode('utf-8')) + '$$$$'
