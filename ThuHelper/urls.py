@@ -26,7 +26,7 @@ urlpatterns = patterns('',
     url(r'^musicplay$', 'ThuHelper.views.musicplay'),
     url(r'^help/$', 'ThuHelper.views.help'),
     url(r'^about/$', 'ThuHelper.views.about'),
-    url(r'^dataupdate/$', 'ThuHelper.views.dataupdate')
+    url(r'^dataupdate/$', 'ThuHelper.views.dataupdate'),
     url(r'^dbinit/', dbinit),
     url(r'^dbtest/', dbtest),
     url(r'^insertmusic/', 'ThuHelper.views.insertmusic'),
