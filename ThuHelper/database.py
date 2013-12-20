@@ -29,8 +29,9 @@ def dbtest(request):
         print(room)
     mydb.close()
     """
-    idleclassroom = adduser('asdfasdfa')
-    return HttpResponse(idleclassroom)
+    p = Classroom(building='asdf', floor=2, roomnumber='r1232', Tuesday='000000')
+    p.save()
+    return HttpResponse(0)
 
 def dbinit(request):
     roomfile = open('ThuHelper/data.pkl', 'r')
@@ -140,7 +141,8 @@ def getOneMusicByType(dict):
     return {
         'Title': music.title,
         'Singer': music.singer,
-        'Description': music.singer
+        'Description': music.singer,
+        'ImageUrl': music.imageURL
     }
 
 def adduser(openid):
@@ -148,18 +150,30 @@ def adduser(openid):
     newuser.save()
 
 def getRecentInfobyID(ID):
-    oneuser = User.objects.get(openid=ID)
-    return oneuser.signupstatus
+    try:
+        oneuser = User.objects.get(openid=ID)
+        return oneuser.signupstatus
+    except User.DoesNotExist:
+        return ''
 
 def changeRecentInfo(ID, info):
-    oneuser = User.objects.get(openid=ID)
-    oneuser.signupstatus = info
-    oneuser.save()
+    try:
+        oneuser = User.objects.get(openid=ID)
+        oneuser.signupstatus = info
+        oneuser.save()
+    except User.DoesNotExist:
+        return 'Error!'
 
 def getLastTimebyID(ID):
-    oneuser = User.objects.get(openid=ID)
-    return oneuser.latestsignuptime
+    try:
+        oneuser = User.objects.get(openid=ID)
+        return oneuser.latestsignuptime
+    except User.DoesNotExist:
+        return 0
 
 def changeLastTime(ID, now):
-    oneuser = User.objects.get(openid=ID)
-    oneuser.latestsignuptime = now
+    try:
+        oneuser = User.objects.get(openid=ID)
+        oneuser.latestsignuptime = now
+    except User.DoesNotExist:
+        return 'Error!'
