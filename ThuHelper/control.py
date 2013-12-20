@@ -30,9 +30,6 @@ def processMessage(message):
             response = getLibrarySeatText()
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('/:'):
-            # 判断是否为表情
-            # 如果是表情，则返回一首相同类型的歌曲
-            # 否则
             response = getMusicByExpression(message['Content'])
             if type(response) is types.StringType:
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
