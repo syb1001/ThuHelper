@@ -21,6 +21,8 @@ def signin(openID, now):
         b = time.strftime('%Y-%m-%d %H:%M:%S', y)
         if( not a[9] == b[9]):
             numofday -= 1
+        if numofday == 0:
+            return -1
         #超过三十天没自习
         if(numofday >= 30):
             changeRecentInfo(openID, '000000000000000000000000000001')

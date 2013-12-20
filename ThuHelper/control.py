@@ -7,7 +7,7 @@
 
 import types
 from settings import EXPRESSION_LIST
-from database import adduser
+from database import adduser, deluser
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
@@ -31,7 +31,7 @@ def processMessage(message):
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('/:'):
             response = getMusicByExpression(message['Content'])
-            if type(response) is types.StringType:
+            if (type(response) is types.UnicodeType) or (type(response) is types.StringType):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             else:
                 return makeMusicMessage(message['FromUserName'], message['ToUserName'], response)
@@ -65,6 +65,13 @@ def processMessage(message):
             # 服务号欢迎消息
             adduser(message['FromUserName'])
             response = u'欢迎关注清华自习小助手，请使用帮助菜单查看帮助信息~也可回复“帮助”或“help”哦~'
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Event'] == 'unsubscribe':
+            # 取消订阅事件
+            # 订阅号欢送消息
+            #response = u'快点重新关注清华助手！'
+            deluser(message['FromUserName'])
+            response = u'快点重新关注清华助手！'
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Event'] == 'CLICK':
             # 响应点击服务号菜单事件
@@ -103,10 +110,6 @@ def processMessage(message):
                 # 帮助功能
                 articles = getHelpInfoArticles()
                 return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
-            elif message['EventKey'] == 'ABOUT':
-                # 开发者信息
-                response = u'机智的程序猿小组'
-                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             else:
                 # 其他事件不响应
                 response = u'抱歉...暂不支持响应此事件'
