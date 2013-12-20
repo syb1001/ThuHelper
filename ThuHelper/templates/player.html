@@ -1,12 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
+	<title>html5播放器</title>
+  <link rel="stylesheet" type="text/css" href="../../static/styles/player.css">
 </head>
 <body>
-    <audio controls="controls" autoplay="autoplay">
-        <source src="{{ musicUrl }}">
-        Sorry，您的浏览器不支持html5播放器(╯‵□′)╯︵┻━┻
-    </audio>
+	<audio id="audio" autoplay="autoplay">
+		<source src="{{ musicUrl }}">
+        抱歉，您的浏览器不支持html5播放器
+	</audio>
+	<div id="controls">
+		<div id="btnwrap">
+			<div id="btn" class="play"></div>
+		</div>
+		<div id="wrap">
+			<div id="info">
+                {% ifequal title '' %}
+                    <p id="title">音乐资源未找到</p>
+                {% else %}
+                    <p id="title">{{ title }}</p>
+                {% endifequal %}
+                {% ifequal description '' %}
+                    <p id="description">换音乐类型试试吧~</p>
+                {% else %}
+                    <p id="description">{{ description }}</p>
+                {% endifequal %}
+				<span id="time">0:00/0:00</span>
+			</div>
+			<div id="totalProgress">
+				<div id="bufferProgress">
+					<div id="currentProgress"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="../../static/js/player.js"></script>
 </body>
 </html>

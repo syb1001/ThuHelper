@@ -1,17 +1,20 @@
 # coding=utf-8
 
+# views.py
+# 定义视图
+
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from ThuHelper.utils import checkSignature, parseXml
-from ThuHelper.control import processMessage
-from ThuHelper.library import getLibrarySeatInfo
-from ThuHelper.database import insertonlinemusic
+from .utils import checkSignature, parseXml
+from .control import processMessage
+from .library import getLibrarySeatInfo
+from .database import insertonlinemusic
 from .music import getRandomMusicByType
 
-# 防止403 error的语句
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 
+# 微信消息推送入口
 def entry(request):
     # 进行token验证
     #if not checkSignature(request):
@@ -22,19 +25,35 @@ def entry(request):
         # 按微信平台要求返回echostr以通过验证
         return HttpResponse(request.GET['echostr'])
     else:
-        # 接收用户消息的情况
         message = parseXml(request.body)
         return HttpResponse(processMessage(message))
 
+# 文图座位信息页面
 def library(request):
     dictArray = getLibrarySeatInfo()
     return render_to_response('library.html', {'seat': dictArray})
 
-def musicplay(request):
-    dict = {'type' + request.GET['type']: request.GET['class']}
-    music = getRandomMusicByType(dict)
-    return render_to_response('player.html', {'musicUrl': music['Url']})
+# 帮助信息页面
+def help(request):
+    return render_to_response('help.html', {})
 
+def about(request):
+    return render_to_response('about.html', {})
+
+# 音乐播放器页面
+def musicplay(request):
+    if request.GET.has_key('type') and request.GET.has_key('class'):
+        dict = {'type' + request.GET['type']: request.GET['class']}
+    else:
+        dict = {}
+    music = getRandomMusicByType(dict)
+    return render_to_response('player.html', {
+        'musicUrl': music['Url'],
+        'title': music['Title'],
+        'description': music['Description']
+    })
+
+# 音乐插入后台页面
 def insertmusic(request):
     music = {}
     musiccomplete = 1
@@ -57,17 +76,11 @@ def insertmusic(request):
         else:
             music['description'] = request.POST['description']
 
-        if (len(request.POST['LQURL']) == 0):
+        if (len(request.POST['imageURL']) == 0):
             musiccomplete = 0
-            music['LQURLempty'] = 1
+            music['imageURLempty'] = 1
         else:
-            music['LQURL'] = request.POST['LQURL']
-
-        if (len(request.POST['HQURL']) == 0):
-            musiccomplete = 0
-            music['HQURLempty'] = 1
-        else:
-            music['HQURL'] = request.POST['HQURL']
+            music['imageURL'] = request.POST['imageURL']
 
         if (musiccomplete == 1):
             music['type1'] = request.POST['type1']
@@ -83,4 +96,3 @@ def insertmusic(request):
             })
     else:
         return (render_to_response('insertmusic.html'))
-

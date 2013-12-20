@@ -1,3 +1,8 @@
+# coding=utf-8
+
+# models.py
+# 数据库model
+
 from django.db import models
 
 class Classroom(models.Model):
@@ -16,8 +21,7 @@ class Classroom(models.Model):
         return self.roomnumber
 
 class Onlinemusic(models.Model):
-    LQURL = models.CharField(max_length=250)
-    HQURL = models.CharField(max_length=250)
+    imageURL = models.CharField(max_length=250)
     title = models.CharField(max_length=50)
     singer = models.CharField(max_length=50)
     description = models.CharField(max_length=250)
@@ -27,3 +31,11 @@ class Onlinemusic(models.Model):
 
     def __unicode__(self):
         return self.title
+
+class User(models.Model):
+    openid = models.CharField(max_length=250)
+    latestsignuptime = models.FloatField()
+    signupstatus = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.openid

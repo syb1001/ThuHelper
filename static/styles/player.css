@@ -1,0 +1,109 @@
+body {
+	background-color: #3498db;
+}
+
+#controls {
+	position: absolute;
+	margin: auto 5%;
+	width: 90%;
+	height: 340px;
+	background-color: #ecf0f1;
+	border-top-right-radius: 170px;
+	border-bottom-right-radius: 170px;
+}
+
+#wrap {
+	margin: 20px 340px 20px 20px;
+}
+
+#info {
+	position: relative;
+	margin: 20px 0px;
+	height: 240px;
+	background-color: #95a5a6;
+	font-size: 40px;
+	font-family: sans serif, Microsoft Yahei;
+	text-align: center;
+	color: white;
+}
+
+#title {
+	margin: 0px;
+	line-height: 80px;
+}
+
+#description {
+	margin: 10px auto;
+	font-size: 40px;
+	line-height: 50px;
+}
+
+#time {
+	line-height: 100px;
+}
+
+#btnwrap {
+	position: relative;
+	float: right;
+	margin: 20px;
+	width: 300px;
+	height: 300px;
+	background-color: #66ccaa;
+	border-radius: 150px;
+}
+
+#btnwrap:hover {
+	position: relative;
+	float: right;
+	margin: 20px;
+	width: 300px;
+	height: 300px;
+	background-color: #66ddbb;
+	border-radius: 150px;	
+}
+
+#btn {
+	position: absolute;
+}
+
+#btn.play {
+	width: 0px;
+	height: 0px;
+	border-style: solid;
+	border-top: 100px solid transparent;
+	border-bottom: 100px solid transparent;
+	border-left: 174px solid white;
+	border-right: 0px;
+	margin: 50px 55px 50px 90px;
+}
+
+#btn.pause {
+	width: 155px;
+	height: 200px;
+	background: -webkit-gradient(linear, left top, right top, 
+		color-stop(0, white),
+		color-stop(0.35, white),
+		color-stop(0.36, transparent),
+		color-stop(0.65, transparent),
+		color-stop(0.66, white),
+		color-stop(1, white)
+	);
+	margin: 50px 73px 52px 73px;
+}
+
+#currentProgress {
+	width: 0px;
+	height: 40px;
+	background-color: #7f8c8d;
+}
+
+#bufferProgress {
+	width: 0px;
+	height: 40px;
+	background-color: #66ccaa;
+}
+
+#totalProgress {
+	height: 40px;
+	background-color: white;
+}

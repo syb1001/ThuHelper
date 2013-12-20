@@ -1,6 +1,12 @@
 # coding=utf-8
 
-arr_food = [
+# food.py
+# 食堂推荐功能
+
+import random
+import datetime
+
+foods = [
     u'紫荆一层木桶饭',
     u'紫荆一层原清芬香锅',
     u'紫荆一层湖南窗口',
@@ -50,9 +56,9 @@ arr_food = [
     u'万人二层自选',
     u'万人三层点餐餐厅',
 
-    u'清青时代咖啡厅',
-
     u'清青永和',
+
+    u'清青面吧'
 
     u'荷园一层自选',
     u'荷园二层点餐餐厅',
@@ -67,3 +73,32 @@ arr_food = [
     u'丁香瓦罐汤',
     u'丁香石锅饭'
 ]
+
+num_cn = {
+    '1': u'一',
+    '2': u'二',
+    '3': u'三',
+    '4': u'四',
+    '5': u'五',
+    '6': u'六',
+    '7': u'天',
+}
+
+ranges = {
+    'lunch_end': datetime.time(hour=13, second=0),
+    'supper_end': datetime.time(hour=19, second=0),
+}
+
+def get_food():
+    length = len(foods)
+    index = random.randint(0, length - 1)
+    dt = datetime.datetime.now()
+    weekday = datetime.date(dt.year, dt.month, dt.day).weekday()
+    t = datetime.time(hour=dt.hour, second=dt.second)
+    meal = ''
+    if t < ranges['lunch_end']:
+        meal = u'午饭'
+    elif t < ranges['supper_end']:
+        meal = u'晚饭'
+    return u'今天是星期' + num_cn[str(weekday+1)]+ u'\n' + meal + u'我们向您推荐:\n' \
+        + tuple(foods)[index] + u'\n快去尝尝吧o(∩_∩)o'
