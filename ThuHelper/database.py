@@ -150,18 +150,30 @@ def adduser(openid):
     newuser.save()
 
 def getRecentInfobyID(ID):
-    oneuser = User.objects.get(openid=ID)
-    return oneuser.signupstatus
+    try:
+        oneuser = User.objects.get(openid=ID)
+        return oneuser.signupstatus
+    except User.DoesNotExist:
+        return ''
 
 def changeRecentInfo(ID, info):
-    oneuser = User.objects.get(openid=ID)
-    oneuser.signupstatus = info
-    oneuser.save()
+    try:
+        oneuser = User.objects.get(openid=ID)
+        oneuser.signupstatus = info
+        oneuser.save()
+    except User.DoesNotExist:
+        return 'Error!'
 
 def getLastTimebyID(ID):
-    oneuser = User.objects.get(openid=ID)
-    return oneuser.latestsignuptime
+    try:
+        oneuser = User.objects.get(openid=ID)
+        return oneuser.latestsignuptime
+    except User.DoesNotExist:
+        return 0
 
 def changeLastTime(ID, now):
-    oneuser = User.objects.get(openid=ID)
-    oneuser.latestsignuptime = now
+    try:
+        oneuser = User.objects.get(openid=ID)
+        oneuser.latestsignuptime = now
+    except User.DoesNotExist:
+        return 'Error!'
