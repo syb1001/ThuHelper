@@ -5,6 +5,8 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.utils import simplejson
+
 from .utils import checkSignature, parseXml
 from .control import processMessage
 from .library import getLibrarySeatInfo
@@ -53,6 +55,12 @@ def musicplay(request):
         'description': music['Description'],
         'imageUrl': music['ImageUrl']
     })
+
+def dataupdate(request):
+    length = len(request.POST)
+    response = HttpResponse(simplejson.dumps({'message': 'ok', 'statusCode': 0, 'dictLength': length}, ensure_ascii=False))
+    response['Access-Control-Allow-Origin'] = '*'
+    return response
 
 # 音乐插入后台页面
 def insertmusic(request):
