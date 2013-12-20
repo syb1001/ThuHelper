@@ -83,8 +83,8 @@ def processMessage(message):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'MEAL':
                 # 推荐吃饭地点
-                response = get_food()
-                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+                articles = get_food()
+                return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'STUDY':
                 # 推荐自习室
                 response = recommend_classroom()
