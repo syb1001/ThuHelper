@@ -61,7 +61,7 @@ def formMusicTypeList():
                 'Title': music_type['type' + str(i)][keys[j-1]],
                 'Url': URL_PLAYER_PREF + '?type=' + str(i) + '&class=' + keys[j-1],
                 'PicUrl': URL_MUSIC_NOTE_IMAGE_PREF + str(notes[i-1])
-                          + '/music' + str(random.randint(1, MAX_MUSIC_NOTE_IMAGE_INDEX[notes[i-1]])) + '.jpg'
+                          + '/music' + str(random.randint(1, MAX_MUSIC_NOTE_IMAGE_INDEX[str(notes[i-1])])) + '.jpg'
             }
             list.append(ele)
     random.shuffle(list)
