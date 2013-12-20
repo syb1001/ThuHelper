@@ -73,21 +73,22 @@ def formMusicTypeList():
 
 def getMusicByExpression(expression):
     flag = 0
+    dict = {}
     for type in EXPRESSION_LIST:
         for expre in EXPRESSION_LIST[type]:
             if expression.startswith(expre):
                 dict = {
                     'type1' : type
                 }
-                music = getRandomMusicByType(dict)
                 flag = 1
                 break
         if (flag == 1):
             break
-    if (flag == 0):
-        return expression
-    else:
-        return music
+    music = getRandomMusicByType(dict)
+    if (music['Url'] == ''):
+        temp = {}
+        music = getRandomMusicByType(temp)
+    return music
 
 
 # 预定义音乐类型

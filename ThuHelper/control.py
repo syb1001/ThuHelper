@@ -12,7 +12,7 @@ from message import *
 from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusicByType, formMusicTypeList, getMusicByExpression
-from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time, getClassroomInfo_time_day, classroom
+from classroom import getRoomCourseInfo, classroom
 from food import food_articles
 from recommend_classroom import recommend_classroom
 from signin import signin
@@ -29,22 +29,7 @@ def processMessage(message):
             # 以文字消息形式返回
             response = getLibrarySeatText()
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif message['Content'].startswith('#'):
-            # 查询教室排课信息, 简易版本
-            response = getClassroomInfo(message['Content'])
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif message['Content'].startswith('$'):
-            # 查询教室排课信息, 加入时间参数
-            response = getClassroomInfo_time(message['Content'])
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif message['Content'].startswith('@'):
-            # 查询教室排课信息, 加入日期偏移参数
-            response = getClassroomInfo_time_day(message['Content'])
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('/:'):
-            # 判断是否为表情
-            # 如果是表情，则返回一首相同类型的歌曲
-            # 否则
             response = getMusicByExpression(message['Content'])
             if type(response) is types.StringType:
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
