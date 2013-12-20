@@ -71,6 +71,7 @@ def formMusicTypeList():
     })
     return list
 
+# 由表情得到音乐
 def getMusicByExpression(expression):
     flag = 0
     dict = {}

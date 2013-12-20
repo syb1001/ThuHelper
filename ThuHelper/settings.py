@@ -194,6 +194,10 @@ URL_MUSIC_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/music/music_'
 URL_MUSIC_IMAGE_SUF = '.jpg'
 MAX_MUSIC_IMAGE_INDEX = 5
 
+# 默认专辑图片
+URL_ALBUM_PREF = 'http://thuhelper11.duapp.com/static/images/album/album'
+MAX_ALBUM_IMAGE_INDEX = 5
+
 # 帮助信息列表
 URL_HELP = 'http://thuhelper11.duapp.com/help/'
 URL_HELP_IMAGE = 'http://thuhelper11.duapp.com/static/images/hand.jpg'

@@ -12,7 +12,7 @@
 	</audio>
     <div id="image">
         {% ifequal imageUrl '' %}
-            <img src="../../static/images/album.jpg">
+            <img src="{{ albumUrl }}">
         {% else %}
             <img src="{{ imageUrl }}">
         {% endifequal %}
