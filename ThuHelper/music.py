@@ -8,7 +8,7 @@ from urllib import quote, urlopen
 from database import getOneMusicByType
 from .settings import URL_PLAYER_PREF,\
     URL_MUSIC_IMAGE_PREF as IMAGE_PREF, URL_MUSIC_IMAGE_SUF as IMAGE_SUF, MAX_MUSIC_IMAGE_INDEX as MAX_INDEX
-
+from .settings import EXPRESSION_LIST
 # 从数据库获取随机音乐
 # 返回一个music对象用于生成音乐消息
 def getRandomMusicByType(dict):
@@ -70,6 +70,25 @@ def formMusicTypeList():
         'Url': URL_PLAYER_PREF
     })
     return list
+
+def getMusicByExpression(expression):
+    flag = 0
+    for type in EXPRESSION_LIST:
+        for expre in EXPRESSION_LIST[type]:
+            if expression.startswith(expre):
+                dict = {
+                    'type1' : type
+                }
+                music = getRandomMusicByType(dict)
+                flag = 1
+                break
+        if (flag == 1):
+            break
+    if (flag == 0):
+        return expression
+    else:
+        return music
+
 
 # 预定义音乐类型
 music_type = {
