@@ -52,15 +52,9 @@
             <option value="e">轻音乐</option>
         </select>
         <br/>
-        <label for="LQURL">标准品质url：</label>
-        <input type="text" name="LQURL" id="LQURL" value="{{ music.LQURL }}"/>
-        {% if music.LQURLempty %}
-            不能为空！
-        {% endif %}
-        <br/>
-        <label for="HQURL">高品质url：</label>
-        <input type="text" name="HQURL" id="HQURL" value="{{ music.HQURL }}"/>
-        {% if music.HQURLempty %}
+        <label for="imageURL">音乐图片url：</label>
+        <input type="text" name="imageURL" id="imageURL" value="{{ music.imageURL }}"/>
+        {% if music.imageURLempty %}
             不能为空！
         {% endif %}
         <br/>

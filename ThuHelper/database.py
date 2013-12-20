@@ -1,4 +1,8 @@
-#coding=utf-8
+# coding=utf-8
+
+# database.py
+# 数据库操作
+
 #from bae.core import const
 from ThuHelper.models import *
 import MySQLdb
@@ -71,7 +75,9 @@ def getcourse(data):
     elif (nowweek == 7):
         return data.Sunday
 
-# building, floor 是字符串; time, weekday 是数�? weekday 的范围是 0 �?6
+# building和floor是字符串
+# time和weekday是数字
+# weekday的范围是0到6
 def getclassroomsbyfloor(building, floor, time, weekday):
     classroomlist = Classroom.objects.filter(building=building, floor=floor)
     result = []
@@ -106,24 +112,36 @@ def insertclassroom(building, roomnumber, status):
     p.save()
 
 def insertonlinemusic(music):
-    p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], LQURL=music['LQURL'], HQURL=music['HQURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
+    p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], imageURL=music['imageURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
     p.save()
 
-def getonemusicbytype(musictype):
-    if musictype['type1']:
-        musiclist = Onlinemusic.objects.filter(type1=musictype['type1'])
-        return musiclist[random.randint(0, len(musiclist) - 1)]
-    if musictype['type2']:
-        musiclist = Onlinemusic.objects.filter(type1=musictype['type2'])
-        return musiclist[random.randint(0, len(musiclist) - 1)]
-    if musictype['type3']:
-        musiclist = Onlinemusic.objects.filter(type1=musictype['type3'])
-        return musiclist[random.randint(0, len(musiclist) - 1)]
-    return None
-
-def getonemusic():
-    musiclist = Onlinemusic.objects.all()
-    return musiclist[random.randint(0, len(musiclist) - 1)]
+# 根据音乐类型随机返回music对象
+# 传入的词典中可能含有'type1': 'b'这样的项
+# 多维搜索时可能含有更多的项
+# 暂不支持多维搜索
+def getOneMusicByType(dict):
+    musicList = None
+    if dict.has_key('type1'):
+        musicList = Onlinemusic.objects.filter(type1=dict['type1'])
+    if dict.has_key('type2'):
+        musicList = Onlinemusic.objects.filter(type2=dict['type2'])
+    if dict.has_key('type3'):
+        musicList = Onlinemusic.objects.filter(type3=dict['type3'])
+    if not dict.has_key('type1') and not dict.has_key('type2') and not dict.has_key('type3'):
+        # 如果字典为空则返回完全随机的歌曲
+        musicList = Onlinemusic.objects.all()
+    # 在列表中完全随机选择音乐返回
+    # 需要保证列表不为空否则出错
+    if len(musicList) == 0:
+        return None
+    music = musicList[random.randint(0, len(musicList) - 1)]
+    # 以字典的形式返回
+    # 其中字符串均为unicode
+    return {
+        'Title': music.title,
+        'Singer': music.singer,
+        'Description': music.singer
+    }
 
 def adduser(openid):
     newuser = User(openid=openid, latestsignuptime=0, signupstatus='000000000000000000000000000000')
