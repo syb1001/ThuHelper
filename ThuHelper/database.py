@@ -112,7 +112,7 @@ def insertclassroom(building, roomnumber, status):
     p.save()
 
 def insertonlinemusic(music):
-    p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], LQURL=music['LQURL'], HQURL=music['HQURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
+    p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], imageURL=music['imageURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
     p.save()
 
 # 根据音乐类型随机返回music对象
@@ -132,6 +132,8 @@ def getOneMusicByType(dict):
         musicList = Onlinemusic.objects.all()
     # 在列表中完全随机选择音乐返回
     # 需要保证列表不为空否则出错
+    if len(musicList) == 0:
+        return None
     music = musicList[random.randint(0, len(musicList) - 1)]
     # 以字典的形式返回
     # 其中字符串均为unicode
