@@ -8,7 +8,7 @@ from urllib import quote, urlopen
 from database import getOneMusicByType
 from .settings import URL_PLAYER_PREF,\
     URL_MUSIC_IMAGE_PREF as IMAGE_PREF, URL_MUSIC_IMAGE_SUF as IMAGE_SUF, MAX_MUSIC_IMAGE_INDEX as MAX_INDEX, \
-    URL_MUSIC_NOTE_IMAGE_PREF, MAX_MUSIC_NOTE_IMAGE_INDEX
+    URL_MUSIC_NOTE_IMAGE_PREF, MAX_MUSIC_NOTE_IMAGE_INDEX, URL_MUSIC_GIFT_IMAGE_PREF, MAX_MUSIC_GIFT_IMAGE_INDEX
 from .settings import EXPRESSION_LIST
 # 从数据库获取随机音乐
 # 返回一个music对象用于生成音乐消息
@@ -50,6 +50,8 @@ def getRandomMusicByType(dict):
 # 用来返回图文消息
 def formMusicTypeList():
     list = []
+    notes = [1, 2, 3]
+    random.shuffle(notes)
     for i in range(1, 4):
         # 先从每个维度上随机取出1个类型
         keys = random.sample(music_type['type' + str(i)], 1)
@@ -58,7 +60,8 @@ def formMusicTypeList():
             ele = {
                 'Title': music_type['type' + str(i)][keys[j-1]],
                 'Url': URL_PLAYER_PREF + '?type=' + str(i) + '&class=' + keys[j-1],
-                'PicUrl': URL_MUSIC_NOTE_IMAGE_PREF + str(random.randint(1, MAX_MUSIC_NOTE_IMAGE_INDEX)) + '.jpg'
+                'PicUrl': URL_MUSIC_NOTE_IMAGE_PREF + str(notes[i-1])
+                          + '/music' + str(random.randint(1, MAX_MUSIC_NOTE_IMAGE_INDEX[notes[i-1]])) + '.jpg'
             }
             list.append(ele)
     random.shuffle(list)
@@ -69,6 +72,7 @@ def formMusicTypeList():
     })
     list.append({
         'Title': u'随便听听',
+        'PicUrl': URL_MUSIC_GIFT_IMAGE_PREF + str(random.randint(1, MAX_MUSIC_GIFT_IMAGE_INDEX)) + '.jpg',
         'Url': URL_PLAYER_PREF
     })
     return list

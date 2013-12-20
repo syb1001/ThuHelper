@@ -193,9 +193,12 @@ URL_PLAYER_PREF = 'http://thuhelper11.duapp.com/musicplay'
 URL_MUSIC_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/music/music_'
 URL_MUSIC_IMAGE_SUF = '.jpg'
 MAX_MUSIC_IMAGE_INDEX = 5
-# 音乐图文消息小图
-URL_MUSIC_NOTE_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/music_notes/note'
-MAX_MUSIC_NOTE_IMAGE_INDEX = 3
+# 音乐图文消息分类小图
+URL_MUSIC_NOTE_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/music_notes/'
+MAX_MUSIC_NOTE_IMAGE_INDEX = {'1': 3, '2': 3, '3': 3}
+# 音乐图文消息随便听听图片
+URL_MUSIC_GIFT_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/gift/gift'
+MAX_MUSIC_GIFT_IMAGE_INDEX = 3
 
 # 帮助信息列表
 URL_HELP = 'http://thuhelper11.duapp.com/help/'
