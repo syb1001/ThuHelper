@@ -10,6 +10,13 @@
 		<source src="{{ musicUrl }}">
         抱歉，您的浏览器不支持html5播放器
 	</audio>
+    <div id="image">
+        {% ifequal imageUrl '' %}
+            <img src="../../static/images/album.jpg">
+        {% else %}
+            <img src="{{ imageUrl }}">
+        {% endifequal %}
+    </div>
 	<div id="controls">
 		<div id="btnwrap">
 			<div id="btn" class="play"></div>

@@ -5,14 +5,15 @@
 # 判断用户发送消息的用途
 # 返回用户不同类型不同内容的消息
 
+import types
 from settings import EXPRESSION_LIST
 from database import adduser
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
-from music import getRandomMusicByType, formMusicTypeList
+from music import getRandomMusicByType, formMusicTypeList, getMusicByExpression
 from classroom import getClassroomInfo, getRoomCourseInfo, getClassroomInfo_time, getClassroomInfo_time_day, classroom
-from food import get_food
+from food import food_articles
 from recommend_classroom import recommend_classroom
 from signin import signin
 
@@ -41,14 +42,14 @@ def processMessage(message):
             response = getClassroomInfo_time_day(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('/:'):
-            flag = 0
-            for type in EXPRESSION_LIST:
-                for expression in EXPRESSION_LIST[type]:
-                    if (expression == message['Content']):
-                        flag = 1
-                        break
-
-
+            # 判断是否为表情
+            # 如果是表情，则返回一首相同类型的歌曲
+            # 否则
+            response = getMusicByExpression(message['Content'])
+            if type(response) is types.StringType:
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            else:
+                return makeMusicMessage(message['FromUserName'], message['ToUserName'], response)
         elif u'教' in message['Content']:
             # 查询教室排课信息, 处理的是文字输入
             response = classroom(message['Content'])
@@ -97,8 +98,8 @@ def processMessage(message):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'MEAL':
                 # 推荐吃饭地点
-                response = get_food()
-                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+                articles = food_articles()
+                return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'STUDY':
                 # 推荐自习室
                 response = recommend_classroom()
