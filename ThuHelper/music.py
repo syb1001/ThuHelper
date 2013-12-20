@@ -7,7 +7,8 @@ import random
 from urllib import quote, urlopen
 from database import getOneMusicByType
 from .settings import URL_PLAYER_PREF,\
-    URL_MUSIC_IMAGE_PREF as IMAGE_PREF, URL_MUSIC_IMAGE_SUF as IMAGE_SUF, MAX_MUSIC_IMAGE_INDEX as MAX_INDEX
+    URL_MUSIC_IMAGE_PREF as IMAGE_PREF, URL_MUSIC_IMAGE_SUF as IMAGE_SUF, MAX_MUSIC_IMAGE_INDEX as MAX_INDEX, \
+    URL_MUSIC_NOTE_IMAGE_PREF, MAX_MUSIC_NOTE_IMAGE_INDEX
 from .settings import EXPRESSION_LIST
 # 从数据库获取随机音乐
 # 返回一个music对象用于生成音乐消息
@@ -56,7 +57,8 @@ def formMusicTypeList():
             # 根据每个类型构造相应图文消息
             ele = {
                 'Title': music_type['type' + str(i)][keys[j-1]],
-                'Url': URL_PLAYER_PREF + '?type=' + str(i) + '&class=' + keys[j-1]
+                'Url': URL_PLAYER_PREF + '?type=' + str(i) + '&class=' + keys[j-1],
+                'PicUrl': URL_MUSIC_NOTE_IMAGE_PREF + str(random.randint(1, MAX_MUSIC_NOTE_IMAGE_INDEX)) + '.jpg'
             }
             list.append(ele)
     random.shuffle(list)
