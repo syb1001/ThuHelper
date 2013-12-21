@@ -86,12 +86,13 @@ def formMusicTypeList():
 # 由表情得到音乐
 def getMusicByExpression(expression):
     flag = 0
-    dict = {}
+    music = None
+    type = ''
     for type in EXPRESSION_LIST:
         for expre in EXPRESSION_LIST[type]:
             if expression.startswith(expre):
                 dict = {
-                    'type1' : type
+                    'type2' : type
                 }
                 music = getRandomMusicByType(dict)
                 flag = 1
@@ -100,7 +101,7 @@ def getMusicByExpression(expression):
             break
     if (flag == 1):
         if (music['Url'] == ''):
-            message = u'居然没有' + music_type['type1'][type] + u'类型的音乐！！！快去补！！！'
+            message = u'抱歉，未找到' + music_type['type1'][type] + u'类型的音乐，换个表情试试吧~'
             return message
         else:
             return music
@@ -110,26 +111,38 @@ def getMusicByExpression(expression):
 # 预定义音乐类型
 music_type = {
     'type1': {
-        'a': u'古典',
-        'b': u'流行',
-        'c': u'摇滚',
-        'd': u'乡村',
-        'e': u'蓝调',
-        'f': u'纯音乐'
+        'a': u'古典', 'b': u'流行', 'c': u'摇滚', 'd': u'乡村', 'e': u'蓝调', 'f': u'纯音乐'
     },
     'type2': {
-        'a': u'欢快',
-        'b': u'平静',
-        'c': u'忧伤',
-        'd': u'激烈',
-        'e': u'小清新',
-        'f': u'怀旧'
+        'a': u'欢快', 'b': u'平静', 'c': u'忧伤', 'd': u'激烈', 'e': u'小清新', 'f': u'怀旧'
     },
     'type3': {
-        'a': u'中文',
-        'b': u'英文',
-        'c': u'电影配乐',
-        'd': u'钢琴',
-        'e': u'轻音乐'
+        'a': u'中文', 'b': u'英文', 'c': u'电影配乐', 'd': u'钢琴', 'e': u'轻音乐'
     }
 }
+
+def isTypeOfMusic(str):
+    if str in music_type_list:
+        return True
+    else:
+        return False
+
+# 音乐类型列表
+music_type_list = [
+    u'音乐',
+    u'古典', u'流行', u'摇滚', u'乡村', u'蓝调', u'纯音乐',
+    u'欢快', u'平静', u'忧伤', u'激烈', u'小清新', u'怀旧',
+    u'中文', u'英文', u'电影配乐', u'钢琴', u'轻音乐'
+]
+
+# 根据类型字符串得到用于查询数据库的字典
+def getTypeDict(str):
+    # 遍历music_type而不是music_type_list
+    for type in music_type:
+        for key in music_type[type]:
+            if music_type[type][key] == str:
+                return {
+                    type: key
+                }
+    # 查询“音乐”时回空字典
+    return {}
