@@ -5,11 +5,13 @@
 
 import random
 from urllib import quote, urlopen
+from xml.etree import ElementTree
 from database import getOneMusicByType
 from .settings import URL_PLAYER_PREF,\
     URL_MUSIC_IMAGE_PREF as IMAGE_PREF, URL_MUSIC_IMAGE_SUF as IMAGE_SUF, MAX_MUSIC_IMAGE_INDEX as MAX_INDEX, \
     URL_MUSIC_NOTE_IMAGE_PREF, MAX_MUSIC_NOTE_IMAGE_INDEX, URL_MUSIC_GIFT_IMAGE_PREF, MAX_MUSIC_GIFT_IMAGE_INDEX
 from .settings import EXPRESSION_LIST
+
 # 从数据库获取随机音乐
 # 返回一个music对象用于生成音乐消息
 def getRandomMusicByType(dict):
@@ -34,17 +36,21 @@ def getRandomMusicByType(dict):
     xml = urlopen(url).read().replace('gb2312', 'utf-8')
 
     # 解析xml得到搜索结果中第一条音乐的url
-    from xml.etree import ElementTree
     tree = ElementTree.fromstring(xml)
-    pref_path = tree.getiterator('encode')[0].text
-    xcode = tree.getiterator('decode')[0].text
-    music_url = pref_path[0: pref_path.rfind('/') + 1] + xcode
-
-    # 增加url字段
-    music['Url'] = music_url
-    music['HQUrl'] = music_url
-
-    return music
+    if tree.find('count').text == '0':
+        # 未找到这首音乐的有效资源
+        music['Url'] = ''
+        music['HQUrl'] = ''
+        music['ImageUrl'] = ''
+        return music
+    else:
+        pref_path = tree.getiterator('encode')[0].text
+        xcode = tree.getiterator('decode')[0].text
+        music_url = pref_path[0: pref_path.rfind('/') + 1] + xcode
+        # 增加url字段
+        music['Url'] = music_url
+        music['HQUrl'] = music_url
+        return music
 
 # 生成音乐列表
 # 用来返回图文消息
@@ -77,6 +83,7 @@ def formMusicTypeList():
     })
     return list
 
+# 由表情得到音乐
 def getMusicByExpression(expression):
     flag = 0
     dict = {}
