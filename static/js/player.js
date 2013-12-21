@@ -6,6 +6,7 @@ time = document.getElementById('time');
 totalProgress = document.getElementById('totalProgress');
 bufferProgress = document.getElementById('bufferProgress');
 currentProgress = document.getElementById('currentProgress');
+change = document.getElementById('change');
 duration = 0;
 
 // 下载音乐时触发事件
@@ -78,6 +79,11 @@ totalProgress.addEventListener('click', function(e) {
 	var len = e.clientX - leftPos;
 	currentProgress.style.width = len + 'px';
 	audio.currentTime = audio.duration * len / totalProgress.offsetWidth;
+});
+
+// 点击更换歌曲按钮刷新页面
+change.addEventListener('click', function() {
+	location.reload();
 });
 
 // 对DOM元素的CSS类进行操作
