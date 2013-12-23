@@ -6,16 +6,16 @@
 # 返回用户不同类型不同内容的消息
 
 import types
-from settings import EXPRESSION_LIST
 from database import adduser, deluser
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
-from music import getRandomMusicByType, formMusicTypeList, getMusicByExpression
+from music import getRandomMusicByType, formMusicTypeList, getMusicByExpression, isTypeOfMusic, getTypeDict
 from classroom import getRoomCourseInfo, classroom
 from food import food_articles
 from recommend_classroom import recommend_classroom
 from signin import signin
+from .settings import URL_SIGNIN_IMAGE
 
 def processMessage(message):
     if message['MsgType'] == 'text':
@@ -30,6 +30,7 @@ def processMessage(message):
             response = getLibrarySeatText()
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('/:'):
+            # 用户发送表情则返回音乐
             response = getMusicByExpression(message['Content'])
             if (type(response) is types.UnicodeType) or (type(response) is types.StringType):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
@@ -39,11 +40,12 @@ def processMessage(message):
             # 查询教室排课信息, 处理的是文字输入
             response = classroom(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif u'音乐' in message['Content']:
-            # 随机播放一首音乐
-            music = getRandomMusicByType({})
+        elif isTypeOfMusic(message['Content']):
+            # 根据音乐类型返回音乐消息
+            dict = getTypeDict(message['Content'])
+            music = getRandomMusicByType(dict)
             if music['Title'] == '':
-                return makeTextMessage(message['FromUserName'], message['ToUserName'], '抱歉，未找到该类型的音乐')
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], '抱歉，未找到该类型的音乐，换个类型试试吧~')
             else:
                 return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
         elif 'test' in message['Content']:
@@ -104,8 +106,27 @@ def processMessage(message):
             elif message['EventKey'] == 'SIGNIN':
                 # 签到功能
                 times = signin(message['FromUserName'], message['CreateTime'])
-                response = str(times)
-                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+                if times == -1:
+                    response = "您今天已经签过到了，感谢您的支持！"
+                    return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+                elif times == 0:
+                    myarticle = [
+                        {
+                         'Title': u'签到信息',
+                         'PicUrl': URL_SIGNIN_IMAGE
+                        },
+                        {'Title':u'这是您第一次签到，欢迎继续使用'}
+                    ]
+                    return makeNewsMessage(message['FromUserName'], message['ToUserName'], myarticle)
+                else:
+                    myarticle = [
+                        {
+                         'Title': u'签到信息',
+                         'PicUrl': URL_SIGNIN_IMAGE
+                        },
+                        {'Title':u'您总共上自习次数'+str(times.all)+u'\n您本月自习次数'+str(times.month)}
+                    ]
+                    return makeNewsMessage(message['FromUserName'], message['ToUserName'], myarticle)
             elif message['EventKey'] == 'HELP':
                 # 帮助功能
                 articles = getHelpInfoArticles()
