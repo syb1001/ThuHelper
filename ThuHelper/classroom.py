@@ -8,50 +8,21 @@ from utils import getClassSeqNumByDatetime
 import datetime
 
 cn_num = {
-    u'〇': 0,
-    u'一': 1,
-    u'二': 2,
-    u'三': 3,
-    u'四': 4,
-    u'五': 5,
-    u'六': 6,
-    u'七': 7,
-    u'八': 8,
-    u'九': 9,
+    u'〇': 0, u'一': 1, u'二': 2, u'三': 3, u'四': 4,
+    u'五': 5, u'六': 6, u'七': 7, u'八': 8, u'九': 9,
 
-    u'零': 0,
-    u'壹': 1,
-    u'贰': 2,
-    u'叁': 3,
-    u'肆': 4,
-    u'伍': 5,
-    u'陆': 6,
-    u'柒': 7,
-    u'捌': 8,
-    u'玖': 9,
+    u'零': 0, u'壹': 1, u'贰': 2, u'叁': 3, u'肆': 4,
+    u'伍': 5, u'陆': 6, u'柒': 7, u'捌': 8, u'玖': 9,
 
-    u'貮': 2,
-    u'两': 2,
+    u'貮': 2, u'两': 2,
 
-    '1':   1,
-    '2':   2,
-    '3':   3,
-    '4':   4,
-    '5':   5,
-    '6':   6,
-    '7':   7,
-    '8':   8,
-    '9':   9,
-    '0':   0,
+    '1': 1, '2': 2, '3': 3, '4': 4, '5': 5,
+    '6': 6, '7': 7, '8': 8, '9': 9, '0': 0,
 }
 
 cn_delta = {
-    u'前': -2,
-    u'昨': -1,
-    u'今': 0,
-    u'明': 1,
-    u'后': 2,
-    u'大后': 3,
+    u'前': -2, u'昨': -1, u'今': 0,
+    u'明': 1, u'后': 2, u'大后': 3,
 }
 
 building_storey = {
@@ -277,7 +248,7 @@ def buildIDtoName(id):
     }
     return buildDict[id]
 
-# 传入的room如果不是一个教室则原样返回
+# 传入的room如果不是一个教室则返回空串
 # 若是一个教室则返回该教室当天的排课信息
 def getRoomCourseInfo(room):
     room = room.upper()
@@ -285,7 +256,7 @@ def getRoomCourseInfo(room):
     if len(result) != 0:
         return room + formCourseText(result)
     else:
-        return room
+        return ''
 
 # 根据六位的01字符序列生成教室占用情况
 def formCourseText(sequence):
