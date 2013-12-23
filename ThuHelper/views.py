@@ -6,12 +6,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.utils import simplejson
+import random
 
 from .utils import checkSignature, parseXml
 from .control import processMessage
 from .library import getLibrarySeatInfo
 from .database import insertonlinemusic
 from .music import getRandomMusicByType
+from .settings import URL_ALBUM_PREF, MAX_ALBUM_IMAGE_INDEX
 
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
@@ -53,7 +55,8 @@ def musicplay(request):
         'musicUrl': music['Url'],
         'title': music['Title'],
         'description': music['Description'],
-        'imageUrl': music['ImageUrl']
+        'imageUrl': music['ImageUrl'],
+        'albumUrl': URL_ALBUM_PREF + str(random.randint(1, MAX_ALBUM_IMAGE_INDEX)) + '.jpg'
     })
 
 def dataupdate(request):
