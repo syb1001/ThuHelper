@@ -1,5 +1,6 @@
 body {
-	background-color: #3498db;
+	/*background-color: #3498db;*/
+	background-color: rgba(173, 216, 230, 1);
 }
 
 #image {
@@ -7,7 +8,8 @@ body {
 	margin: 80px auto;
 	width: 500px;
 	height: 500px;
-	background-color: #3498db;
+	/*background-color: #3498db;*/
+	background-color: rgba(173, 216, 230, 1)
 }
 
 #image img {
@@ -33,7 +35,8 @@ body {
 	position: relative;
 	margin: 20px 0px;
 	height: 240px;
-	background-color: #95a5a6;
+	/*background-color: #95a5a6;*/
+	background-color:rgba(113, 172, 199, 0.81);
 	font-size: 40px;
 	font-family: sans serif, Microsoft Yahei;
 	text-align: center;
@@ -119,4 +122,18 @@ body {
 #totalProgress {
 	height: 40px;
 	background-color: white;
+}
+
+#change {
+	width: 500px;
+	height: 80px;
+	background-color: #eeeeee;
+	border: 5px solid #bbbbbb;
+	line-height: 80px;
+	font-size: 40px;
+	font-family: Microsoft Yahei;
+	text-align: center;
+	margin: 80px auto;
+	color: #aa33dd;
+	cursor: pointer;
 }

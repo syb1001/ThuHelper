@@ -71,7 +71,10 @@ building_storey = {
 def getClassroomInfo_time_day(queryStr):
     queryDict = getBuildFloorTimeDaydelta(queryStr)
     if int(queryDict['floor']) not in building_storey[queryDict['buildID']]:
-        return buildIDtoName(queryDict['buildID']) + u'哪里有' + queryDict['floor'] + u'层嘛～'
+        return buildIDtoName(queryDict['buildID']) + u'没有' + queryDict['floor'] + u'层，只有' \
+               + ''.join(map(lambda x: str(x)+u'、', building_storey[queryDict['buildID']])).rstrip(u'、') \
+               + u'层'
+
     dt = datetime.datetime.now()
     weekday = datetime.date(dt.year, dt.month, dt.day).weekday()
     weekday += int(queryDict['delta'])
@@ -80,8 +83,7 @@ def getClassroomInfo_time_day(queryStr):
     dt += datetime.timedelta(days=int(queryDict['delta']))
     roomList = getclassroomsbyfloor(queryDict['buildID'], queryDict['floor'], int(queryDict['time']), weekday)
     buildname = buildIDtoName(queryDict['buildID'])
-    ret = str(dt.month) + u'月' + str(dt.day) + u'日' + u'第' + queryDict['time'] \
-          + u'大节，\n' + buildname + queryDict['floor'] + u'层空闲教室：\n'
+    ret = buildname + queryDict['floor'] + u'层空闲教室：\n'
     if roomList == []:
         ret += u'无'
     else:
@@ -96,7 +98,14 @@ def classroom(query):
     if not valid_query(query):
         return u"您的输入似乎不太对哦~\n举个栗子：您可以输入“今天第二节四教二层”、“六教”等关键词查询所有没课的教室。"
     query_dict = query_to_dict(query)
-    ret = ''
+    dt = datetime.datetime.now()
+    ret = str(dt.month) + u'月' + str(dt.day + int(query_dict['day_delta'])) + u'日' + u'第' + query_dict['class_sequence'] + u'大节\n'
+    if query_dict['storey'] != '-':
+        if query_dict['building_id'] in building_storey:
+            if int(query_dict['storey']) not in building_storey[query_dict['building_id']]:
+                ret = ''
+    if query_dict['class_sequence'] not in ('1', '2', '3', '4', '5', '6'):
+        return u'一天只有6大节课'
     if query_dict['building_id'] == '6ABC':
         for section in ('A', 'B', 'C'):
             query_dict['building_id'] = '6' + section
@@ -105,11 +114,11 @@ def classroom(query):
                 for i in storeys:
                     query_dict['storey'] = str(i)
                     ret += getClassroomInfo_time_day(toQueryStr(query_dict))
-                    ret += '\n\n'
+                    ret += '\n'
                 query_dict['storey'] = '-'
             else:
                 ret += getClassroomInfo_time_day(toQueryStr(query_dict))
-                ret += '\n\n'
+                ret += '\n'
 
     elif query_dict['building_id'] == '3123':
         for section in ('1', '2', '3'):
@@ -119,39 +128,23 @@ def classroom(query):
                 for i in storeys:
                     query_dict['storey'] = str(i)
                     ret += getClassroomInfo_time_day(toQueryStr(query_dict))
-                    ret += '\n\n'
+                    ret += '\n'
                 query_dict['storey'] = '-'
             else:
                 ret += getClassroomInfo_time_day(toQueryStr(query_dict))
-                ret += '\n\n'
+                ret += '\n'
     else:
         if query_dict['storey'] == '-':
             storeys = building_storey[query_dict['building_id']]
             for i in storeys:
                 query_dict['storey'] = str(i)
                 ret += getClassroomInfo_time_day(toQueryStr(query_dict))
-                ret += '\n\n'
+                ret += '\n'
             query_dict['storey'] = '-'
         else:
             ret += getClassroomInfo_time_day(toQueryStr(query_dict))
     ret = ret.rstrip('\n')
     return ret
-
-
-def getBuildFloor(queryStr):
-    t = tuple(queryStr.strip('#').split(' '))
-    return {
-        'buildID': t[0],
-        'floor': t[1],
-    }
-
-def getBuildFloorTime(queryStr):
-    t = tuple(queryStr.strip('$').split(' '))
-    return {
-        'buildID': t[0],
-        'floor': t[1],
-        'time': t[2],
-    }
 
 def getBuildFloorTimeDaydelta(queryStr):
     t = tuple(queryStr.strip('@').split(' '))
@@ -249,44 +242,10 @@ def to_delta(word):
 def toNum(word):
     if isinstance(word, int):
         return word
-    cn_num = {
-        u'〇': 0,
-        u'一': 1,
-        u'二': 2,
-        u'三': 3,
-        u'四': 4,
-        u'五': 5,
-        u'六': 6,
-        u'七': 7,
-        u'八': 8,
-        u'九': 9,
-
-        u'零': 0,
-        u'壹': 1,
-        u'贰': 2,
-        u'叁': 3,
-        u'肆': 4,
-        u'伍': 5,
-        u'陆': 6,
-        u'柒': 7,
-        u'捌': 8,
-        u'玖': 9,
-
-        u'貮': 2,
-        u'两': 2,
-
-        '1':   1,
-        '2':   2,
-        '3':   3,
-        '4':   4,
-        '5':   5,
-        '6':   6,
-        '7':   7,
-        '8':   8,
-        '9':   9,
-        '0':   0,
-    }
-    return cn_num[word]
+    if word in cn_num:
+        return cn_num[word]
+    else:
+        return word
 
 def nametoBuildID(name):
     d = {

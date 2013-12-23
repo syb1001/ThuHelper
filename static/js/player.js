@@ -6,10 +6,12 @@ time = document.getElementById('time');
 totalProgress = document.getElementById('totalProgress');
 bufferProgress = document.getElementById('bufferProgress');
 currentProgress = document.getElementById('currentProgress');
+change = document.getElementById('change');
 duration = 0;
 
 // 下载音乐时触发事件
 // 更新缓冲条
+// android手机无效
 audio.addEventListener('progress', function() {
 	var percent = audio.buffered.end(0) / audio.duration;
 	bufferProgress.style.width = totalProgress.offsetWidth * percent + 'px';
@@ -45,6 +47,20 @@ audio.addEventListener('ended', function() {
 	audio.play();
 });
 
+// 播放暂停事件
+audio.addEventListener('pause', function() {
+    if (hasClass(btn, 'pause')) {
+        replaceClass(btn, 'pause', 'play');
+    }
+});
+
+// 播放继续事件
+audio.addEventListener('play', function() {
+    if (hasClass(btn, 'play')) {
+        replaceClass(btn, 'play', 'pause');
+    }
+});
+
 // 播放暂停按钮点击事件
 btn.addEventListener('click', function() {
 	if (hasClass(btn, 'pause')) {
@@ -63,6 +79,11 @@ totalProgress.addEventListener('click', function(e) {
 	var len = e.clientX - leftPos;
 	currentProgress.style.width = len + 'px';
 	audio.currentTime = audio.duration * len / totalProgress.offsetWidth;
+});
+
+// 点击更换歌曲按钮刷新页面
+change.addEventListener('click', function() {
+	location.reload();
 });
 
 // 对DOM元素的CSS类进行操作
