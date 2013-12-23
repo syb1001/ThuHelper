@@ -15,6 +15,7 @@ from classroom import getRoomCourseInfo, classroom
 from food import food_articles
 from recommend_classroom import recommend_classroom
 from signin import signin
+from .settings import URL_SIGNIN_IMAGE
 
 def processMessage(message):
     if message['MsgType'] == 'text':
@@ -105,8 +106,27 @@ def processMessage(message):
             elif message['EventKey'] == 'SIGNIN':
                 # 签到功能
                 times = signin(message['FromUserName'], message['CreateTime'])
-                response = str(times)
-                return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+                if times == -1:
+                    response = "您今天已经签过到了，感谢您的支持！"
+                    return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+                elif times == 0:
+                    myarticle = [
+                        {
+                         'Title': u'签到信息',
+                         'PicUrl': URL_SIGNIN_IMAGE
+                        },
+                        {'Title':u'这是您第一次签到，欢迎继续使用'}
+                    ]
+                    return makeNewsMessage(message['FromUserName'], message['ToUserName'], myarticle)
+                else:
+                    myarticle = [
+                        {
+                         'Title': u'签到信息',
+                         'PicUrl': URL_SIGNIN_IMAGE
+                        },
+                        {'Title':u'您总共上自习次数'+str(times.all)+u'\n您本月自习次数'+str(times.month)}
+                    ]
+                    return makeNewsMessage(message['FromUserName'], message['ToUserName'], myarticle)
             elif message['EventKey'] == 'HELP':
                 # 帮助功能
                 articles = getHelpInfoArticles()
