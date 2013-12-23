@@ -208,7 +208,7 @@ MAX_ALBUM_IMAGE_INDEX = 5
 URL_HELP = 'http://thuhelper11.duapp.com/help/'
 URL_HELP_IMAGE = 'http://thuhelper11.duapp.com/static/images/hand.jpg'
 URL_HELP_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/help/'
-
+URL_SIGNIN_IMAGE = 'http://thuhelper11.duapp.com/static/images/signin.jpg'
 # 关于我们页面
 URL_ABOUT = 'http://thuhelper11.duapp.com/about/'
 

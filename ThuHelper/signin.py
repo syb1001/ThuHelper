@@ -3,12 +3,15 @@
 # signin.py
 # 处理用户签到事件
 import time
-from database import getLastTimebyID, getRecentInfobyID, changeLastTime, changeRecentInfo
+from database import getLastTimebyID, getRecentInfobyID, changeLastTime, changeRecentInfo, addsignintime, getsignintimebyID
 #两个参数都是字符串
 def signin(openID, now):
+
+
     info = getRecentInfobyID(openID)
     lasttime = getLastTimebyID(openID)
     if(not lasttime):       #没上过自习,首次签到
+        addsignintime(openID)
         changeRecentInfo(openID, '000000000000000000000000000001')
         changeLastTime(openID, now)
         return 0    #没上过自习
@@ -25,12 +28,17 @@ def signin(openID, now):
             return -1
         #超过三十天没自习
         if(numofday >= 30):
+            addsignintime(openID)
             changeRecentInfo(openID, '000000000000000000000000000001')
             changeLastTime(openID, now)
             #超过三十天没自习
-            return 1
+            myobject = {}
+            myobject["all"] = getsignintimebyID(openID)
+            myobject["month"] = 1
+            return myobject
         else:
             #统计一个月内上自习的次数
+            addsignintime(openID)
             count = 0
             #newinfo = '000000000000000000000000000001'
             for i in range(numofday, 29):
@@ -43,7 +51,10 @@ def signin(openID, now):
             newinfo += '1'
             changeRecentInfo(openID, newinfo)
             changeLastTime(openID, now)
-            return count+1
+            myobject = {}
+            myobject["all"] = getsignintimebyID(openID)
+            myobject["month"] = count + 1
+            return myobject
 
 
 
