@@ -123,3 +123,17 @@ body {
 	height: 40px;
 	background-color: white;
 }
+
+#change {
+	width: 500px;
+	height: 80px;
+	background-color: #eeeeee;
+	border: 5px solid #bbbbbb;
+	line-height: 80px;
+	font-size: 40px;
+	font-family: Microsoft Yahei;
+	text-align: center;
+	margin: 80px auto;
+	color: rgba(23, 124, 218, 0.73);
+	cursor: pointer;
+}

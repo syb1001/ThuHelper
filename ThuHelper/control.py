@@ -6,12 +6,11 @@
 # 返回用户不同类型不同内容的消息
 
 import types
-from settings import EXPRESSION_LIST
 from database import adduser, deluser
 from message import *
 from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
-from music import getRandomMusicByType, formMusicTypeList, getMusicByExpression
+from music import getRandomMusicByType, formMusicTypeList, getMusicByExpression, isTypeOfMusic, getTypeDict
 from classroom import getRoomCourseInfo, classroom
 from food import food_articles
 from recommend_classroom import recommend_classroom
@@ -30,6 +29,7 @@ def processMessage(message):
             response = getLibrarySeatText()
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Content'].startswith('/:'):
+            # 用户发送表情则返回音乐
             response = getMusicByExpression(message['Content'])
             if (type(response) is types.UnicodeType) or (type(response) is types.StringType):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
@@ -39,11 +39,12 @@ def processMessage(message):
             # 查询教室排课信息, 处理的是文字输入
             response = classroom(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-        elif u'音乐' in message['Content']:
-            # 随机播放一首音乐
-            music = getRandomMusicByType({})
+        elif isTypeOfMusic(message['Content']):
+            # 根据音乐类型返回音乐消息
+            dict = getTypeDict(message['Content'])
+            music = getRandomMusicByType(dict)
             if music['Title'] == '':
-                return makeTextMessage(message['FromUserName'], message['ToUserName'], '抱歉，未找到该类型的音乐')
+                return makeTextMessage(message['FromUserName'], message['ToUserName'], '抱歉，未找到该类型的音乐，换个类型试试吧~')
             else:
                 return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
         elif 'test' in message['Content']:

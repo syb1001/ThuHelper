@@ -91,6 +91,7 @@ def getclassroomsbyfloor(building, floor, time, weekday):
             result.append(roomdata)
     return result
 
+# 获取一个教室的上课情况
 def getcoursebyroom(room):
     classroomlist = Classroom.objects.filter(roomnumber__contains=room)
     if (len(classroomlist) == 0):
@@ -98,6 +99,7 @@ def getcoursebyroom(room):
     else:
         return getcourse(classroomlist[0])
 
+# 添加一个教室
 def insertclassroom(building, roomnumber, status):
     #roomnumber = roomnumber.decode('unicode_escape')
     if (building == '1') or (building == '2'):
@@ -113,6 +115,40 @@ def insertclassroom(building, roomnumber, status):
     p = Classroom(building=building, floor=floornum, roomnumber=roomnumber, Monday=status[0:6], Tuesday=status[6:12], Wednesday=status[12:18], Thursday=status[18:24], Friday=status[24:30], Saturday=status[30:36], Sunday=status[36:42])
     p.save()
 
+# 修改某个教室某天的上课情况
+def updateclassroombyweek(building, roomnumber, week, status):
+    try:
+        p = Classroom.objects.get(roomnumber=roomnumber)
+    except Classroom.DoesNotExist:
+        if (building == '1') or (building == '2'):
+            floornum = int(roomnumber[0])
+        elif (building[0] == '3') or (building == '4') or (building == '5'):
+            floornum = int(roomnumber[1])
+        elif (building[0] == '6'):
+            floornum = int(roomnumber[2])
+        #if (building[0] == '3'):
+           #building += roomnumber[0]
+        if (building[0] == '6'):
+            building += roomnumber[1]
+        p = Classroom(building=building, floor=floornum, roomnumber=roomnumber)
+    if (week == 1):
+        p.Monday = status
+    elif (week == 2):
+        p.Tuesday = status
+    elif (week == 3):
+        p.Wednesday = status
+    elif (week == 4):
+        p.Thursday = status
+    elif (week == 5):
+        p.Friday = status
+    elif (week == 6):
+        p.Saturday = status
+    elif (week == 7):
+        p.Sunday = status
+    p.save()
+
+
+# 添加一首音乐
 def insertonlinemusic(music):
     p = Onlinemusic(title=music['title'], singer=music['singer'], description=music['description'], imageURL=music['imageURL'], type1=music['type1'], type2=music['type2'], type3=music['type3'])
     p.save()
@@ -146,10 +182,12 @@ def getOneMusicByType(dict):
         'ImageUrl': music.imageURL
     }
 
+# 添加用户
 def adduser(openid):
-    newuser = User(openid=openid, latestsignuptime=0, signupstatus='000000000000000000000000000000')
+    newuser = User(openid=openid, latestsignuptime=0, signupstatus='000000000000000000000000000000', sumtime=0)
     newuser.save()
 
+# 删除用户
 def deluser(openid):
     try:
         olduser = User.objects.get(openid=openid)
@@ -157,6 +195,7 @@ def deluser(openid):
     except User.DoesNotExist:
         return 'Error!'
 
+# 获取最近三十天的签到情况
 def getRecentInfobyID(ID):
     try:
         oneuser = User.objects.get(openid=ID)
@@ -164,6 +203,7 @@ def getRecentInfobyID(ID):
     except User.DoesNotExist:
         return ''
 
+# 修改最近三十天的签到情况
 def changeRecentInfo(ID, info):
     try:
         oneuser = User.objects.get(openid=ID)
@@ -172,6 +212,7 @@ def changeRecentInfo(ID, info):
     except User.DoesNotExist:
         return 'Error!'
 
+# 获取上一次签到的时间
 def getLastTimebyID(ID):
     try:
         oneuser = User.objects.get(openid=ID)
@@ -179,6 +220,7 @@ def getLastTimebyID(ID):
     except User.DoesNotExist:
         return 0
 
+# 修改上一次签到的时间
 def changeLastTime(ID, now):
     try:
         oneuser = User.objects.get(openid=ID)
@@ -186,3 +228,20 @@ def changeLastTime(ID, now):
         oneuser.save()
     except User.DoesNotExist:
         return 'Error!'
+# 用户的总签到次数加1
+def addsignintime(ID):
+    try:
+        oneuser = User.objects.get(openid=ID)
+        oneuser.sumtime += 1
+        oneuser.save()
+    except User.DoesNotExist:
+        return 'Error!'
+
+# 获取某用户的总签到次数
+def getsignintimebyID(ID):
+    try:
+        oneuser = User.objects.get(openid=ID)
+        return oneuser.sumtime
+    except User.DoesNotExist:
+        return 'Error!'
+
