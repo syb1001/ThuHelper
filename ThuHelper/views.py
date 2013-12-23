@@ -7,11 +7,12 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.utils import simplejson
 import random
+import json
 
 from .utils import checkSignature, parseXml
 from .control import processMessage
 from .library import getLibrarySeatInfo
-from .database import insertonlinemusic
+from .database import insertonlinemusic, updateclassroombyweek
 from .music import getRandomMusicByType
 from .settings import URL_ALBUM_PREF, MAX_ALBUM_IMAGE_INDEX
 
@@ -60,6 +61,13 @@ def musicplay(request):
     })
 
 def dataupdate(request):
+    data = request.POST
+    aa = json.dumps(data)
+    aa = json.loads(aa)
+    week = data['weekday']
+    building = data['building']
+    for classroom in data['finalstatus']:
+        updateclassroombyweek(building, classroom['classroom'], week, classroom['status'])
     length = len(request.POST)
     response = HttpResponse(simplejson.dumps({'message': 'ok', 'statusCode': 0, 'dictLength': length}, ensure_ascii=False))
     response['Access-Control-Allow-Origin'] = '*'
