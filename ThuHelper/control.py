@@ -111,11 +111,8 @@ def processMessage(message):
                 return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'SIGNIN':
                 # 签到功能
-                obj = signin(message['FromUserName'], message['CreateTime'])
-                if (type(obj) is types.UnicodeType) or (type(obj) is types.StringType):
-                    return makeTextMessage(message['FromUserName'], message['ToUserName'], obj)
-                else:
-                    return makeNewsMessage(message['FromUserName'], message['ToUserName'], obj)
+                response = signin(message['FromUserName'], message['CreateTime'])
+                return makeNewsMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'HELP':
                 # 帮助功能
                 articles = getHelpInfoArticles()
