@@ -36,6 +36,7 @@ class User(models.Model):
     openid = models.CharField(max_length=250)
     latestsignuptime = models.FloatField()
     signupstatus = models.CharField(max_length=50)
+    sumtime = models.IntegerField()
 
     def __unicode__(self):
         return self.openid
