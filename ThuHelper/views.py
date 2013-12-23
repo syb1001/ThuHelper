@@ -61,13 +61,13 @@ def musicplay(request):
     })
 
 def dataupdate(request):
-    data = request.POST
-    aa = json.dumps(data)
-    aa = json.loads(aa)
+    data = request.POST['data']
+    #aa = json.dumps(data)
+    data = json.loads(data)
     week = data['weekday']
     building = data['building']
-    for classroom in data['finalstatus']:
-        updateclassroombyweek(building, classroom['classroom'], week, classroom['status'])
+    for classroom in data['status']:
+        updateclassroombyweek(str(building), classroom['name'], week, classroom['status'])
     length = len(request.POST)
     response = HttpResponse(simplejson.dumps({'message': 'ok', 'statusCode': 0, 'dictLength': length}, ensure_ascii=False))
     response['Access-Control-Allow-Origin'] = '*'
