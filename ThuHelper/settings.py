@@ -211,7 +211,7 @@ URL_HELP_IMAGE = 'http://thuhelper11.duapp.com/static/images/help.jpg'
 URL_HELP_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/help/'
 
 # 欢迎图片
-URL_WELCOME_IMAGE = 'http://www.baidu.com/img/bdlogo.gif'
+URL_WELCOME_IMAGE = 'http://thuhelper11.duapp.com/static/images/welcome.jpg'
 
 # 签到图片
 URL_SIGNIN_IMAGE = 'http://thuhelper11.duapp.com/static/images/signin.jpg'

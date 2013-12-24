@@ -1,67 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/static/styles/insertmusic.css" >
+    <link rel="stylesheet" type="text/css" href="/static/styles/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/insertmusic.css">
 </head>
 <body>
-    <form action="" method="post">
-        <label for="title">歌名：</label>
-        <input type="text" name="title" id="title" value="{{ music.title }}"/>
-        {% if music.titleempty %}
-            不能为空！
-        {% endif %}
-        <br/>
-        <label for="singer">歌手：</label>
-        <input type="text" name="singer" id="singer" value="{{ music.singer }}">
-        {% if music.singerempty %}
-            不能为空！
-        {% endif %}
-        <br/>
-        <label for="description">描述：</label>
-        <input type="text" name="description" id="description" value="{{ music.description }}">
-        {% if music.descriptionempty %}
-            不能为空！
-        {% endif %}
-        <br/>
-        <label for="type1">类型1：</label>
-        <select name="type1" id="type1" value="{{ music.type1 }}">
-            <option value="a">古典</option>
-            <option value="b">流行</option>
-            <option value="c">摇滚</option>
-            <option value="d">乡村</option>
-            <option value="e">蓝调</option>
-            <option value="f">纯音乐</option>
-        </select>
-        <br/>
-        <label for="type2">类型2：</label>
-        <select name="type2" id="type2">
-            <option value="a">欢快</option>
-            <option value="b">平静</option>
-            <option value="c">忧伤</option>
-            <option value="d">激烈</option>
-            <option value="e">小清新</option>
-            <option value="f">怀旧</option>
-        </select>
-        <br/>
-        <label for="type3">类型3：</label>
-        <select name="type3" id="type3">
-            <option value="a">中文</option>
-            <option value="b">英文</option>
-            <option value="c">电影配乐</option>
-            <option value="d">钢琴</option>
-            <option value="e">轻音乐</option>
-        </select>
-        <br/>
-        <label for="imageURL">音乐图片url：</label>
-        <input type="text" name="imageURL" id="imageURL" value="{{ music.imageURL }}"/>
-        {% if music.imageURLempty %}
-            不能为空！
-        {% endif %}
-        <br/>
-        <button type="submit">提交</button>
-        {% if insertsuccess %}
-            插入成功~
-        {% endif %}
+    <form class="form-horizontal" action="" method="post">
+        <fieldset>
+            <legend>添加音乐</legend>
+
+
+            <div class="control-group">
+                <label class="control-label" for="title">歌名</label>
+                <div class="controls">
+                    <input type="text" name="title" id="title" value="{{ music.title }}"/>
+                    {% if music.titleempty %}
+                        不能为空！
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="singer">歌手</label>
+                <div class="controls">
+                    <input type="text" name="singer" id="singer" value="{{ music.singer }}">
+                    {% if music.singerempty %}
+                        不能为空！
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="description">描述</label>
+                <div class="controls">
+                    <input type="text" name="description" id="description" value="{{ music.description }}">
+                    {% if music.descriptionempty %}
+                        不能为空！
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="type1">类型一</label>
+                <div class="controls">
+                    <select name="type1" id="type1" value="{{ music.type1 }}">
+                        <option value="a">古典</option>
+                        <option value="b">流行</option>
+                        <option value="c">摇滚</option>
+                        <option value="d">乡村</option>
+                        <option value="e">蓝调</option>
+                        <option value="f">纯音乐</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="type2">类型二</label>
+                <div class="controls">
+                    <select name="type2" id="type2">
+                        <option value="a">欢快</option>
+                        <option value="b">平静</option>
+                        <option value="c">忧伤</option>
+                        <option value="d">激烈</option>
+                        <option value="e">小清新</option>
+                        <option value="f">怀旧</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="type3">类型三</label>
+                <div class="controls">
+                    <select name="type3" id="type3">
+                        <option value="a">中文</option>
+                        <option value="b">英文</option>
+                        <option value="c">电影配乐</option>
+                        <option value="d">钢琴</option>
+                        <option value="e">轻音乐</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="imageURL">音乐图片url</label>
+                <div class="controls">
+                    <input type="text" name="imageURL" id="imageURL" value="{{ music.imageURL }}"/>
+                    {% if music.imageURLempty %}
+                        不能为空！
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn" type="submit">提交</button>
+                {% if insertsuccess %}
+                    插入成功~
+                {% endif %}
+            </div>
+        </fieldset>
     </form>
 </body>
 </html>
