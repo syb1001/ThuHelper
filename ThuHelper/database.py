@@ -251,10 +251,16 @@ def getsignintimebyID(ID):
 def getrankbyID(ID):
     alluser = User.objects.order_by('-sumtime')
     i = 0
+    usersumtime = -1
     for oneuser in alluser:
         i += 1
         if (oneuser.openid == ID):
-            break
+            usersumtime = oneuser.sumtime
+            continue
+        if (usersumtime != -1):
+            if (usersumtime != oneuser.sumtime):
+                i -= 1
+                break
     result = {
         'rank' : i,
         'total' : len(alluser),
