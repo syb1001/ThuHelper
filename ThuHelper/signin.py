@@ -45,6 +45,7 @@ def signin(openID, now):
             # 今日还没签过到
             # 增加总签到次数
             addsignintime(openID)
+            totalSignTime += 1
             # 更改上一次签到时间
             changeLastTime(openID, now)
             if numOfDay >= 30:
@@ -105,7 +106,7 @@ def signin(openID, now):
 # 根据距上次自习的天数得到评价
 def getRemark(num):
     if num <= 3:
-        return u'最近自习很勤奋嘛~继续朝着学霸努力吧！'
+        return u'最近自习很勤奋嘛~继续朝着学霸的方向努力吧！'
     elif num <= 10:
         return u'常去自习有益身体健康~'
     elif num <= 20:

@@ -51,10 +51,10 @@ def processMessage(message):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], '抱歉，未找到该类型的音乐，换个类型试试吧~')
             else:
                 return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
-        elif 'test' in message['Content']:
-            # 测试通道
-            response = message['Content']
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Content'] == u'签到':
+            # 输文字签到
+            response = signin(message['FromUserName'], message['CreateTime'])
+            return makeNewsMessage(message['FromUserName'], message['ToUserName'], response)
         else:
             # 判断输入是否为某个教室
             # 若是一个教室则返回教室信息
