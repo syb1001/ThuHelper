@@ -76,10 +76,8 @@ def processMessage(message):
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Event'] == 'unsubscribe':
             # 取消订阅事件
-            # 订阅号欢送消息
-            #response = u'快点重新关注清华助手！'
             deluser(message['FromUserName'])
-            response = u'快点重新关注清华助手！'
+            response = u'谢谢您关注本产品，再见~'
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Event'] == 'CLICK':
             # 响应点击服务号菜单事件
