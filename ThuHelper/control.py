@@ -11,7 +11,7 @@ from message import *
 from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusicByType, formMusicTypeList, getMusicByExpression, isTypeOfMusic, getTypeDict
-from classroom import getRoomCourseInfo, classroom
+from classroom import getRoomCourseInfo, classroom, is_classroom
 from food import food_articles
 from recommend_classroom import recommend_classroom
 from signin import signin
@@ -30,9 +30,9 @@ def processMessage(message):
             return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
         elif isConsultingLibrary(message['Content']):
             # 用户查询人文图书馆座位信息
-            # 以文字消息形式返回
-            response = getLibrarySeatText()
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            # 以图文消息形式返回
+            articles = getLibrarySeatNews()
+            return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
         elif message['Content'].startswith('/:'):
             # 用户发送表情则返回音乐
             response = getMusicByExpression(message['Content'])
@@ -41,8 +41,12 @@ def processMessage(message):
             else:
                 return makeMusicMessage(message['FromUserName'], message['ToUserName'], response)
         elif u'教' in message['Content']:
-            # 查询教室排课信息, 处理的是文字输入
+            # 查询空闲教室信息, 处理的是文字输入
             response = classroom(message['Content'])
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif is_classroom(message['Content']):
+            # 查询教室排课信息
+            response = getRoomCourseInfo(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif isTypeOfMusic(message['Content']):
             # 根据音乐类型返回音乐消息
@@ -57,12 +61,8 @@ def processMessage(message):
             response = signin(message['FromUserName'], message['CreateTime'])
             return makeNewsMessage(message['FromUserName'], message['ToUserName'], response)
         else:
-            # 判断输入是否为某个教室
-            # 若是一个教室则返回教室信息
-            response = getRoomCourseInfo(message['Content'])
-            # 如果不符合以上任意规则则识别为非法输入
-            if response == '':
-                response = u'无法识别您的输入，请输入教室代码、文图相关词语、教室查询字符串或音乐类型等与功能相关的文字'
+            # 处理用户的其他输入
+            response = u'亲～无法识别您的输入，请输入教室代码、文图相关词语、教室查询字符串或音乐类型等与功能相关的文字。详细情况请查看帮助。'
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
 
     elif message['MsgType'] == 'event':
