@@ -93,7 +93,7 @@ def getclassroomsbyfloor(building, floor, time, weekday):
 
 # 获取一个教室的上课情况
 def getcoursebyroom(room):
-    classroomlist = Classroom.objects.filter(roomnumber__contains=room)
+    classroomlist = Classroom.objects.filter(roomnumber=room)
     if (len(classroomlist) == 0):
         return classroomlist
     else:

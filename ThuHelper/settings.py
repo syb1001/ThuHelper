@@ -180,6 +180,7 @@ APP_SECRET = '82729dab279ea74bab044cd868ec1543'
 # 与微信公众平台约定的token
 # 在微信平台上填写
 WEIXIN_TOKEN = 'helloworld'
+
 # 人文社科图书馆座位查询URL
 URL_LIBRARY = 'http://thuhelper11.duapp.com/library/'
 URL_LIBRARY_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/library/library'
@@ -206,17 +207,11 @@ MAX_ALBUM_IMAGE_INDEX = 5
 
 # 帮助信息列表
 URL_HELP = 'http://thuhelper11.duapp.com/help/'
-URL_HELP_IMAGE = 'http://thuhelper11.duapp.com/static/images/hand.jpg'
+URL_HELP_IMAGE = 'http://thuhelper11.duapp.com/static/images/help.jpg'
 URL_HELP_IMAGE_PREF = 'http://thuhelper11.duapp.com/static/images/help/'
+
+# 签到图片
 URL_SIGNIN_IMAGE = 'http://thuhelper11.duapp.com/static/images/signin.jpg'
+
 # 关于我们页面
 URL_ABOUT = 'http://thuhelper11.duapp.com/about/'
-
-EXPRESSION_LIST = {
-    'a': ['/::)', '/::B', '/:8-)', '/::P', '/::D', '/::+', '/:,@P', '/:,@-D', '/::>', '/::,@', '/:handclap', '/:B-)', '/::*'],
-    'b': ['/::|', '/::Z', '/:–b', '/::d', '/:|-)', '/::-O', '/:@x', '/:8*'],
-    'c': ['/::~', '/::<', '/::X', '/::’(', '/::(', '/::T', '/::g', '/::L', '/:,@!', '/:xx', '/:P-(', '/::’|'],
-    'd': ['/::-|', '/::@', '/::O', '/::Q', '/:,@o', '/::!', '/:,@f', '/::-S', '/::8', '/:!!!'],
-    'e': ['/::$', '/:?', '/:,@x', '/:,@@', '/:wipe', '/:dig', '/:&-(', '/:<@', '/:@>', '/:>-|', '/:X-)'],
-    'f': ['/:bye'],
-}

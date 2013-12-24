@@ -15,10 +15,13 @@ from classroom import getRoomCourseInfo, classroom
 from food import food_articles
 from recommend_classroom import recommend_classroom
 from signin import signin
-from .settings import URL_SIGNIN_IMAGE
 
 def processMessage(message):
+
     if message['MsgType'] == 'text':
+        # 取出首尾空格和换行
+        message['Content'] = message['Content'].strip('\n')
+        message['Content'] = message['Content'].strip(' ')
         # 根据用户发来的消息返回对应的消息
         if message['Content'] in ['?', 'help', u'？', u'帮助']:
             # 帮助信息
@@ -55,9 +58,12 @@ def processMessage(message):
         else:
             # 判断输入是否为某个教室
             # 若是一个教室则返回教室信息
-            # 否则原样返回
             response = getRoomCourseInfo(message['Content'])
+            # 如果不符合以上任意规则则识别为非法输入
+            if response == '':
+                response = u'无法识别您的输入，请输入教室代码、文图相关词语、教室查询字符串或音乐类型等与功能相关的文字'
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+
     elif message['MsgType'] == 'event':
         # 响应用户事件
         if message['Event'] == 'subscribe':
@@ -105,28 +111,8 @@ def processMessage(message):
                 return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'SIGNIN':
                 # 签到功能
-                times = signin(message['FromUserName'], message['CreateTime'])
-                if times == -1:
-                    response = "您今天已经签过到了，感谢您的支持！"
-                    return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-                elif times == 0:
-                    myarticle = [
-                        {
-                         'Title': u'签到信息',
-                         'PicUrl': URL_SIGNIN_IMAGE
-                        },
-                        {'Title':u'这是您第一次签到，欢迎继续使用'}
-                    ]
-                    return makeNewsMessage(message['FromUserName'], message['ToUserName'], myarticle)
-                else:
-                    myarticle = [
-                        {
-                         'Title': u'签到信息',
-                         'PicUrl': URL_SIGNIN_IMAGE
-                        },
-                        {'Title':u'您总共上自习次数'+str(times.all)+u'\n您本月自习次数'+str(times.month)}
-                    ]
-                    return makeNewsMessage(message['FromUserName'], message['ToUserName'], myarticle)
+                response = signin(message['FromUserName'], message['CreateTime'])
+                return makeNewsMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'HELP':
                 # 帮助功能
                 articles = getHelpInfoArticles()
