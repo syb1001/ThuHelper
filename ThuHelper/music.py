@@ -110,7 +110,7 @@ def getMusicByExpression(expression):
             break
     if (flag == 1):
         if (music['Url'] == ''):
-            message = u'抱歉，未找到' + music_type['type1'][type] + u'类型的音乐，换个表情试试吧~'
+            message = u'抱歉，未找到' + music_type['type2'][type] + u'类型的音乐，换个表情试试吧~'
             return message
         else:
             return music

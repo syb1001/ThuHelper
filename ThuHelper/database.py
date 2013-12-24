@@ -32,6 +32,7 @@ def dbtest(request):
     """
     #app = signin('asdfasdfasdf', 123123)
     #appe = app
+    test = getrankbyID('asdfasdf12')
     return HttpResponse(0)
 
 def dbinit(request):
@@ -108,8 +109,8 @@ def insertclassroom(building, roomnumber, status):
         floornum = int(roomnumber[1])
     elif (building[0] == '6'):
         floornum = int(roomnumber[2])
-    #if (building[0] == '3'):
-       #building += roomnumber[0]
+    if (building[0] == '3'):
+       building += roomnumber[0]
     if (building[0] == '6'):
         building += roomnumber[1]
     p = Classroom(building=building, floor=floornum, roomnumber=roomnumber, Monday=status[0:6], Tuesday=status[6:12], Wednesday=status[12:18], Thursday=status[18:24], Friday=status[24:30], Saturday=status[30:36], Sunday=status[36:42])
@@ -126,8 +127,8 @@ def updateclassroombyweek(building, roomnumber, week, status):
             floornum = int(roomnumber[1])
         elif (building[0] == '6'):
             floornum = int(roomnumber[2])
-        #if (building[0] == '3'):
-           #building += roomnumber[0]
+        if (building[0] == '3'):
+           building += roomnumber[0]
         if (building[0] == '6'):
             building += roomnumber[1]
         p = Classroom(building=building, floor=floornum, roomnumber=roomnumber)
@@ -245,3 +246,17 @@ def getsignintimebyID(ID):
     except User.DoesNotExist:
         return 'Error!'
 
+# 获取某用户签到情况
+# 返回的dict字段rank为该用户的排名，total为总用户数量
+def getrankbyID(ID):
+    alluser = User.objects.order_by('-sumtime')
+    i = 0
+    for oneuser in alluser:
+        i += 1
+        if (oneuser.openid == ID):
+            break
+    result = {
+        'rank' : i,
+        'total' : len(alluser),
+    }
+    return result
