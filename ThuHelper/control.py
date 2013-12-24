@@ -15,6 +15,7 @@ from classroom import getRoomCourseInfo, classroom
 from food import food_articles
 from recommend_classroom import recommend_classroom
 from signin import signin
+from settings import URL_WELCOME_IMAGE, URL_HELP
 
 def processMessage(message):
 
@@ -67,13 +68,17 @@ def processMessage(message):
     elif message['MsgType'] == 'event':
         # 响应用户事件
         if message['Event'] == 'subscribe':
-            # 响应订阅事件
-            # 订阅号欢迎消息
-            #response = u'欢迎关注清华自习小助手，请发送“帮助”或“help”查看帮助信息~'
-            # 服务号欢迎消息
+            # 订阅事件欢迎消息
             adduser(message['FromUserName'])
-            response = u'欢迎关注清华自习小助手，请使用帮助菜单查看帮助信息~也可回复“帮助”或“help”哦~'
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            response = [{
+                'Title': u'欢迎您的关注！',
+                'PicUrl': URL_WELCOME_IMAGE,
+                'Url': URL_HELP
+            }, {
+                'Title': u'点击此消息查看帮助',
+                'Url': URL_HELP
+            }]
+            return makeNewsMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Event'] == 'unsubscribe':
             # 取消订阅事件
             deluser(message['FromUserName'])
