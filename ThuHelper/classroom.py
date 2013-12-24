@@ -109,7 +109,7 @@ building_storey = {
     '2':  (1, 2),
     '31': (1, 2, 3),
     '32': (1, 3),
-    '33': (1, 2, 3, 4),
+    '33': (1, 2, 3),
     '4':  (1, 2, 3, 4),
     '5':  (1, 2, 3),
     '6A': (0, 1, 2, 3, 4),
@@ -204,7 +204,7 @@ def formalize(query_dict):
             for building in ('31', '32', '33'):
                 if int(query_dict['storey']) not in building_storey[building]:
                     is_all_valid = False
-                    if building != '32':
+                    if building not in ('32', '33'):
                         prompt += building_id_to_name(building) + u'只有' + \
                                   ''.join(map(lambda x: str(x)+u'、',
                                               building_storey[str(building)])).rstrip(u'、') + u'层\n'
@@ -236,7 +236,7 @@ def formalize(query_dict):
             # 指定楼层不正确
             if int(query_dict['storey']) not in building_storey[query_dict['building_id']]:
                 is_all_valid = False
-                if query_dict['building_id'] in ('6A', '6B', '32'):
+                if query_dict['building_id'] in ('6A', '6B', '32', '33'):
                     prompt += building_id_to_name(query_dict['building_id']) + u'只在' \
                              + ''.join(map(lambda x: str(x)+u'、',
                                            building_storey[query_dict['building_id']])).rstrip(u'、') \
@@ -353,11 +353,11 @@ def check_query(query):
                                      + u'层\n您输入的层数似乎有点不对哦^_^'
             elif building == 3:
                 if u'段' not in query:
-                    if cn_num[query[query.index(u'层') - 1]] not in (1, 2, 3, 4):
+                    if cn_num[query[query.index(u'层') - 1]] not in (1, 2, 3):
                         is_valid = False
                         prompt = u'亲～您输入的层数似乎有点不对哦～\n' \
                                  u'三教一段只有1、2、3层\n' \
-                                 u'三教二段只在1、3层有自习教室\n三教三段只有1、2、3、4层^_^'
+                                 u'三教二段只在1、3层有自习教室\n三教三段只在1、2、3层有自习教室^_^'
                 if u'段' in query:
                     section = cn_num[query[query.index(u'段') - 1]]
                     building_section = str(building) + str(section)
