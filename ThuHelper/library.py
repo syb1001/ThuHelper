@@ -68,6 +68,7 @@ def getLibrarySeatInfo():
             info.append(element)
     return info
 
+# obsolete
 # 获取座位信息
 # 并将座位信息转成文字消息
 def getLibrarySeatText():

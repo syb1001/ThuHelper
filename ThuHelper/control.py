@@ -26,9 +26,9 @@ def processMessage(message):
             return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
         elif isConsultingLibrary(message['Content']):
             # 用户查询人文图书馆座位信息
-            # 以文字消息形式返回
-            response = getLibrarySeatText()
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            # 以图文消息形式返回
+            articles = getLibrarySeatNews()
+            return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
         elif message['Content'].startswith('/:'):
             # 用户发送表情则返回音乐
             response = getMusicByExpression(message['Content'])
