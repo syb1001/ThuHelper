@@ -93,7 +93,7 @@ def getclassroomsbyfloor(building, floor, time, weekday):
 
 # 获取一个教室的上课情况
 def getcoursebyroom(room):
-    classroomlist = Classroom.objects.filter(roomnumber__contains=room)
+    classroomlist = Classroom.objects.filter(roomnumber=room)
     if (len(classroomlist) == 0):
         return classroomlist
     else:
@@ -108,8 +108,8 @@ def insertclassroom(building, roomnumber, status):
         floornum = int(roomnumber[1])
     elif (building[0] == '6'):
         floornum = int(roomnumber[2])
-    #if (building[0] == '3'):
-       #building += roomnumber[0]
+    if (building[0] == '3'):
+       building += roomnumber[0]
     if (building[0] == '6'):
         building += roomnumber[1]
     p = Classroom(building=building, floor=floornum, roomnumber=roomnumber, Monday=status[0:6], Tuesday=status[6:12], Wednesday=status[12:18], Thursday=status[18:24], Friday=status[24:30], Saturday=status[30:36], Sunday=status[36:42])
@@ -126,8 +126,8 @@ def updateclassroombyweek(building, roomnumber, week, status):
             floornum = int(roomnumber[1])
         elif (building[0] == '6'):
             floornum = int(roomnumber[2])
-        #if (building[0] == '3'):
-           #building += roomnumber[0]
+        if (building[0] == '3'):
+           building += roomnumber[0]
         if (building[0] == '6'):
             building += roomnumber[1]
         p = Classroom(building=building, floor=floornum, roomnumber=roomnumber)
