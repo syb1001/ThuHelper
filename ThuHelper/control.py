@@ -71,8 +71,11 @@ def processMessage(message):
             # 订阅事件欢迎消息
             adduser(message['FromUserName'])
             response = [{
-                'Title': u'欢迎您的关注！',
+                'Title': u'清华助手，带您走向人生巅峰！',
                 'PicUrl': URL_WELCOME_IMAGE,
+                'Url': URL_HELP
+            }, {
+                'Title': u'清华自习助手提供了人文馆查座、教学楼空闲教室及教室排课查询功能，给我们的自习提供方便；此外还具有听音乐、推荐清华美食、自习签到等功能，等待您的探索~',
                 'Url': URL_HELP
             }, {
                 'Title': u'点击此消息查看帮助',
