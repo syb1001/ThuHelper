@@ -4,7 +4,7 @@
 # 处理用户签到事件
 
 import time, random
-from database import getLastTimebyID, getRecentInfobyID, changeLastTime, changeRecentInfo, addsignintime, getsignintimebyID
+from database import getLastTimebyID, getRecentInfobyID, changeLastTime, changeRecentInfo, addsignintime, getsignintimebyID, getrankbyID
 from .settings import URL_SIGNIN_IMAGE
 
 #两个参数都是字符串
@@ -19,13 +19,16 @@ def signin(openID, now):
         addsignintime(openID)
         changeRecentInfo(openID, '000000000000000000000000000001')
         changeLastTime(openID, now)
+        dictTemp = getrankbyID(openID)
         return [{
                 'Title': u'学霸是怎样炼成的',
                 'PicUrl': URL_SIGNIN_IMAGE
             }, {
                 'Title': u'欢迎您使用自习签到功能。\n' + getSaying() + '\n要想成为学霸，坚持签到吧~'
             }, {
-                'Title': u'您这个月总共签到：1次\n总签到次数：1次'
+                'Title': u'您这个月总共签到：1次\n总签到次数：1次\n' +
+                         u'您目前排在第' + str(dictTemp['rank']) + u'名，击败了' +
+                         str(round((1 - float(dictTemp['rank'] - 1) / (dictTemp['total'] - 1)) * 100, 1)) + u'%的学霸'
             }, {
                 'Title': u'学习要对自己诚实，不要故意刷数据呦~↖(^ω^)↗\n注：每天只能签到一次'
             }
@@ -48,6 +51,8 @@ def signin(openID, now):
             totalSignTime += 1
             # 更改上一次签到时间
             changeLastTime(openID, now)
+            # 得到签到排名
+            dictTemp = getrankbyID(openID)
             if numOfDay >= 30:
                 # 超过三十天没自习
                 changeRecentInfo(openID, '000000000000000000000000000001')
@@ -57,7 +62,9 @@ def signin(openID, now):
                         }, {
                             'Title': u'欢迎您使用自习签到功能。\n' + getSaying() + '\n要想成为学霸，坚持签到吧~'
                         }, {
-                            'Title': u'您这个月总共签到：1次\n总签到次数：' + str(totalSignTime) + u'次'
+                            'Title': u'您这个月总共签到：1次\n总签到次数：' + str(totalSignTime) + u'次\n' +
+                                     u'您目前排在第' + str(dictTemp['rank']) + u'名，击败了' +
+                                     str(round((1 - float(dictTemp['rank'] - 1) / (dictTemp['total'] - 1)) * 100, 1)) + u'%的学霸'
                         }, {
                             'Title': u'距您上次自习好久好久了o(╯□╰)o\n这么久没有自习了，学渣要努力啊！'
                         }
@@ -81,7 +88,9 @@ def signin(openID, now):
                         }, {
                             'Title': u'欢迎您使用自习签到功能。\n' + getSaying() + '\n要想成为学霸，坚持签到吧~'
                         }, {
-                            'Title': u'您这个月总共签到：' + str(count) + u'次\n总签到次数：' + str(totalSignTime) + u'次'
+                            'Title': u'您这个月总共签到：' + str(count) + u'次\n总签到次数：' + str(totalSignTime) + u'次\n' +
+                                     u'您目前排在第' + str(dictTemp['rank']) + u'名，击败了' +
+                                     str(round((1 - float(dictTemp['rank'] - 1) / (dictTemp['total'] - 1)) * 100, 1)) + u'%的学霸'
                         }, {
                             'Title': u'据您上次自习已经过去了' + str(numOfDay) + u'天\n' + getRemark(numOfDay)
                         }
@@ -93,11 +102,14 @@ def signin(openID, now):
             for i in range(0, len(info)):
                 if info[i] == '1':
                     count += 1
+            dictTemp = getrankbyID(openID)
             return [{
                     'Title': u'学霸是怎样炼成的',
                     'PicUrl': URL_SIGNIN_IMAGE
                 }, {
-                    'Title': u'您这个月总共签到：' + str(count) + u'次\n总签到次数：' + str(totalSignTime) + u'次'
+                    'Title': u'您这个月总共签到：' + str(count) + u'次\n总签到次数：' + str(totalSignTime) + u'次\n' +
+                             u'您目前排在第' + str(dictTemp['rank']) + u'名，击败了' +
+                             str(round((1 - float(dictTemp['rank'] - 1) / (dictTemp['total'] - 1)) * 100, 1)) + u'%的学霸'
                 }, {
                     'Title': u'今天您已经签过到了'
                 }
