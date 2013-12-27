@@ -1,0 +1,2 @@
+这是两个chrome插件，使用前请先安装到chrome。
+每次需要更新数据是，点击multipage即可。

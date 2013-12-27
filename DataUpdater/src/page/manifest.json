@@ -1,0 +1,22 @@
+{
+  "name": "page",
+  "description": "for one page",
+  "version": "2.0",
+  "web_accessible_resources":[ "jquery-1.10.2.min.map"],
+  "content_scripts": [
+    {
+      "matches": ["http://zhjw.cic.tsinghua.edu.cn/pk.classroomctrl.do?m=qyClassroomState*"],
+      
+      "js": [ "jquery-1.10.2.min.js","content_script.js"],
+	  "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_title": "for one page"
+  },
+  "manifest_version": 2
+}
