@@ -22,8 +22,8 @@ from django.views.decorators.csrf import csrf_exempt
 # 微信消息推送入口
 def entry(request):
     # 进行token验证
-    #if not checkSignature(request):
-    #    return HttpResponse('Invalid Request')
+    if not checkSignature(request):
+        return HttpResponse('Invalid Request')
 
     if request.GET.has_key('echostr'):
         # 接入微信公众平台的情况
@@ -42,6 +42,7 @@ def library(request):
 def help(request):
     return render_to_response('help.html', {})
 
+# 开发者信息页面
 def about(request):
     return render_to_response('about.html', {})
 
@@ -60,9 +61,10 @@ def musicplay(request):
         'albumUrl': URL_ALBUM_PREF + str(random.randint(1, MAX_ALBUM_IMAGE_INDEX)) + '.jpg'
     })
 
+# 更新教室数据的后台
+# 客户端postJSON包到服务器解析后存入数据库
 def dataupdate(request):
     data = request.POST['data']
-    #aa = json.dumps(data)
     data = json.loads(data)
     week = data['weekday']
     building = data['building']
@@ -90,17 +92,17 @@ def insertmusic(request):
         else:
             music['singer'] = request.POST['singer']
 
-        if (len(request.POST['description']) == 0):
-            musiccomplete = 0
-            music['descriptionempty'] = 1
-        else:
-            music['description'] = request.POST['description']
+        #if (len(request.POST['description']) == 0):
+            #musiccomplete = 0
+            #music['descriptionempty'] = 1
+        #else:
+        music['description'] = request.POST['description']
 
-        if (len(request.POST['imageURL']) == 0):
-            musiccomplete = 0
-            music['imageURLempty'] = 1
-        else:
-            music['imageURL'] = request.POST['imageURL']
+        #if (len(request.POST['imageURL']) == 0):
+            #musiccomplete = 0
+            #music['imageURLempty'] = 1
+        #else:
+        music['imageURL'] = request.POST['imageURL']
 
         if (musiccomplete == 1):
             music['type1'] = request.POST['type1']

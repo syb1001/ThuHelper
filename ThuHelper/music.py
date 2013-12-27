@@ -10,7 +10,6 @@ from database import getOneMusicByType
 from .settings import URL_PLAYER_PREF,\
     URL_MUSIC_IMAGE_PREF as IMAGE_PREF, URL_MUSIC_IMAGE_SUF as IMAGE_SUF, MAX_MUSIC_IMAGE_INDEX as MAX_INDEX, \
     URL_MUSIC_NOTE_IMAGE_PREF, MAX_MUSIC_NOTE_IMAGE_INDEX, URL_MUSIC_GIFT_IMAGE_PREF, MAX_MUSIC_GIFT_IMAGE_INDEX
-from .settings import EXPRESSION_LIST
 
 # 从数据库获取随机音乐
 # 返回一个music对象用于生成音乐消息
@@ -83,6 +82,16 @@ def formMusicTypeList():
     })
     return list
 
+# 表情与音乐类型对应列表
+EXPRESSION_LIST = {
+    'a': ['/::)', '/::B', '/:8-)', '/::P', '/::D', '/::+', '/:,@P', '/:,@-D', '/::>', '/::,@', '/:handclap', '/:B-)', '/::*'],
+    'b': ['/::|', '/::Z', '/:–b', '/::d', '/:|-)', '/::-O', '/:@x', '/:8*'],
+    'c': ['/::~', '/::<', '/::X', "/::'(", '/::(', '/::T', '/::g', '/::L', '/:,@!', '/:xx', '/:P-(', "/::'|"],
+    'd': ['/::-|', '/::@', '/::O', '/::Q', '/:,@o', '/::!', '/:,@f', '/::-S', '/::8', '/:!!!'],
+    'e': ['/::$', '/:?', '/:,@x', '/:,@@', '/:wipe', '/:dig', '/:&-(', '/:<@', '/:@>', '/:>-|', '/:X-)'],
+    'f': ['/:bye'],
+}
+
 # 由表情得到音乐
 def getMusicByExpression(expression):
     flag = 0
@@ -101,7 +110,7 @@ def getMusicByExpression(expression):
             break
     if (flag == 1):
         if (music['Url'] == ''):
-            message = u'抱歉，未找到' + music_type['type1'][type] + u'类型的音乐，换个表情试试吧~'
+            message = u'抱歉，未找到' + music_type['type2'][type] + u'类型的音乐，换个表情试试吧~'
             return message
         else:
             return music

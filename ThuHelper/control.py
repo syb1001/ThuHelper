@@ -11,14 +11,18 @@ from message import *
 from library import getLibrarySeatText, getLibrarySeatNews, isConsultingLibrary
 from helpInfo import getHelpInfoArticles
 from music import getRandomMusicByType, formMusicTypeList, getMusicByExpression, isTypeOfMusic, getTypeDict
-from classroom import getRoomCourseInfo, classroom
+from classroom import getRoomCourseInfo, classroom, is_classroom
 from food import food_articles
 from recommend_classroom import recommend_classroom
 from signin import signin
-from .settings import URL_SIGNIN_IMAGE
+from settings import URL_WELCOME_IMAGE, URL_HELP
 
 def processMessage(message):
+
     if message['MsgType'] == 'text':
+        # 取出首尾空格和换行
+        message['Content'] = message['Content'].strip('\n')
+        message['Content'] = message['Content'].strip(' ')
         # 根据用户发来的消息返回对应的消息
         if message['Content'] in ['?', 'help', u'？', u'帮助']:
             # 帮助信息
@@ -26,9 +30,9 @@ def processMessage(message):
             return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
         elif isConsultingLibrary(message['Content']):
             # 用户查询人文图书馆座位信息
-            # 以文字消息形式返回
-            response = getLibrarySeatText()
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            # 以图文消息形式返回
+            articles = getLibrarySeatNews()
+            return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
         elif message['Content'].startswith('/:'):
             # 用户发送表情则返回音乐
             response = getMusicByExpression(message['Content'])
@@ -37,8 +41,12 @@ def processMessage(message):
             else:
                 return makeMusicMessage(message['FromUserName'], message['ToUserName'], response)
         elif u'教' in message['Content']:
-            # 查询教室排课信息, 处理的是文字输入
+            # 查询空闲教室信息, 处理的是文字输入
             response = classroom(message['Content'])
+            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif is_classroom(message['Content']):
+            # 查询教室排课信息
+            response = getRoomCourseInfo(message['Content'])
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif isTypeOfMusic(message['Content']):
             # 根据音乐类型返回音乐消息
@@ -48,32 +56,36 @@ def processMessage(message):
                 return makeTextMessage(message['FromUserName'], message['ToUserName'], '抱歉，未找到该类型的音乐，换个类型试试吧~')
             else:
                 return makeMusicMessage(message['FromUserName'], message['ToUserName'], music)
-        elif 'test' in message['Content']:
-            # 测试通道
-            response = message['Content']
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+        elif message['Content'] == u'签到':
+            # 输文字签到
+            response = signin(message['FromUserName'], message['CreateTime'])
+            return makeNewsMessage(message['FromUserName'], message['ToUserName'], response)
         else:
-            # 判断输入是否为某个教室
-            # 若是一个教室则返回教室信息
-            # 否则原样返回
-            response = getRoomCourseInfo(message['Content'])
+            # 处理用户的其他输入
+            response = u'亲～无法识别您的输入，请输入教室代码、文图相关词语、教室查询字符串或音乐类型等与功能相关的文字。详细情况请查看帮助。'
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+
     elif message['MsgType'] == 'event':
         # 响应用户事件
         if message['Event'] == 'subscribe':
-            # 响应订阅事件
-            # 订阅号欢迎消息
-            #response = u'欢迎关注清华自习小助手，请发送“帮助”或“help”查看帮助信息~'
-            # 服务号欢迎消息
+            # 订阅事件欢迎消息
             adduser(message['FromUserName'])
-            response = u'欢迎关注清华自习小助手，请使用帮助菜单查看帮助信息~也可回复“帮助”或“help”哦~'
-            return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
+            response = [{
+                'Title': u'清华助手，带您走向人生巅峰！',
+                'PicUrl': URL_WELCOME_IMAGE,
+                'Url': URL_HELP
+            }, {
+                'Title': u'清华自习助手提供了人文馆查座、教学楼空闲教室及教室排课查询功能，给我们的自习提供方便；此外还具有听音乐、推荐清华美食、自习签到等功能，等待您的探索~',
+                'Url': URL_HELP
+            }, {
+                'Title': u'点击此消息查看帮助',
+                'Url': URL_HELP
+            }]
+            return makeNewsMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Event'] == 'unsubscribe':
             # 取消订阅事件
-            # 订阅号欢送消息
-            #response = u'快点重新关注清华助手！'
             deluser(message['FromUserName'])
-            response = u'快点重新关注清华助手！'
+            response = u'谢谢您关注本产品，再见~'
             return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
         elif message['Event'] == 'CLICK':
             # 响应点击服务号菜单事件
@@ -105,28 +117,8 @@ def processMessage(message):
                 return makeNewsMessage(message['FromUserName'], message['ToUserName'], articles)
             elif message['EventKey'] == 'SIGNIN':
                 # 签到功能
-                times = signin(message['FromUserName'], message['CreateTime'])
-                if times == -1:
-                    response = "您今天已经签过到了，感谢您的支持！"
-                    return makeTextMessage(message['FromUserName'], message['ToUserName'], response)
-                elif times == 0:
-                    myarticle = [
-                        {
-                         'Title': u'签到信息',
-                         'PicUrl': URL_SIGNIN_IMAGE
-                        },
-                        {'Title':u'这是您第一次签到，欢迎继续使用'}
-                    ]
-                    return makeNewsMessage(message['FromUserName'], message['ToUserName'], myarticle)
-                else:
-                    myarticle = [
-                        {
-                         'Title': u'签到信息',
-                         'PicUrl': URL_SIGNIN_IMAGE
-                        },
-                        {'Title':u'您总共上自习次数'+str(times.all)+u'\n您本月自习次数'+str(times.month)}
-                    ]
-                    return makeNewsMessage(message['FromUserName'], message['ToUserName'], myarticle)
+                response = signin(message['FromUserName'], message['CreateTime'])
+                return makeNewsMessage(message['FromUserName'], message['ToUserName'], response)
             elif message['EventKey'] == 'HELP':
                 # 帮助功能
                 articles = getHelpInfoArticles()

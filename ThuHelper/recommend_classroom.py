@@ -20,6 +20,18 @@ buildings = [
     '6C',
 ]
 
+buildings_weight = {
+    '1': 5,
+    '31': 23,
+    '32': 0,
+    '33': 20,
+    '4': 20,
+    '5': 20,
+    '6A': 25,
+    '6B': 25,
+    '6C': 0,
+}
+
 code_building = {
     '1': u'一教',
     '2': u'二教',
@@ -51,17 +63,59 @@ def recommend_classroom():
     dt = datetime.datetime.now()
     class_seq = getClassSeqNumByDatetime(dt, 10)
     rooms = get_rooms(3, 10)
-    time_string = str(dt.hour) + u'点' + str(dt.minute) + u'分'
+    if dt.minute < 10 and dt.minute != 0:
+        minute_str = '0' + str(dt.minute)
+    else:
+        minute_str = str(dt.minute)
+    time_string = str(dt.hour) + u'点' + minute_str + u'分'
     ret = u'现在是' + time_string + u'\n'
     ret += code_building[rooms['building']] \
-           + str(rooms['floor']) + u'层第'+ str(class_seq) + u'节空教室较多\n'
+           + str(rooms['floor']) + u'层\n第' + str(class_seq) + u'节课空闲教室较多\n'
     for i in range(3):
         ret += rooms['list'][i]['roomnumber'].split()[0] + '\n'
-    ret += u'都是不错的选择'
+    ret += u'都是不错的选择^_^'
     return ret
 
-# least_num 是最少的空闲教室数量
+def get_building():
+    total = 0
+    for key in buildings_weight:
+        total += buildings_weight[key]
+    num = random.randint(1, total)
+
+    ret = ''
+    building_list = sorted(buildings_weight)
+    for building in building_list:
+        if num - buildings_weight[building] <= 0:
+            ret = building
+            break
+        else:
+            num -= buildings_weight[building]
+    return ret
+
+def get_storey(building):
+    storeys = building_storey[building]
+    index = random.randint(0, len(storeys) - 1)
+    return storeys[index]
+
 def get_rooms(least_num, minute_delta):
+    room_list = []
+    building = ''
+    storey = 0
+    dt = datetime.datetime.now()
+    class_seq = getClassSeqNumByDatetime(dt, minute_delta)
+    weekday = datetime.date(dt.year, dt.month, dt.day).weekday()
+    while len(room_list) < least_num:
+        building = get_building()
+        storey = get_storey(building)
+        room_list = getclassroomsbyfloor(building, storey, class_seq, weekday)
+    return {
+        'list': room_list,
+        'building': building,
+        'floor': storey,
+    }
+
+# least_num 是最少的空闲教室数量
+def get_rooms2(least_num, minute_delta):
     dt = datetime.datetime.now()
     class_seq = getClassSeqNumByDatetime(dt, minute_delta)
     weekday = datetime.date(dt.year, dt.month, dt.day).weekday()
