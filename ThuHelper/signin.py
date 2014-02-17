@@ -35,7 +35,7 @@ def signin(openID, now):
         ]
     else:
         # 计算距上次自习已有多长时间
-        numOfDay = int((float(now) - lastSignTime)/(24*3600))+1
+        numOfDay = int((float(now) - lastSignTime)/(24*3600))
         timeforcheck = lastSignTime + numOfDay*24*3600
         x = time.localtime(timeforcheck)
         y = time.localtime(float(now))
