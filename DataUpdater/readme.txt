@@ -1,2 +1,5 @@
-��������chrome�����ʹ��ǰ���Ȱ�װ��chrome��
-ÿ����Ҫ���������ǣ����multipage���ɡ�
+考虑到更新教室数据需要在校内网环境下进行，
+我们只做了两个chrome插件，使用前请先安装到chrome。
+multipage插件依赖page插件，
+每次需要更新数据时，点击multipage即可。
+插件会打开多个网页并从中爬取数据，打开过的网页就可以关掉了。
